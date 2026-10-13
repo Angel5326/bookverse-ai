@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BookVerse AI</title>
+</head>
+<body>
+    <h1>📚 Welcome to BookVerse AI</h1>
+    <p>Your AI-powered online bookstore.</p>
+
+    <h2>Categories</h2>
+    <ul>
+        {% for category in categories %}
+            <li>{{ category.name }}</li>
+        {% empty %}
+            <li>No categories yet. Add from admin panel.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Latest Books</h2>
+    <ul>
+        {% for book in books %}
+            <li>{{ book.title }} - ₹{{ book.price }}</li>
+        {% empty %}
+            <li>No books yet. Add from admin panel.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
