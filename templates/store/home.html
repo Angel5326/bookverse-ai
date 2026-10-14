@@ -1,29 +1,444 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>BookVerse AI</title>
-</head>
-<body>
-    <h1>📚 Welcome to BookVerse AI</h1>
-    <p>Your AI-powered online bookstore.</p>
+{% extends 'base.html' %}
+{% load static %}
 
-    <h2>Categories</h2>
-    <ul>
-        {% for category in categories %}
-            <li>{{ category.name }}</li>
-        {% empty %}
-            <li>No categories yet. Add from admin panel.</li>
-        {% endfor %}
-    </ul>
+{% block title %}BookVerse AI — Find Your Next Book, Understand It Instantly{% endblock %}
+{% block meta_description %}Browse thousands of books, read AI-powered summaries, and order in seconds. BookVerse AI — India's smartest bookstore.{% endblock %}
 
-    <h2>Latest Books</h2>
-    <ul>
-        {% for book in books %}
-            <li>{{ book.title }} - ₹{{ book.price }}</li>
-        {% empty %}
-            <li>No books yet. Add from admin panel.</li>
+{% block content %}
+
+{# ============================================================
+   SECTION 1 — HERO
+   ============================================================ #}
+<section class="bv-hero" aria-label="Hero">
+
+  {# Small pill label #}
+  <div class="bv-hero__label" role="note">
+    <span class="dot" aria-hidden="true"></span>
+    <i class="bi bi-stars" aria-hidden="true"></i>
+    AI-powered bookstore
+  </div>
+
+  {# Headline #}
+  <div class="bv-hero__text">
+    <h1 class="bv-hero__h1">
+      Find your next book.<br>
+      <em>Understand it instantly.</em>
+    </h1>
+
+    <p class="bv-hero__sub">
+      BookVerse AI lets you discover, preview with Gemini-powered summaries,
+      and order from thousands of titles — all in one beautiful place.
+    </p>
+
+    {# CTAs #}
+    <div class="bv-hero__cta">
+      <a href="#books" class="btn-bv-pill-dark" aria-label="Browse books">
+        <i class="bi bi-book-half" aria-hidden="true"></i>
+        Browse Books
+      </a>
+      <a href="#ai-feature" class="btn-bv-pill-white" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.35);" aria-label="Learn about AI summaries">
+        <i class="bi bi-cpu" aria-hidden="true"></i>
+        How AI works
+      </a>
+    </div>
+
+    {# Trust lines #}
+    <div class="bv-hero__trust" aria-label="Key features">
+      <span><i class="bi bi-check-circle" aria-hidden="true"></i> 10,000+ Titles</span>
+      <span><i class="bi bi-check-circle" aria-hidden="true"></i> AI Summary before you buy</span>
+      <span><i class="bi bi-check-circle" aria-hidden="true"></i> Fast delivery across India</span>
+    </div>
+  </div>
+
+  {# ── Floating glass app-preview panel ── #}
+  <div class="bv-hero__panel" role="region" aria-label="App preview">
+    {# macOS-style window controls #}
+    <div class="bv-hero__panel-bar" aria-hidden="true">
+      <div class="bv-hero__panel-dot"></div>
+      <div class="bv-hero__panel-dot"></div>
+      <div class="bv-hero__panel-dot"></div>
+      <span style="color:rgba(255,255,255,.5);font-size:12px;margin-left:auto;">bookverse.ai</span>
+    </div>
+
+    {# Category chips inside panel #}
+    <div class="bv-chip-row" data-filter-group role="list" aria-label="Category filter chips">
+      <button class="bv-chip active" data-filter-chip role="listitem">All Books</button>
+      {% for cat in categories %}
+        <button class="bv-chip" data-filter-chip role="listitem">{{ cat.name }}</button>
+      {% empty %}
+        <button class="bv-chip">Fiction</button>
+        <button class="bv-chip">Non-Fiction</button>
+        <button class="bv-chip">Science</button>
+        <button class="bv-chip">History</button>
+        <button class="bv-chip">Self-Help</button>
+      {% endfor %}
+    </div>
+
+    {# Mini book cards row inside the panel #}
+    <div class="bv-hero__books-row d-flex gap-3" style="overflow-x:auto;padding-bottom:4px;cursor:grab;" aria-label="Featured books preview">
+      {% for book in books %}
+        <div class="bv-book-mini" style="min-width:130px;">
+          <div class="bv-book-mini__cover" aria-hidden="true">
+            {% if book.cover_image %}
+              <img src="{{ book.cover_image.url }}" alt="Cover of {{ book.title }}" style="width:100%;height:100%;object-fit:cover;">
+            {% else %}
+              {{ book.title|slice:":1"|upper }}
+            {% endif %}
+          </div>
+          <div class="bv-book-mini__body">
+            <div class="bv-book-mini__title">{{ book.title }}</div>
+            <div class="bv-book-mini__price">₹{{ book.price }}</div>
+          </div>
+        </div>
+      {% empty %}
+        {# Placeholder cards when no books yet #}
+        {% for i in "123" %}
+          <div class="bv-book-mini" style="min-width:130px;">
+            <div class="bv-book-mini__cover" aria-hidden="true">📚</div>
+            <div class="bv-book-mini__body">
+              <div class="bv-book-mini__title">Add books from admin</div>
+              <div class="bv-book-mini__price">₹ —</div>
+            </div>
+          </div>
         {% endfor %}
-    </ul>
-</body>
-</html>
+      {% endfor %}
+    </div>
+
+  </div>{# end hero panel #}
+
+</section>
+{# end hero #}
+
+
+{# ============================================================
+   SECTION 2 — CATEGORIES
+   ============================================================ #}
+<section class="bv-section" id="categories" aria-labelledby="categories-heading">
+  <div class="container-bv">
+
+    <div class="bv-section__header bv-reveal">
+      <div>
+        <p class="section-label">
+          <i class="bi bi-grid" aria-hidden="true"></i> Browse by genre
+        </p>
+        <h2 class="bv-section__title" id="categories-heading">
+          Every genre, <em>every taste</em>
+        </h2>
+      </div>
+      <a href="#" class="bv-view-all" aria-label="View all categories">
+        <!-- TODO Person 1: replace with {% url 'store:category_list' %} -->
+        All categories <i class="bi bi-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    {# Category chips strip #}
+    <div class="bv-categories-strip bv-reveal-stagger" role="list" aria-label="Book categories">
+      {% for cat in categories %}
+        <a
+          href="#"
+          class="bv-category-chip"
+          role="listitem"
+          aria-label="Browse {{ cat.name }} books"
+        >
+          <!-- TODO Person 1: replace href with {% url 'store:category_detail' cat.slug %} -->
+          <i class="bi bi-tag" aria-hidden="true"></i>
+          {{ cat.name }}
+        </a>
+      {% empty %}
+        {# Fallback placeholder chips #}
+        {% for label in "Fiction,Non-Fiction,Science,History,Self-Help,Biography,Technology,Art"|split:"," %}
+          <span class="bv-category-chip" role="listitem">
+            <i class="bi bi-tag" aria-hidden="true"></i> {{ label }}
+          </span>
+        {% empty %}
+          <span class="bv-category-chip"><i class="bi bi-tag"></i> Fiction</span>
+          <span class="bv-category-chip"><i class="bi bi-tag"></i> Non-Fiction</span>
+          <span class="bv-category-chip"><i class="bi bi-tag"></i> Science</span>
+          <span class="bv-category-chip"><i class="bi bi-tag"></i> History</span>
+          <span class="bv-category-chip"><i class="bi bi-tag"></i> Self-Help</span>
+          <span class="bv-category-chip"><i class="bi bi-tag"></i> Biography</span>
+          <span class="bv-category-chip"><i class="bi bi-tag"></i> Technology</span>
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+
+{# ============================================================
+   SECTION 3 — BEST SELLERS
+   ============================================================ #}
+<section class="bv-section bv-section--alt" id="best-sellers" aria-labelledby="bestsellers-heading">
+  <div class="container-bv">
+
+    <div class="bv-section__header bv-reveal">
+      <div>
+        <p class="section-label">
+          <i class="bi bi-star-fill" style="color:#f59e0b;" aria-hidden="true"></i> Top picks
+        </p>
+        <h2 class="bv-section__title" id="bestsellers-heading">
+          Best <em>Sellers</em>
+        </h2>
+      </div>
+      <a href="#" class="bv-view-all" aria-label="View all best sellers">
+        <!-- TODO Person 1: replace with filtered listing URL -->
+        View all <i class="bi bi-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="Best seller books">
+      {# Prefer global_best_sellers, fall back to books from view context #}
+      {% with book_list=global_best_sellers|default:books %}
+        {% for book in book_list %}
+          <div role="listitem">
+            {% include 'partials/book_card.html' with book=book %}
+          </div>
+        {% empty %}
+          <div class="bv-empty-state" style="grid-column:1/-1;">
+            <div class="bv-empty-state__icon"><i class="bi bi-star" aria-hidden="true"></i></div>
+            <h3 class="bv-empty-state__title">No best sellers yet</h3>
+            <p class="bv-empty-state__text">
+              Visit the <a href="/admin/" style="color:var(--blue);">admin panel</a> and toggle
+              <strong>is_best_seller</strong> on any book to feature it here.
+            </p>
+          </div>
+        {% endfor %}
+      {% endwith %}
+    </div>
+
+  </div>
+</section>
+
+
+{# ============================================================
+   SECTION 4 — NEW ARRIVALS
+   ============================================================ #}
+<section class="bv-section" id="new-arrivals" aria-labelledby="newarrivals-heading">
+  <div class="container-bv">
+
+    <div class="bv-section__header bv-reveal">
+      <div>
+        <p class="section-label">
+          <i class="bi bi-lightning-fill" style="color:var(--blue);" aria-hidden="true"></i> Just landed
+        </p>
+        <h2 class="bv-section__title" id="newarrivals-heading">
+          New <em>Arrivals</em>
+        </h2>
+      </div>
+      <a href="#" class="bv-view-all" aria-label="View all new arrivals">
+        <!-- TODO Person 1: replace with new_arrivals listing URL -->
+        View all <i class="bi bi-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="New arrival books">
+      {% with book_list=global_new_arrivals|default:books %}
+        {% for book in book_list %}
+          <div role="listitem">
+            {% include 'partials/book_card.html' with book=book %}
+          </div>
+        {% empty %}
+          <div class="bv-empty-state" style="grid-column:1/-1;">
+            <div class="bv-empty-state__icon"><i class="bi bi-lightning" aria-hidden="true"></i></div>
+            <h3 class="bv-empty-state__title">No new arrivals yet</h3>
+            <p class="bv-empty-state__text">
+              Add books via the <a href="/admin/" style="color:var(--blue);">admin panel</a>.
+              New books appear here automatically.
+            </p>
+          </div>
+        {% endfor %}
+      {% endwith %}
+    </div>
+
+  </div>
+</section>
+
+
+{# ============================================================
+   SECTION 5 — ALL BOOKS (fallback grid)
+   ============================================================ #}
+<section class="bv-section bv-section--alt" id="books" aria-labelledby="allbooks-heading">
+  <div class="container-bv">
+
+    <div class="bv-section__header bv-reveal">
+      <div>
+        <p class="section-label">
+          <i class="bi bi-books" aria-hidden="true"></i> Full catalogue
+        </p>
+        <h2 class="bv-section__title" id="allbooks-heading">
+          Browse All <em>Books</em>
+        </h2>
+      </div>
+    </div>
+
+    <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="All books">
+      {% for book in books %}
+        <div role="listitem">
+          {% include 'partials/book_card.html' with book=book %}
+        </div>
+      {% empty %}
+        <div class="bv-empty-state" style="grid-column:1/-1;">
+          <div class="bv-empty-state__icon"><i class="bi bi-book" aria-hidden="true"></i></div>
+          <h3 class="bv-empty-state__title">Your library is empty</h3>
+          <p class="bv-empty-state__text">
+            Head over to the <a href="/admin/" style="color:var(--blue);">admin panel</a> and
+            add your first book to get started!
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+
+{# ============================================================
+   SECTION 6 — AI SUMMARY FEATURE
+   ============================================================ #}
+<section class="bv-section" id="ai-feature" aria-labelledby="ai-heading">
+  <div class="container-bv">
+    <div class="bv-ai-block bv-reveal">
+
+      {# Left: copy #}
+      <div>
+        <p class="bv-ai-block__label">
+          <i class="bi bi-cpu-fill" aria-hidden="true"></i> Powered by Gemini AI
+        </p>
+        <h2 class="bv-ai-block__title" id="ai-heading">
+          Get an instant AI summary<br><em>before you buy</em>
+        </h2>
+        <p class="bv-ai-block__body">
+          Never regret a purchase again. BookVerse AI uses Google's Gemini model to generate
+          concise, spoiler-free summaries of any book in our catalogue — so you know exactly
+          what you're getting before you spend a rupee.
+        </p>
+        <ul class="bv-ai-block__features" aria-label="AI summary features">
+          <li>
+            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            <span>Instant 3-paragraph summary of any book</span>
+          </li>
+          <li>
+            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            <span>Key themes and reader mood analysis</span>
+          </li>
+          <li>
+            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            <span>Similar book recommendations</span>
+          </li>
+          <li>
+            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            <span>Works on 10,000+ titles, updated daily</span>
+          </li>
+        </ul>
+        <div style="margin-top:var(--space-6);">
+          <a href="#" class="btn-bv-pill-blue" aria-label="Try AI summary feature">
+            <!-- TODO Person 5: replace with {% url 'ai_summary:index' %} -->
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            Try AI Summary
+          </a>
+        </div>
+      </div>
+
+      {# Right: mockup UI #}
+      <div class="bv-ai-mockup" aria-label="AI summary preview" role="img">
+        <div class="bv-ai-mockup__book">
+          <div class="bv-ai-mockup__book-cover" aria-hidden="true">📘</div>
+          <div class="bv-ai-mockup__book-info">
+            <h4>Atomic Habits</h4>
+            <p>James Clear · Self-Help</p>
+            <span class="bv-ai-mockup__tag">AI Summary Ready</span>
+          </div>
+        </div>
+
+        <div class="bv-ai-mockup__summary-label">
+          <i class="bi bi-stars" aria-hidden="true"></i>
+          Gemini AI Summary
+        </div>
+        <p class="bv-ai-mockup__summary-text">
+          <em>Atomic Habits</em> argues that tiny, 1% improvements compounded over time lead to
+          remarkable results. Clear introduces a four-step habit loop — cue, craving, response,
+          reward — and shows how to redesign your environment to make good habits obvious and
+          bad habits invisible…
+        </p>
+
+        {# Fake typing indicator #}
+        <div style="margin-top:12px;display:flex;align-items:center;gap:8px;">
+          <div class="bv-typing" aria-label="Generating summary">
+            <span></span><span></span><span></span>
+          </div>
+          <span style="color:rgba(255,255,255,.4);font-size:12px;">Generating more…</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+{# ============================================================
+   SECTION 7 — AUDIOBOOKS TEASER (static placeholder)
+   ============================================================ #}
+<section class="bv-section bv-section--alt" id="audiobooks" aria-labelledby="audio-heading">
+  <div class="container-bv">
+
+    <div class="bv-reveal" style="text-align:center;max-width:600px;margin-inline:auto;">
+      <p class="section-label" style="justify-content:center;">
+        <i class="bi bi-headphones" aria-hidden="true"></i> Coming soon
+      </p>
+      <h2 class="bv-section__title" id="audio-heading" style="text-align:center;">
+        Audiobooks are <em>on their way</em>
+      </h2>
+      <p style="color:var(--text-muted);margin-top:var(--space-4);font-size:16px;">
+        We're building a world-class audiobook library. Subscribe to our newsletter
+        to be the first to know when they drop.
+      </p>
+      <div style="display:flex;justify-content:center;gap:var(--space-3);margin-top:var(--space-6);">
+        <i class="bi bi-headphones" aria-hidden="true" style="font-size:4rem;color:var(--muted);"></i>
+      </div>
+      <a href="#newsletter" class="btn-bv-pill-dark" style="margin-top:var(--space-5);display:inline-flex;" aria-label="Subscribe for audiobooks announcement">
+        Notify me
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+{# ============================================================
+   SECTION 8 — NEWSLETTER BAND
+   ============================================================ #}
+<section class="bv-section" id="newsletter" aria-labelledby="newsletter-heading">
+  <div class="container-bv">
+    <div class="bv-newsletter-band bv-reveal">
+
+      <h2 id="newsletter-heading">
+        Read more, spend smarter
+      </h2>
+      <p>
+        Join 50,000+ readers who get curated book picks and AI summaries delivered weekly.
+      </p>
+
+      {# TODO Person 3: set action="{% url 'newsletter:subscribe' %}" when view is ready #}
+      <form class="bv-newsletter-form" action="#" method="post" aria-label="Newsletter subscription form">
+        {% csrf_token %}
+        <label for="newsletter-email" class="sr-only">Your email address</label>
+        <input
+          id="newsletter-email"
+          type="email"
+          name="email"
+          placeholder="Enter your email…"
+          required
+          autocomplete="email"
+          aria-label="Email address for newsletter"
+        >
+        <button type="submit" class="btn-bv-pill-dark" aria-label="Subscribe to newsletter">
+          Subscribe
+        </button>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
