@@ -137,6 +137,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ====================================================
+     5.5 HERO SHELF TABS FILTERING (Recommended / Upcoming)
+     ==================================================== */
+  const shelfTabs = document.querySelectorAll('.bv-shelf__tab[data-shelf-tab]');
+  const shelfCards = document.querySelectorAll('.bv-shelf__card[data-shelf-item]');
+
+  shelfTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      shelfTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const filter = tab.getAttribute('data-shelf-tab');
+      shelfCards.forEach(card => {
+        const itemTypes = card.getAttribute('data-shelf-item') || '';
+        if (filter === 'all' || itemTypes.includes(filter)) {
+          card.style.display = 'flex';
+          card.style.opacity = '1';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+
+  /* ====================================================
      6. HERO PANEL — book card scroll (if overflowing)
      ==================================================== */
   const heroPanel = document.querySelector('.bv-hero__books-row');

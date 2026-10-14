@@ -84,122 +84,186 @@
 
         {# Filter tabs row #}
         <div class="bv-shelf__tabs" role="tablist">
-          <button class="bv-shelf__tab active" role="tab"><span>⚡ Bestsellers</span> <span class="tab-count">24</span></button>
-          <button class="bv-shelf__tab" role="tab"><span>✨ New Arrivals</span> <span class="tab-count">18</span></button>
-          <button class="bv-shelf__tab" role="tab"><span>🧠 AI Summaries</span> <span class="tab-count">40</span></button>
-          <button class="bv-shelf__tab" role="tab"><span>🎧 Audiobooks</span> <span class="tab-count">12</span></button>
-          <button class="bv-shelf__tab" role="tab"><span>📖 Sci-Fi</span> <span class="tab-count">28</span></button>
+          <button class="bv-shelf__tab active" role="tab" data-shelf-tab="all"><span>🌟 All</span> <span class="tab-count">10</span></button>
+          <button class="bv-shelf__tab" role="tab" data-shelf-tab="recommended"><span>✨ Recommended Books</span> <span class="tab-count">5</span></button>
+          <button class="bv-shelf__tab" role="tab" data-shelf-tab="upcoming"><span>⏳ Upcoming Books</span> <span class="tab-count">5</span></button>
+          <button class="bv-shelf__tab" role="tab" data-shelf-tab="preorder"><span>📦 Pre-Orders</span> <span class="tab-count">4</span></button>
           <button class="bv-shelf__tab bv-shelf__tab--add" title="More categories" aria-label="More categories"><i class="bi bi-plus-lg"></i></button>
         </div>
 
         {# Cards track inside shelf #}
-        <div class="bv-shelf__cards-track" role="list" aria-label="Featured books shelf">
-          <!-- Card 1 -->
-          <div class="bv-shelf__card" role="listitem">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6);">
+        <div class="bv-shelf__cards-track" role="list" aria-label="Recommended and Upcoming books shelf">
+
+          <!-- Recommended 1 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #1e1b4b, #3b82f6);">
               <div class="bv-shelf__card-overlay">
-                <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> AI Summary</span>
+                <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> 99% AI Match</span>
                 <div class="bv-shelf__card-text-preview">
-                  <strong>The Psychology of Money</strong>
-                  <p>Timeless lessons on wealth</p>
+                  <strong>Nexus: Information Networks</strong>
+                  <p>Yuval Noah Harari · Top Pick</p>
                 </div>
               </div>
             </div>
             <div class="bv-shelf__card-meta">
-              <span class="bv-shelf__card-tag"><i class="bi bi-graph-up-arrow"></i> Finance</span>
-              <span class="bv-shelf__card-price">₹399</span>
+              <span class="bv-shelf__card-tag"><i class="bi bi-cpu"></i> Tech & AI</span>
+              <span class="bv-shelf__card-price">₹699</span>
             </div>
           </div>
 
-          <!-- Card 2 -->
-          <div class="bv-shelf__card" role="listitem">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #7c2d12, #ea580c);">
+          <!-- Recommended 2 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #064e3b, #059669);">
               <div class="bv-shelf__card-overlay">
-                <span class="bv-shelf__card-badge"><i class="bi bi-lightning-fill"></i> #1 Bestseller</span>
+                <span class="bv-shelf__card-badge"><i class="bi bi-heart-fill" style="color:#f43f5e;"></i> Recommended</span>
                 <div class="bv-shelf__card-text-preview">
-                  <strong>Atomic Habits</strong>
-                  <p>Tiny changes, big results</p>
+                  <strong>Thinking in Systems</strong>
+                  <p>Donella Meadows · Essential</p>
                 </div>
               </div>
             </div>
             <div class="bv-shelf__card-meta">
-              <span class="bv-shelf__card-tag"><i class="bi bi-bullseye"></i> Habits</span>
-              <span class="bv-shelf__card-price">₹499</span>
-            </div>
-          </div>
-
-          <!-- Card 3 -->
-          <div class="bv-shelf__card" role="listitem">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #831843, #e11d48);">
-              <div class="bv-shelf__card-overlay">
-                <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> 5-Min Recap</span>
-                <div class="bv-shelf__card-text-preview">
-                  <strong>Dune</strong>
-                  <p>Frank Herbert's sci-fi epic</p>
-                </div>
-              </div>
-            </div>
-            <div class="bv-shelf__card-meta">
-              <span class="bv-shelf__card-tag"><i class="bi bi-rocket-takeoff"></i> Sci-Fi</span>
+              <span class="bv-shelf__card-tag"><i class="bi bi-diagram-3"></i> Logic & Mind</span>
               <span class="bv-shelf__card-price">₹450</span>
             </div>
           </div>
 
-          <!-- Card 4 -->
-          <div class="bv-shelf__card" role="listitem">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #134e4a, #0d9488);">
-              <div class="bv-shelf__card-overlay">
-                <span class="bv-shelf__card-badge"><i class="bi bi-bookmark-star"></i> Staff Pick</span>
-                <div class="bv-shelf__card-text-preview">
-                  <strong>Klara and the Sun</strong>
-                  <p>Love & artificial beings</p>
-                </div>
-              </div>
-            </div>
-            <div class="bv-shelf__card-meta">
-              <span class="bv-shelf__card-tag"><i class="bi bi-book"></i> Fiction</span>
-              <span class="bv-shelf__card-price">₹380</span>
-            </div>
-          </div>
-
-          <!-- Card 5 -->
-          <div class="bv-shelf__card" role="listitem">
+          <!-- Recommended 3 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
             <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #312e81, #6366f1);">
               <div class="bv-shelf__card-overlay">
-                <span class="bv-shelf__card-badge"><i class="bi bi-headphones"></i> Audio Ready</span>
+                <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> Staff Choice</span>
                 <div class="bv-shelf__card-text-preview">
-                  <strong>Deep Work</strong>
-                  <p>Rules for focused success</p>
+                  <strong>Chip War</strong>
+                  <p>Chris Miller · Microchips</p>
                 </div>
               </div>
             </div>
             <div class="bv-shelf__card-meta">
-              <span class="bv-shelf__card-tag"><i class="bi bi-laptop"></i> Focus</span>
-              <span class="bv-shelf__card-price">₹350</span>
+              <span class="bv-shelf__card-tag"><i class="bi bi-motherboard"></i> Silicon Geo</span>
+              <span class="bv-shelf__card-price">₹599</span>
             </div>
           </div>
 
-          {# Dynamic books from database #}
-          {% for book in books %}
-            <div class="bv-shelf__card" role="listitem">
-              <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #0a508f, #087cf8);">
-                {% if book.cover_image %}
-                  <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
-                {% endif %}
-                <div class="bv-shelf__card-overlay">
-                  <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> AI Ready</span>
-                  <div class="bv-shelf__card-text-preview">
-                    <strong>{{ book.title }}</strong>
-                    <p>{{ book.author|default:"Featured Title" }}</p>
-                  </div>
+          <!-- Recommended 4 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #7c2d12, #ea580c);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-bookmark-star"></i> Based on Taste</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Supercommunicators</strong>
+                  <p>Charles Duhigg · Connection</p>
                 </div>
               </div>
-              <div class="bv-shelf__card-meta">
-                <span class="bv-shelf__card-tag"><i class="bi bi-book"></i> {{ book.category.name|default:"Book" }}</span>
-                <span class="bv-shelf__card-price">₹{{ book.price }}</span>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-chat-dots"></i> Communication</span>
+              <span class="bv-shelf__card-price">₹520</span>
+            </div>
+          </div>
+
+          <!-- Recommended 5 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #134e4a, #0d9488);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-robot"></i> 98% Match</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Co-Intelligence</strong>
+                  <p>Ethan Mollick · Living with AI</p>
+                </div>
               </div>
             </div>
-          {% endfor %}
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-robot"></i> AI Future</span>
+              <span class="bv-shelf__card-price">₹490</span>
+            </div>
+          </div>
+
+          <!-- Upcoming 1 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #831843, #e11d48);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge" style="background:rgba(225,29,72,.88);"><i class="bi bi-hourglass-split"></i> Upcoming · Nov 2026</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>The Winds of Winter</strong>
+                  <p>George R.R. Martin · Pre-Order</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-calendar-event"></i> Pre-Order</span>
+              <span class="bv-shelf__card-price">₹899</span>
+            </div>
+          </div>
+
+          <!-- Upcoming 2 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #451a03, #d97706);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge" style="background:rgba(217,119,6,.88);"><i class="bi bi-hourglass-split"></i> Upcoming Release</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>The Singularity is Nearer</strong>
+                  <p>Ray Kurzweil · Futurology</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-rocket-takeoff"></i> Future Tech</span>
+              <span class="bv-shelf__card-price">₹650</span>
+            </div>
+          </div>
+
+          <!-- Upcoming 3 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #0f172a, #334155);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge" style="background:rgba(51,65,85,.88);"><i class="bi bi-clock-history"></i> Dropping Next Month</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Clear Thinking</strong>
+                  <p>Shane Parrish · New Hardcover</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-lightning-charge"></i> Decisions</span>
+              <span class="bv-shelf__card-price">₹480</span>
+            </div>
+          </div>
+
+          <!-- Upcoming 4 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #1e3a8a, #8b5cf6);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge" style="background:rgba(139,92,246,.88);"><i class="bi bi-stars"></i> Gemini AI Preview</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Artificial General Intelligence</strong>
+                  <p>Demis Hassabis · Pre-Order</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-cpu-fill"></i> Frontier AI</span>
+              <span class="bv-shelf__card-price">₹750</span>
+            </div>
+          </div>
+
+          <!-- Upcoming 5 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #14532d, #16a34a);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge" style="background:rgba(22,163,74,.88);"><i class="bi bi-hourglass-split"></i> Expected Soon</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>The Coming Wave (Expanded)</strong>
+                  <p>Mustafa Suleyman · Pre-Order</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-shield-lock"></i> Governance</span>
+              <span class="bv-shelf__card-price">₹590</span>
+            </div>
+          </div>
+
         </div>
 
       </div>
