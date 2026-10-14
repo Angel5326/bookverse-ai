@@ -1,0 +1,156 @@
+{% load static %}
+
+{# ── Floating dark pill navbar ── #}
+<nav class="bv-navbar" aria-label="Main navigation">
+  <div class="bv-navbar__inner">
+
+    {# ── Brand ── #}
+    <a href="{% url 'store:home' %}" class="bv-navbar__brand" aria-label="{{ SITE_NAME }} home">
+      <div class="bv-logo-mark" aria-hidden="true">B</div>
+      <span>{{ SITE_NAME }}</span>
+    </a>
+
+    {# ── Desktop nav links ── #}
+    <ul class="bv-navbar__links" role="list">
+
+      <li>
+        <a href="{% url 'store:home' %}" aria-label="Home">Home</a>
+      </li>
+
+      <li>
+        <a href="#books" aria-label="Browse books">Books</a>
+      </li>
+
+      {# ── Categories dropdown ── #}
+      <li class="bv-dropdown">
+        <button class="nav-link-btn" aria-haspopup="true" aria-expanded="false" aria-label="Browse categories">
+          Categories <i class="bi bi-chevron-down" style="font-size:10px;"></i>
+        </button>
+        <div class="bv-dropdown__menu" role="menu">
+          {% for cat in global_categories %}
+            {# href='#' until Person 1/3 creates category detail URLs #}
+            <a href="#" role="menuitem">
+              <!-- TODO Person 1: replace with {% url 'store:category_detail' cat.slug %} -->
+              {{ cat.name }}
+            </a>
+          {% empty %}
+            <span style="padding:10px 12px;color:rgba(255,255,255,.4);font-size:12px;display:block;">
+              No categories yet
+            </span>
+          {% endfor %}
+        </div>
+      </li>
+
+      <li>
+        <a href="#best-sellers" aria-label="Best sellers">Best Sellers</a>
+      </li>
+
+      <li>
+        <a href="#new-arrivals" aria-label="New arrivals">New Arrivals</a>
+      </li>
+
+    </ul>
+
+    {# ── Search bar (desktop) ── #}
+    <form class="bv-navbar__search" role="search" action="#" method="get">
+      {# TODO Person 1: set action="{% url 'store:search' %}" once search view exists #}
+      <i class="bi bi-search bv-navbar__search-icon" aria-hidden="true"></i>
+      <input
+        type="search"
+        name="q"
+        placeholder="Search books…"
+        aria-label="Search books"
+        autocomplete="off"
+      >
+    </form>
+
+    {# ── Right actions ── #}
+    <div class="bv-navbar__actions">
+
+      {# Cart icon with badge #}
+      <a
+        href="#"
+        class="bv-cart-btn"
+        aria-label="Shopping cart, {{ cart_count }} item{% if cart_count != 1 %}s{% endif %}"
+      >
+        <!-- TODO Person 4: replace href with {% url 'cart:cart_detail' %} -->
+        <i class="bi bi-bag" aria-hidden="true"></i>
+        {% if cart_count > 0 %}
+          <span class="bv-cart-badge" aria-hidden="true">{{ cart_count }}</span>
+        {% endif %}
+      </a>
+
+      {# Auth actions #}
+      {% if user.is_authenticated %}
+        {# User dropdown #}
+        <div class="bv-dropdown">
+          <button class="bv-cart-btn" aria-haspopup="true" aria-expanded="false" aria-label="User menu">
+            <i class="bi bi-person-circle" aria-hidden="true"></i>
+          </button>
+          <div class="bv-dropdown__menu" role="menu" style="right:0;left:auto;transform:none;min-width:160px;">
+            <a href="{% url 'accounts:profile' %}" role="menuitem">
+              <i class="bi bi-person me-2" aria-hidden="true"></i>My Profile
+            </a>
+            {% if user.is_staff %}
+              <a href="/admin/" role="menuitem" target="_blank" rel="noopener">
+                <i class="bi bi-speedometer2 me-2" aria-hidden="true"></i>Admin Panel
+              </a>
+            {% endif %}
+            <a href="{% url 'accounts:logout' %}" role="menuitem"
+               style="color:rgba(255,100,100,.8);">
+              <i class="bi bi-box-arrow-right me-2" aria-hidden="true"></i>Log out
+            </a>
+          </div>
+        </div>
+      {% else %}
+        <a href="{% url 'accounts:login' %}" class="bv-cart-btn" style="font-size:14px;padding:6px 12px;">
+          Log in
+        </a>
+        <a href="{% url 'accounts:register' %}" class="btn-bv-pill-white">
+          Sign up
+        </a>
+      {% endif %}
+
+    </div>{# end actions #}
+
+    {# ── Mobile hamburger ── #}
+    <button
+      id="bv-nav-toggler"
+      class="bv-navbar-toggler"
+      aria-controls="bv-mobile-menu"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="bi bi-list" aria-hidden="true"></i>
+    </button>
+
+  </div>{# end inner #}
+
+  {# ── Mobile menu (collapsed) ── #}
+  <div id="bv-mobile-menu" class="bv-navbar__mobile-menu" aria-label="Mobile navigation">
+    <a href="{% url 'store:home' %}">🏠 Home</a>
+    <a href="#books">📚 Books</a>
+    <a href="#best-sellers">⭐ Best Sellers</a>
+    <a href="#new-arrivals">✨ New Arrivals</a>
+    {% for cat in global_categories %}
+      <a href="#">
+        <!-- TODO Person 1: replace with category detail URL -->
+        {{ cat.name }}
+      </a>
+    {% endfor %}
+    <hr style="border-color:rgba(255,255,255,.1);margin:8px 0;">
+    {% if user.is_authenticated %}
+      <a href="{% url 'accounts:profile' %}">👤 My Profile</a>
+      {% if user.is_staff %}
+        <a href="/admin/" target="_blank" rel="noopener">⚙️ Admin</a>
+      {% endif %}
+      <a href="{% url 'accounts:logout' %}" style="color:rgba(255,100,100,.8);">Log out</a>
+    {% else %}
+      <a href="{% url 'accounts:login' %}">Log in</a>
+      <a href="{% url 'accounts:register' %}" style="color:var(--sky);">Sign up →</a>
+    {% endif %}
+  </div>
+
+</nav>
+{# Push content below fixed navbar #}
+<div style="height:76px;" aria-hidden="true"></div>

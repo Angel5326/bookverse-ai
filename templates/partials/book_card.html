@@ -1,0 +1,68 @@
+{% load static %}
+
+{#
+  Reusable book card partial.
+  Usage: {% include 'partials/book_card.html' with book=book %}
+  Expects: book object with fields: title, price, slug, description,
+           is_best_seller, is_new_arrival, created_at
+  Optional future fields (guarded): cover_image, author, category
+#}
+
+<article class="bv-book-card" aria-label="{{ book.title }}">
+
+  {# ── Cover ── #}
+  <div class="bv-book-card__cover">
+
+    {# Badge: prioritise Best Seller > New Arrival #}
+    {% if book.is_best_seller %}
+      <span class="bv-book-badge is-bestseller" aria-label="Best Seller">⭐ Best Seller</span>
+    {% elif book.is_new_arrival %}
+      <span class="bv-book-badge is-new" aria-label="New Arrival">✦ New</span>
+    {% endif %}
+
+    {# Cover image — guard for future field #}
+    {% if book.cover_image %}
+      <img src="{{ book.cover_image.url }}" alt="Cover of {{ book.title }}" loading="lazy">
+    {% else %}
+      {# CSS gradient placeholder with first letter of title #}
+      <div class="bv-book-cover-placeholder" aria-hidden="true">
+        {{ book.title|slice:":1"|upper }}
+      </div>
+    {% endif %}
+
+  </div>{# end cover #}
+
+  {# ── Body ── #}
+  <div class="bv-book-card__body">
+
+    {# Category — guard for future field #}
+    {% if book.category %}
+      <p class="bv-book-card__category">{{ book.category.name }}</p>
+    {% endif %}
+
+    <h3 class="bv-book-card__title">{{ book.title }}</h3>
+
+    {# Author — guard for future field #}
+    {% if book.author %}
+      <p class="bv-book-card__author">by {{ book.author }}</p>
+    {% endif %}
+
+    {# Footer: price + cart button #}
+    <div class="bv-book-card__footer">
+      <span class="bv-book-card__price" aria-label="Price: ₹{{ book.price }}">₹{{ book.price }}</span>
+
+      {# Add to Cart — href='#' until Person 4 builds cart URLs #}
+      <a
+        href="#"
+        class="bv-book-card__add"
+        aria-label="Add {{ book.title }} to cart"
+      >
+        <!-- TODO Person 4: replace href with {% url 'cart:add_to_cart' book.slug %} -->
+        <i class="bi bi-bag-plus" aria-hidden="true"></i>
+        Add
+      </a>
+    </div>
+
+  </div>{# end body #}
+
+</article>

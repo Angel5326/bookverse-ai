@@ -1,0 +1,142 @@
+{% load static %}
+{% load i18n %}
+
+<footer class="bv-footer" role="contentinfo">
+  <div class="container-bv">
+
+    {# ── Main grid ── #}
+    <div class="bv-footer__grid">
+
+      {# Column 1: Brand #}
+      <div>
+        <div class="bv-footer__brand-name">
+          <div class="bv-logo-mark" aria-hidden="true" style="width:28px;height:28px;font-size:13px;">B</div>
+          {{ SITE_NAME }}
+        </div>
+        <p class="bv-footer__brand-desc">
+          India's smartest online bookstore powered by Gemini AI. Discover, buy, and understand
+          any book instantly — before you spend a rupee.
+        </p>
+
+        {# Social icons #}
+        <div class="bv-footer__social" role="list">
+          <a href="#" aria-label="BookVerse on Twitter / X" role="listitem">
+            <i class="bi bi-twitter-x" aria-hidden="true"></i>
+          </a>
+          <a href="#" aria-label="BookVerse on Instagram" role="listitem">
+            <i class="bi bi-instagram" aria-hidden="true"></i>
+          </a>
+          <a href="#" aria-label="BookVerse on LinkedIn" role="listitem">
+            <i class="bi bi-linkedin" aria-hidden="true"></i>
+          </a>
+          <a href="#" aria-label="BookVerse on GitHub" role="listitem">
+            <i class="bi bi-github" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+
+      {# Column 2: Quick links #}
+      <div>
+        <h3 class="bv-footer__col-title">Quick Links</h3>
+        <ul class="bv-footer__links" role="list">
+          <li><a href="{% url 'store:home' %}">Home</a></li>
+          <li><a href="#books">Browse Books</a></li>
+          <li><a href="#best-sellers">Best Sellers</a></li>
+          <li><a href="#new-arrivals">New Arrivals</a></li>
+          <li>
+            <a href="#">
+              <!-- TODO Person 3: replace with {% url 'ai_summary:index' %} -->
+              AI Summaries
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <!-- TODO Person 4: replace with {% url 'cart:cart_detail' %} -->
+              My Cart
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <!-- TODO Person 4: replace with {% url 'orders:my_orders' %} -->
+              My Orders
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      {# Column 3: Categories #}
+      <div>
+        <h3 class="bv-footer__col-title">Categories</h3>
+        <ul class="bv-footer__links" role="list">
+          {% for cat in global_categories %}
+            <li>
+              <a href="#">
+                <!-- TODO Person 1: replace with {% url 'store:category_detail' cat.slug %} -->
+                {{ cat.name }}
+              </a>
+            </li>
+          {% empty %}
+            <li style="color:rgba(255,255,255,.25);font-size:12px;">No categories yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      {# Column 4: Newsletter + Help #}
+      <div>
+        <h3 class="bv-footer__col-title">Stay in the loop</h3>
+        <p style="color:rgba(255,255,255,.45);font-size:13px;margin-bottom:12px;line-height:1.5;">
+          Get new arrivals and curated reading lists in your inbox.
+        </p>
+
+        {# Newsletter form #}
+        {# TODO Person 3: set action="{% url 'newsletter:subscribe' %}" when ready #}
+        <form class="bv-footer__newsletter-form bv-newsletter-form" action="#" method="post" aria-label="Newsletter signup">
+          {% csrf_token %}
+          <label for="footer-email" class="sr-only">Your email address</label>
+          <input
+            id="footer-email"
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            required
+            autocomplete="email"
+            aria-label="Email address for newsletter"
+          >
+          <button type="submit" class="btn-bv-pill-blue" aria-label="Subscribe to newsletter">
+            Subscribe
+          </button>
+        </form>
+
+        {# Help links #}
+        <div style="margin-top:28px;">
+          <h3 class="bv-footer__col-title">Help</h3>
+          <ul class="bv-footer__links" role="list">
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Shipping &amp; Returns</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>{# end grid #}
+
+    {# ── Bottom bar ── #}
+    <div class="bv-footer__bottom">
+      <p class="bv-footer__copy">
+        &copy; {% now "Y" %} {{ SITE_NAME }}. All rights reserved. Made with
+        <i class="bi bi-heart-fill" style="color:#ef4444;font-size:11px;" aria-label="love"></i>
+        in India.
+      </p>
+
+      <nav class="bv-footer__bottom-links" aria-label="Legal links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+        <a href="#">Sitemap</a>
+      </nav>
+    </div>
+
+  </div>{# end container #}
+</footer>
