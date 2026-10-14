@@ -5,13 +5,16 @@
   <div class="container-bv">
 
     {# ── Main grid ── #}
+    {# ── Main grid: 5 clean balanced columns ── #}
     <div class="bv-footer__grid">
 
       {# Column 1: Brand #}
-      <div>
+      <div class="bv-footer__col-brand">
         <div class="bv-footer__brand-name">
-          <div class="bv-logo-mark" aria-hidden="true" style="width:28px;height:28px;font-size:13px;">B</div>
-          {{ SITE_NAME }}
+          <div class="bv-logo-mark" aria-hidden="true" style="width:28px;height:28px;border-radius:8px;font-size:13px;">
+            <i class="bi bi-book-half"></i>
+          </div>
+          <span>{{ SITE_NAME }}</span>
         </div>
         <p class="bv-footer__brand-desc">
           India's smartest online bookstore powered by Gemini AI. Discover, buy, and understand
@@ -40,27 +43,11 @@
         <h3 class="bv-footer__col-title">Quick Links</h3>
         <ul class="bv-footer__links" role="list">
           <li><a href="{% url 'store:home' %}">Home</a></li>
-          <li><a href="#books">Browse Books</a></li>
-          <li><a href="#best-sellers">Best Sellers</a></li>
-          <li><a href="#new-arrivals">New Arrivals</a></li>
-          <li>
-            <a href="#">
-              {# TODO Person 5: replace with ai_summary:index #}
-              AI Summaries
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              {# TODO Person 4: replace with cart:cart_detail #}
-              My Cart
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              {# TODO Person 4: replace with orders:my_orders #}
-              My Orders
-            </a>
-          </li>
+          <li><a href="{% url 'store:book_list' %}">Browse Books</a></li>
+          <li><a href="{% url 'store:book_list' %}?sort=trending">Best Sellers</a></li>
+          <li><a href="{% url 'store:book_list' %}?sort=new">New Arrivals</a></li>
+          <li><a href="#ai-feature">AI Summaries</a></li>
+          <li><a href="{% url 'cart:cart_detail' %}">My Cart</a></li>
         </ul>
       </div>
 
@@ -70,26 +57,43 @@
         <ul class="bv-footer__links" role="list">
           {% for cat in global_categories %}
             <li>
-              <a href="#">
-                {# TODO Person 1: replace with store:category_detail cat.slug #}
+              <a href="{% url 'store:book_list' %}?category={{ cat.slug }}">
                 {{ cat.name }}
               </a>
             </li>
           {% empty %}
-            <li style="color:rgba(255,255,255,.25);font-size:12px;">No categories yet.</li>
+            <li><a href="{% url 'store:book_list' %}?category=biography">Biography</a></li>
+            <li><a href="{% url 'store:book_list' %}?category=business">Business</a></li>
+            <li><a href="{% url 'store:book_list' %}?category=fiction">Fiction</a></li>
+            <li><a href="{% url 'store:book_list' %}?category=history">History</a></li>
+            <li><a href="{% url 'store:book_list' %}?category=philosophy">Philosophy</a></li>
+            <li><a href="{% url 'store:book_list' %}?category=sci-fi">Science Fiction</a></li>
+            <li><a href="{% url 'store:book_list' %}?category=self-help">Self-Help</a></li>
+            <li><a href="{% url 'store:book_list' %}?category=technology">Technology</a></li>
           {% endfor %}
         </ul>
       </div>
 
-      {# Column 4: Newsletter + Help #}
+      {# Column 4: Help #}
       <div>
-        <h3 class="bv-footer__col-title">Stay in the loop</h3>
-        <p style="color:rgba(255,255,255,.45);font-size:13px;margin-bottom:12px;line-height:1.5;">
+        <h3 class="bv-footer__col-title">Help</h3>
+        <ul class="bv-footer__links" role="list">
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shipping &amp; Returns</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+
+      {# Column 5: Stay in the loop #}
+      <div class="bv-footer__col-newsletter">
+        <h3 class="bv-footer__col-title">Stay In The Loop</h3>
+        <p class="bv-footer__newsletter-desc">
           Get new arrivals and curated reading lists in your inbox.
         </p>
 
         {# Newsletter form #}
-        {# TODO Person 3: set action to newsletter:subscribe when ready #}
         <form class="bv-footer__newsletter-form bv-newsletter-form" action="#" method="post" aria-label="Newsletter signup">
           {% csrf_token %}
           <label for="footer-email" class="sr-only">Your email address</label>
@@ -106,18 +110,6 @@
             Subscribe
           </button>
         </form>
-
-        {# Help links #}
-        <div style="margin-top:28px;">
-          <h3 class="bv-footer__col-title">Help</h3>
-          <ul class="bv-footer__links" role="list">
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Shipping &amp; Returns</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-          </ul>
-        </div>
       </div>
 
     </div>{# end grid #}

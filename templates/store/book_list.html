@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title|default:"All Books" }} — BookVerse AI{% endblock %}
+{% block meta_description %}Explore our collection of {{ page_title|default:"books" }}, bestsellers, and new arrivals on BookVerse AI.{% endblock %}
+
+{% block content %}
+<div class="bv-catalog-page py-4" style="background: #f8fafc; min-height: 80vh;">
+  <div class="container-bv">
+
+    {# ── Breadcrumb ── #}
+    <nav aria-label="breadcrumb" class="mb-3">
+      <ol class="breadcrumb" style="font-size: 13px;">
+        <li class="breadcrumb-item"><a href="{% url 'store:home' %}" style="color: #64748b;">Home</a></li>
+        {% if category or current_sort == 'trending' or current_sort == 'new' or query %}
+          <li class="breadcrumb-item"><a href="{% url 'store:book_list' %}" style="color: #64748b;">All Books</a></li>
+          <li class="breadcrumb-item active" aria-current="page" style="color: #0f172a; font-weight: 600;">{{ breadcrumb_title }}</li>
+        {% else %}
+          <li class="breadcrumb-item active" aria-current="page" style="color: #0f172a; font-weight: 600;">All Books</li>
+        {% endif %}
+      </ol>
+    </nav>
+
+    {# ── Catalog Header ── #}
+    <div class="bv-catalog-header mb-4">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <h1 class="bv-section__title bv-trending-title font-serif mb-1" style="font-size: 2.15rem;">
+            {{ page_title|default:"All Books" }}
+          </h1>
+          <p class="text-muted mb-0" style="font-size: 14px;">
+            {{ page_subtitle|default:"Showing titles in our library" }}
+          </p>
+        </div>
+
+        {# ── Search & Filter Controls ── #}
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          {# Search within catalog #}
+          <form method="get" action="{% url 'store:book_list' %}" class="d-flex align-items-center position-relative">
+            {% if current_sort %}
+              <input type="hidden" name="sort" value="{{ current_sort }}">
+            {% endif %}
+            {% if category %}
+              <input type="hidden" name="category" value="{{ category.slug }}">
+            {% endif %}
+            <input
+              type="text"
+              name="q"
+              value="{{ query }}"
+              placeholder="Search by title..."
+              class="form-control form-control-sm pe-4"
+              style="width: 200px; border-radius: 20px; font-size: 13px; border-color: #cbd5e1;"
+            >
+            {% if query %}
+              <a href="{% url 'store:book_list' %}{% if category %}?category={{ category.slug }}{% elif current_sort %}?sort={{ current_sort }}{% endif %}" class="position-absolute end-0 me-2 text-muted" title="Clear search" style="font-size: 12px;">
+                <i class="bi bi-x-circle-fill"></i>
+              </a>
+            {% else %}
+              <i class="bi bi-search position-absolute end-0 me-2 text-muted" style="font-size: 12px; pointer-events: none;"></i>
+            {% endif %}
+          </form>
+
+          {# Sort Dropdown #}
+          <div class="dropdown">
+            <button class="btn btn-sm btn-white border dropdown-toggle fw-semibold" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 20px; font-size: 13px; background: #fff; padding: 6px 14px; border-color: #cbd5e1 !important;">
+              <i class="bi bi-arrow-down-up me-1 text-primary"></i>
+              Sort: 
+              {% if current_sort == 'trending' %}Trending
+              {% elif current_sort == 'new' %}New Arrivals
+              {% elif current_sort == 'price_low' %}Price: Low to High
+              {% elif current_sort == 'price_high' %}Price: High to Low
+              {% elif current_sort == 'rating' %}Highest Rated
+              {% elif current_sort == 'alpha' %}Title A-Z
+              {% else %}Trending{% endif %}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 13px; border-radius: 12px;">
+              <li><a class="dropdown-item {% if current_sort == 'trending' %}active fw-bold{% endif %}" href="{% url 'store:book_list' %}?sort=trending{% if category %}&category={{ category.slug }}{% endif %}{% if query %}&q={{ query }}{% endif %}"><i class="bi bi-fire me-2 text-danger"></i>Now Trending</a></li>
+              <li><a class="dropdown-item {% if current_sort == 'new' %}active fw-bold{% endif %}" href="{% url 'store:book_list' %}?sort=new{% if category %}&category={{ category.slug }}{% endif %}{% if query %}&q={{ query }}{% endif %}"><i class="bi bi-lightning-charge me-2 text-warning"></i>New Arrivals</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item {% if current_sort == 'rating' %}active fw-bold{% endif %}" href="{% url 'store:book_list' %}?sort=rating{% if category %}&category={{ category.slug }}{% endif %}{% if query %}&q={{ query }}{% endif %}"><i class="bi bi-star-fill me-2 text-warning"></i>Highest Rated</a></li>
+              <li><a class="dropdown-item {% if current_sort == 'price_low' %}active fw-bold{% endif %}" href="{% url 'store:book_list' %}?sort=price_low{% if category %}&category={{ category.slug }}{% endif %}{% if query %}&q={{ query }}{% endif %}"><i class="bi bi-sort-numeric-down me-2 text-primary"></i>Price: Low to High</a></li>
+              <li><a class="dropdown-item {% if current_sort == 'price_high' %}active fw-bold{% endif %}" href="{% url 'store:book_list' %}?sort=price_high{% if category %}&category={{ category.slug }}{% endif %}{% if query %}&q={{ query }}{% endif %}"><i class="bi bi-sort-numeric-up-alt me-2 text-primary"></i>Price: High to Low</a></li>
+              <li><a class="dropdown-item {% if current_sort == 'alpha' %}active fw-bold{% endif %}" href="{% url 'store:book_list' %}?sort=alpha{% if category %}&category={{ category.slug }}{% endif %}{% if query %}&q={{ query }}{% endif %}"><i class="bi bi-sort-alpha-down me-2 text-secondary"></i>Title A-Z</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# ── All Books Grid ── #}
+    {% if books %}
+      <div class="bv-all-books-grid">
+        {% for book in books %}
+          <div class="bv-grid-card-wrap">
+            {% include 'partials/book_card.html' with book=book %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="bv-empty-search-box py-5 px-4 text-center rounded-4 border bg-white mb-5 shadow-sm" style="max-width: 680px; margin-inline: auto;">
+        <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 68px; height: 68px; border-radius: 20px; background: #eff6ff; color: var(--blue); font-size: 32px; box-shadow: 0 4px 14px rgba(8, 124, 248, 0.15);">
+          <i class="bi bi-book-half"></i>
+        </div>
+        <div class="d-block mb-2">
+          <span class="badge bg-danger-subtle text-danger px-3 py-1 rounded-pill fw-semibold" style="font-size: 11px;">
+            <i class="bi bi-exclamation-circle me-1"></i> Library Status: Not Available
+          </span>
+        </div>
+        <h2 class="bv-section__title bv-trending-title font-serif mb-2" style="font-size: 1.85rem;">
+          {% if query %}Book Not Available{% else %}No Books Found{% endif %}
+        </h2>
+        <p class="text-muted mx-auto mb-4" style="font-size: 14.5px; max-width: 480px; line-height: 1.6;">
+          {% if query %}
+            We searched our entire catalogue for <strong class="text-dark">"{{ query }}"</strong>, but this book is not currently available in the BookVerse library.
+          {% else %}
+            No books currently match your selected filters.
+          {% endif %}
+        </p>
+        <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
+          <a href="{% url 'store:book_list' %}" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold" style="font-size: 13.5px;">
+            <i class="bi bi-collection me-1"></i> Browse All Available Books
+          </a>
+          <a href="{% url 'store:home' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold" style="font-size: 13.5px;">
+            Return to Home
+          </a>
+        </div>
+      </div>
+
+      {% if recommended_books %}
+        <div class="bv-recommended-fallback mt-5">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h3 class="bv-section__title bv-trending-title font-serif m-0" style="font-size: 1.4rem;">
+              You May Be Interested In
+            </h3>
+            <span class="text-muted" style="font-size: 13px;">Popular picks currently in stock</span>
+          </div>
+          <div class="bv-all-books-grid">
+            {% for rec_book in recommended_books %}
+              <div class="bv-grid-card-wrap">
+                {% include 'partials/book_card.html' with book=rec_book %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

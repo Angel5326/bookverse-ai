@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shopping Cart — BookVerse AI{% endblock %}
+
+{% block content %}
+<div class="bv-cart-page py-5">
+  <div class="container-bv">
+
+    <div class="bv-cart-header mb-4 pb-2 border-bottom d-flex align-items-center justify-content-between">
+      <h1 class="bv-section__title font-serif m-0">Shopping <em>Bag</em></h1>
+      <a href="{% url 'store:home' %}#books" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+        <i class="bi bi-arrow-left me-1"></i> Continue Shopping
+      </a>
+    </div>
+
+    {% if cart_items %}
+      <div class="row g-4">
+        {# Left: Items list #}
+        <div class="col-lg-8">
+          <div class="bv-cart-items-card p-3 p-md-4 bg-white rounded-3 border shadow-sm">
+            {% for item in cart_items %}
+              <div class="bv-cart-item-row d-flex gap-3 py-3 border-bottom align-items-center flex-wrap flex-sm-nowrap">
+                {# Book Cover #}
+                <div class="bv-cart-item-cover flex-shrink-0" style="width: 75px; height: 105px;">
+                  <a href="{% url 'store:book_detail' item.book.slug %}">
+                    {% if item.book.cover_url %}
+                      <img src="{{ item.book.cover_url }}" alt="{{ item.book.title }}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                      <div class="bv-cover-mock" style="height: 100%; font-size: 8px;">
+                        <span class="bv-cover-mock__title" style="font-size: 9px;">{{ item.book.title }}</span>
+                      </div>
+                    {% endif %}
+                  </a>
+                </div>
+
+                {# Book Info #}
+                <div class="bv-cart-item-details flex-grow-1">
+                  <h5 class="m-0 fs-6 fw-bold">
+                    <a href="{% url 'store:book_detail' item.book.slug %}" class="text-dark text-decoration-none">
+                      {{ item.book.title }}
+                    </a>
+                  </h5>
+                  <p class="text-muted small m-0">by {{ item.book.author }}</p>
+                  <p class="text-secondary small m-0">{{ item.book.format_and_release }}</p>
+                  {% if item.savings %}
+                    <span class="badge bg-success-subtle text-success mt-1">Saved ₹{{ item.savings }}</span>
+                  {% endif %}
+                </div>
+
+                {# Price #}
+                <div class="text-end me-3">
+                  <div class="fw-bold text-danger fs-6">₹{{ item.price|floatformat:0 }}</div>
+                  <del class="text-muted small">₹{{ item.book.original_price }}</del>
+                </div>
+
+                {# Quantity Form #}
+                <div class="bv-cart-item-qty d-flex align-items-center gap-2">
+                  <form action="{% url 'cart:update_cart' item.book.id %}" method="post" class="d-flex align-items-center">
+                    {% csrf_token %}
+                    <select name="quantity" class="form-select form-select-sm rounded-pill" onchange="this.form.submit()" style="width: 65px;">
+                      <option value="1" {% if item.quantity == 1 %}selected{% endif %}>1</option>
+                      <option value="2" {% if item.quantity == 2 %}selected{% endif %}>2</option>
+                      <option value="3" {% if item.quantity == 3 %}selected{% endif %}>3</option>
+                      <option value="4" {% if item.quantity == 4 %}selected{% endif %}>4</option>
+                      <option value="5" {% if item.quantity == 5 %}selected{% endif %}>5</option>
+                      <option value="6" {% if item.quantity == 6 %}selected{% endif %}>6</option>
+                    </select>
+                  </form>
+
+                  <a href="{% url 'cart:remove_from_cart' item.book.id %}" class="btn btn-sm btn-link text-danger p-0 ms-1" title="Remove item" aria-label="Remove item">
+                    <i class="bi bi-trash3 fs-6"></i>
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+
+            <div class="d-flex justify-content-between align-items-center pt-3 text-muted small">
+              <span><i class="bi bi-shield-check text-success me-1"></i> Certified Genuine Books</span>
+              <span><i class="bi bi-truck text-primary me-1"></i> Fast Delivery Across India</span>
+            </div>
+          </div>
+        </div>
+
+        {# Right: Order Summary #}
+        <div class="col-lg-4">
+          <div class="bv-order-summary-card p-4 bg-white rounded-3 border shadow-sm sticky-top" style="top: 100px;">
+            <h4 class="fs-6 fw-bold mb-3 border-bottom pb-2">Order Summary</h4>
+
+            <div class="d-flex justify-content-between mb-2 small text-secondary">
+              <span>Subtotal ({{ total_count }} item{% if total_count != 1 %}s{% endif %}):</span>
+              <span class="text-dark fw-semibold">₹{{ subtotal|floatformat:0 }}</span>
+            </div>
+
+            {% if total_savings %}
+              <div class="d-flex justify-content-between mb-2 small text-success">
+                <span>Total Discount Saved:</span>
+                <span>- ₹{{ total_savings }}</span>
+              </div>
+            {% endif %}
+
+            <div class="d-flex justify-content-between mb-3 small text-secondary">
+              <span>Shipping Fee:</span>
+              {% if shipping == 0 %}
+                <span class="text-success fw-bold">FREE</span>
+              {% else %}
+                <span class="text-dark">₹{{ shipping }}</span>
+              {% endif %}
+            </div>
+
+            {% if subtotal < 499 %}
+              <div class="alert alert-info py-2 px-3 small rounded-3 mb-3">
+                <i class="bi bi-info-circle me-1"></i> Add <strong>₹{{ 499|add:"-"|add:subtotal }}</strong> more for <strong>FREE Delivery</strong>!
+              </div>
+            {% endif %}
+
+            <div class="d-flex justify-content-between pt-3 border-top mb-4">
+              <span class="fw-bold fs-5">Grand Total:</span>
+              <span class="fw-bold fs-5 text-danger">₹{{ total|floatformat:0 }}</span>
+            </div>
+
+            <button type="button" class="btn btn-danger w-100 py-2 rounded-pill fw-bold shadow-sm" onclick="alert('Proceeding to Secure Checkout! All payment gateways configured.');">
+              <i class="bi bi-lock-fill me-1"></i> Proceed to Checkout
+            </button>
+
+            <div class="text-center mt-3 text-muted small">
+              <i class="bi bi-shield-lock me-1"></i> 256-bit SSL Encrypted Checkout
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {% else %}
+      {# Empty Cart State #}
+      <div class="bv-empty-cart text-center py-5 bg-white rounded-4 border shadow-sm my-4">
+        <div class="display-3 text-muted mb-3"><i class="bi bi-bag-x"></i></div>
+        <h3 class="fw-bold mb-2">Your shopping bag is empty</h3>
+        <p class="text-secondary mb-4">Looks like you haven't added any books yet.</p>
+        <a href="{% url 'store:home' %}#best-sellers" class="btn btn-danger rounded-pill px-4 py-2 fw-semibold">
+          <i class="bi bi-fire me-1"></i> Explore Now Trending Books
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

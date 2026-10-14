@@ -1,93 +1,93 @@
 {% load static %}
 
-{% comment %}
-  Reusable book card partial.
-  Usage: include partials/book_card.html with book=book
-  Expects: book object with fields: title, price, slug, description,
-           is_best_seller, is_new_arrival, created_at
-  Optional future fields (guarded): cover_image, author, category
-{% endcomment %}
-
 <article class="bv-book-card" aria-label="{{ book.title }}">
 
   {# ── Cover ── #}
-  <div class="bv-book-card__cover">
+  <div class="bv-book-card__cover-wrap">
 
-    {# Badge: prioritise Best Seller > New Arrival #}
+    {# Top-right circular discount badge matching reference image #}
+    {% if book.discount_pct %}
+      <span class="bv-discount-circle" aria-label="{{ book.discount_pct }}% off">{{ book.discount_pct }}%</span>
+    {% endif %}
+
+    {# Badge: Best Seller / New Arrival #}
     {% if book.is_best_seller %}
-      <span class="bv-book-badge is-bestseller" aria-label="Best Seller">⭐ Best Seller</span>
+      <span class="bv-book-badge is-bestseller" aria-label="Best Seller">⭐ Best</span>
     {% elif book.is_new_arrival %}
       <span class="bv-book-badge is-new" aria-label="New Arrival">✦ New</span>
     {% endif %}
 
-    {# Cover image — guard for future field #}
-    {% if book.cover_image %}
-      <img src="{{ book.cover_image.url }}" alt="Cover of {{ book.title }}" loading="lazy">
-    {% else %}
-      {# Rich hardcover typographic mockup #}
-      <div class="bv-cover-mock" aria-label="{{ book.title }}">
-        <div class="bv-cover-mock__spine"></div>
-        <div class="bv-cover-mock__inner">
-          <div class="bv-cover-mock__top">
-            <span class="bv-cover-mock__tag"><i class="bi bi-stars"></i> Gemini AI</span>
-            <span class="bv-cover-mock__icon"><i class="bi bi-book"></i></span>
+    <a href="{% url 'store:book_detail' book.slug %}" class="bv-book-card__cover-link" aria-label="View {{ book.title }}">
+      <div class="bv-book-card__cover">
+        {# Cover image — supports uploaded image or mapped cover_url #}
+        {% if book.cover_image %}
+          <img src="{{ book.cover_image.url }}" alt="Cover of {{ book.title }}" loading="lazy">
+        {% elif book.cover_url %}
+          <img src="{{ book.cover_url }}" alt="Cover of {{ book.title }}" loading="lazy">
+        {% else %}
+          {# Rich hardcover typographic mockup #}
+          <div class="bv-cover-mock" aria-label="{{ book.title }}">
+            <div class="bv-cover-mock__spine"></div>
+            <div class="bv-cover-mock__inner">
+              <div class="bv-cover-mock__top">
+                <span class="bv-cover-mock__tag"><i class="bi bi-stars"></i> Gemini AI</span>
+                <span class="bv-cover-mock__icon"><i class="bi bi-book"></i></span>
+              </div>
+              <div class="bv-cover-mock__center">
+                <h4 class="bv-cover-mock__title">{{ book.title }}</h4>
+                <div class="bv-cover-mock__line"></div>
+                {% if book.category %}
+                  <p class="bv-cover-mock__genre">{{ book.category.name }}</p>
+                {% else %}
+                  <p class="bv-cover-mock__genre">Hardcover Edition</p>
+                {% endif %}
+              </div>
+              <div class="bv-cover-mock__bottom">
+                <span class="bv-cover-mock__brand">BookVerse · AI Verified</span>
+              </div>
+            </div>
           </div>
-          <div class="bv-cover-mock__center">
-            <h4 class="bv-cover-mock__title">{{ book.title }}</h4>
-            <div class="bv-cover-mock__line"></div>
-            {% if book.category %}
-              <p class="bv-cover-mock__genre">{{ book.category.name }}</p>
-            {% else %}
-              <p class="bv-cover-mock__genre">Hardcover Edition</p>
-            {% endif %}
-          </div>
-          <div class="bv-cover-mock__bottom">
-            <span class="bv-cover-mock__brand">BookVerse · AI Verified</span>
-          </div>
-        </div>
+        {% endif %}
       </div>
-    {% endif %}
+    </a>
 
-  </div>{# end cover #}
+  </div>{# end cover-wrap #}
 
   {# ── Body ── #}
   <div class="bv-book-card__body">
 
-    {# Category — guard for future field #}
-    {% if book.category %}
-      <p class="bv-book-card__category">{{ book.category.name }}</p>
-    {% endif %}
+    <h3 class="bv-book-card__title">
+      <a href="{% url 'store:book_detail' book.slug %}" title="{{ book.title }}">{{ book.title }}</a>
+    </h3>
 
-    <h3 class="bv-book-card__title">{{ book.title }}</h3>
+    <p class="bv-book-card__author" title="{{ book.author }}">{{ book.author|default:"BookVerse Author" }}</p>
 
-    {# Author — guard for future field #}
-    {% if book.author %}
-      <p class="bv-book-card__author">by {{ book.author }}</p>
-    {% endif %}
+    {# Rating row #}
+    <div class="bv-book-card__rating" aria-label="Rating: {{ book.rating }} out of 5">
+      <i class="bi bi-star-fill" style="color: #f59e0b;" aria-hidden="true"></i>
+      <span>{{ book.rating }}</span>
+    </div>
 
-    {# Footer: price + discount + cart button #}
+    {# Footer: price + cart button #}
     <div class="bv-book-card__footer">
-      <div class="bv-book-card__pricing">
-        <div class="bv-book-card__price-row">
-          <span class="bv-book-card__price" aria-label="Price: ₹{{ book.price }}">₹{{ book.price }}</span>
-          {% if book.original_price %}
-            <span class="bv-book-card__original-price" aria-label="Original price: ₹{{ book.original_price }}">₹{{ book.original_price }}</span>
-          {% endif %}
-        </div>
-        {% if book.discount_pct %}
-          <span class="bv-book-card__discount-tag">{{ book.discount_pct }}% OFF</span>
+      <div class="bv-book-card__price-row">
+        <span class="bv-book-card__price" aria-label="Price: ₹{{ book.price }}">₹{{ book.price|floatformat:0 }}</span>
+        {% if book.original_price %}
+          <span class="bv-book-card__original-price" aria-label="Original price: ₹{{ book.original_price }}">₹{{ book.original_price }}</span>
         {% endif %}
       </div>
 
-      {# Add to Cart — href='#' until Person 4 builds cart URLs #}
-      <a
-        href="#"
-        class="bv-book-card__add"
+      {# Add to Cart icon button #}
+      <button
+        type="button"
+        class="bv-book-card__add js-add-to-cart"
+        data-book-id="{{ book.id }}"
+        data-add-url="{% url 'cart:add_to_cart' book.id %}"
         aria-label="Add {{ book.title }} to cart"
-        {# TODO Person 4: replace href with cart:add_to_cart book.slug #}
+        title="Add to cart"
+      >
         <i class="bi bi-bag-plus" aria-hidden="true"></i>
-        Add
-      </a>
+      </button>
     </div>
 
   </div>{# end body #}

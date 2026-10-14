@@ -1,0 +1,187 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+<!-- Metrics Grid -->
+<div class="row g-3 mb-4">
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="bv-dash-card bv-dash-metric">
+      <div class="bv-dash-metric-icon text-primary">
+        <i class="bi bi-book"></i>
+      </div>
+      <div>
+        <div class="bv-dash-metric-label">Total Books</div>
+        <div class="bv-dash-metric-value">{{ total_books }}</div>
+        <div class="bv-dash-metric-sub"><i class="bi bi-clock-history"></i> +{{ recent_books }} in last 7 days</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="bv-dash-card bv-dash-metric">
+      <div class="bv-dash-metric-icon text-info">
+        <i class="bi bi-tags"></i>
+      </div>
+      <div>
+        <div class="bv-dash-metric-label">Categories</div>
+        <div class="bv-dash-metric-value">{{ total_categories }}</div>
+        <div class="bv-dash-metric-sub">Active genres & shelves</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="bv-dash-card bv-dash-metric">
+      <div class="bv-dash-metric-icon text-success">
+        <i class="bi bi-people"></i>
+      </div>
+      <div>
+        <div class="bv-dash-metric-label">Total Users</div>
+        <div class="bv-dash-metric-value">{{ total_users }}</div>
+        <div class="bv-dash-metric-sub"><i class="bi bi-person-plus"></i> +{{ recent_users }} in last 7 days</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="bv-dash-card bv-dash-metric">
+      <div class="bv-dash-metric-icon text-warning">
+        <i class="bi bi-stars"></i>
+      </div>
+      <div>
+        <div class="bv-dash-metric-label">Spotlight & Bestsellers</div>
+        <div class="bv-dash-metric-value">{{ best_sellers }} / {{ new_arrivals }}</div>
+        <div class="bv-dash-metric-sub">{{ best_sellers }} best sellers &bull; {{ new_arrivals }} new</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <!-- Latest Books Table -->
+  <div class="col-12 col-lg-8">
+    <div class="bv-dash-card h-100">
+      <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-secondary-subtle">
+        <h3 class="bv-dash-section-title mb-0">
+          <i class="bi bi-journal-bookmark me-2 text-primary"></i>Recently Added Books
+        </h3>
+        <a href="{% url 'dashboard:book_list' %}" class="btn-bv-pill-outline btn-sm">
+          View All <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="bv-dash-table align-middle">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Badges</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for book in latest_books %}
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-3">
+                    {% if book.cover_image %}
+                      <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="bv-dash-thumb" loading="lazy">
+                    {% else %}
+                      <div class="bv-dash-thumb-placeholder">
+                        <i class="bi bi-book"></i>
+                      </div>
+                    {% endif %}
+                    <div>
+                      <a href="{% url 'store:book_detail' book.slug %}" target="_blank" class="bv-dash-item-title text-decoration-none">
+                        {{ book.title|truncatechars:38 }}
+                      </a>
+                      <div class="bv-dash-item-sub">{{ book.author_name|default:"BookVerse AI Collection" }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="bv-badge-outline">{{ book.category.name|default:"Unassigned" }}</span>
+                </td>
+                <td>
+                  <strong class="text-white">₹{{ book.price }}</strong>
+                </td>
+                <td>
+                  <div class="d-flex gap-1 flex-wrap">
+                    {% if book.is_best_seller %}
+                      <span class="badge bg-warning text-dark"><i class="bi bi-fire"></i> Best Seller</span>
+                    {% endif %}
+                    {% if book.is_new_arrival %}
+                      <span class="badge bg-info text-dark"><i class="bi bi-sparkles"></i> New</span>
+                    {% endif %}
+                    {% if not book.is_best_seller and not book.is_new_arrival %}
+                      <span class="text-muted small">—</span>
+                    {% endif %}
+                  </div>
+                </td>
+                <td class="text-end">
+                  <div class="btn-group btn-group-sm">
+                    <a href="{% url 'dashboard:book_edit' book.id %}" class="btn btn-outline-light btn-sm" title="Edit book">
+                      <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="{% url 'dashboard:book_delete' book.id %}" class="btn btn-outline-danger btn-sm" title="Delete book">
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="5" class="text-center py-4 text-muted">
+                  <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                  No books found in database.
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category & Quick Stats -->
+  <div class="col-12 col-lg-4">
+    <div class="bv-dash-card h-100">
+      <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-secondary-subtle">
+        <h3 class="bv-dash-section-title mb-0">
+          <i class="bi bi-pie-chart me-2 text-info"></i>Top Categories
+        </h3>
+        <a href="{% url 'dashboard:category_list' %}" class="btn-bv-pill-outline btn-sm">Manage</a>
+      </div>
+
+      <div class="bv-dash-cat-list mb-4">
+        {% for cat in category_data %}
+          <div class="bv-dash-cat-item mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="fw-medium text-white">{{ cat.name }}</span>
+              <span class="badge bg-secondary rounded-pill">{{ cat.count }} books</span>
+            </div>
+            <div class="progress bv-dash-progress" role="progressbar" aria-valuenow="{{ cat.count }}" aria-valuemin="0" aria-valuemax="{{ total_books }}">
+              <div class="progress-bar bg-primary" style="width: {% widthratio cat.count total_books 100 %}%;"></div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="text-center py-4 text-muted">
+            No categories registered yet.
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="p-3 rounded-3 bv-dash-callout">
+        <div class="d-flex align-items-center gap-2 mb-2 text-warning fw-semibold">
+          <i class="bi bi-magic"></i> AI Engine Status
+        </div>
+        <p class="small text-muted mb-0">
+          Gemini AI Book Assistant is connected. Readers can ask contextual questions and generate instant chapter summaries on product pages.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

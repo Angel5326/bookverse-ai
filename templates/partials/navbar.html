@@ -18,7 +18,7 @@
         <a href="{% url 'store:home' %}" aria-label="Home">Home</a>
       </li>
       <li>
-        <a href="#books" aria-label="Browse books">Books</a>
+        <a href="{% url 'store:book_list' %}" aria-label="Browse books">Books</a>
       </li>
       <li class="bv-dropdown">
         <button class="nav-link-btn" aria-haspopup="true" aria-expanded="false" aria-label="Browse categories">
@@ -27,8 +27,7 @@
         </button>
         <div class="bv-dropdown__menu" role="menu">
           {% for cat in global_categories %}
-            <a href="#" role="menuitem">
-              {# TODO Person 1: replace with store:category_detail cat.slug #}
+            <a href="{% url 'store:book_list' %}?category={{ cat.slug }}" role="menuitem">
               {{ cat.name }}
             </a>
           {% empty %}
@@ -49,13 +48,12 @@
     <div class="bv-navbar__actions">
 
       {# Compact expanding search icon #}
-      <form class="bv-navbar__search-compact" role="search" action="#" method="get">
-        {# TODO Person 1: set action to store:search once search view exists #}
+      <form class="bv-navbar__search-compact" role="search" action="{% url 'store:book_list' %}" method="get">
         <i class="bi bi-search bv-navbar__search-icon" aria-hidden="true"></i>
         <input
           type="search"
           name="q"
-          placeholder="Search..."
+          placeholder="Search books..."
           aria-label="Search books"
           autocomplete="off"
         >
@@ -63,15 +61,16 @@
 
       {# Cart button #}
       <a
-        href="#"
+        href="{% url 'cart:cart_detail' %}"
         class="bv-nav-icon-btn"
         aria-label="Shopping cart, {{ cart_count }} item{% if cart_count != 1 %}s{% endif %}"
         title="View cart"
       >
-        {# TODO Person 4: replace href with cart:cart_detail #}
         <i class="bi bi-bag" aria-hidden="true"></i>
         {% if cart_count > 0 %}
-          <span class="bv-cart-badge" aria-hidden="true">{{ cart_count }}</span>
+          <span class="bv-cart-badge" id="bv-nav-cart-badge" aria-hidden="true">{{ cart_count }}</span>
+        {% else %}
+          <span class="bv-cart-badge d-none" id="bv-nav-cart-badge" aria-hidden="true">0</span>
         {% endif %}
       </a>
 
@@ -79,18 +78,19 @@
       {% if user.is_authenticated %}
         {# User dropdown #}
         <div class="bv-dropdown">
-          <button class="btn-bv-pill-white" aria-haspopup="true" aria-expanded="false" aria-label="User menu">
+          <button class="btn-bv-pill-white bv-nav-user-btn" aria-haspopup="true" aria-expanded="false" aria-label="User menu" title="{{ user.username }}">
             <i class="bi bi-person-fill" aria-hidden="true"></i>
-            <span>{{ user.username|truncatechars:10 }}</span>
-            <i class="bi bi-chevron-down bv-dropdown-icon"></i>
           </button>
           <div class="bv-dropdown__menu" role="menu" style="right:0;left:auto;transform:none;min-width:160px;">
             <a href="{% url 'accounts:profile' %}" role="menuitem">
               <i class="bi bi-person me-2" aria-hidden="true"></i>My Profile
             </a>
             {% if user.is_staff %}
-              <a href="/admin/" role="menuitem" target="_blank" rel="noopener">
+              <a href="{% url 'dashboard:overview' %}" role="menuitem">
                 <i class="bi bi-speedometer2 me-2" aria-hidden="true"></i>Admin Panel
+              </a>
+              <a href="/admin/" role="menuitem" target="_blank" rel="noopener">
+                <i class="bi bi-shield-lock me-2" aria-hidden="true"></i>Django Admin
               </a>
             {% endif %}
             <a href="{% url 'accounts:logout' %}" role="menuitem" style="color:rgba(255,100,100,.9);">
@@ -127,8 +127,7 @@
     <a href="{% url 'store:home' %}">🏠 Home</a>
     <a href="#ai-feature" style="color:var(--sky);font-weight:600;"><i class="bi bi-stars me-1"></i> AI Based on Teams</a>
     {% for cat in global_categories %}
-      <a href="#">
-        <!-- TODO Person 1: replace with category detail URL -->
+      <a href="{% url 'store:book_list' %}?category={{ cat.slug }}">
         {{ cat.name }}
       </a>
     {% endfor %}
@@ -136,7 +135,8 @@
     {% if user.is_authenticated %}
       <a href="{% url 'accounts:profile' %}">👤 My Profile</a>
       {% if user.is_staff %}
-        <a href="/admin/" target="_blank" rel="noopener">⚙️ Admin</a>
+        <a href="{% url 'dashboard:overview' %}">⚡ Admin Panel</a>
+        <a href="/admin/" target="_blank" rel="noopener">⚙️ Django Admin</a>
       {% endif %}
       <a href="{% url 'accounts:logout' %}" style="color:rgba(255,100,100,.8);">Log out</a>
     {% else %}

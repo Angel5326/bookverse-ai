@@ -254,4 +254,230 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  /* ====================================================
+     10. BOOK CAROUSEL NAVIGATION & PAGE INDICATOR
+     ==================================================== */
+  document.querySelectorAll('.bv-section').forEach(section => {
+    const carousel = section.querySelector('.bv-books-carousel');
+    const prevBtn = section.querySelector('.bv-nav-arrow--prev');
+    const nextBtn = section.querySelector('.bv-nav-arrow--next');
+    const pageCurrent = section.querySelector('.bv-page-current');
+    const pageTotal = section.querySelector('.bv-page-total');
+
+    if (!carousel) return;
+
+    const updateControls = () => {
+      const scrollLeft = carousel.scrollLeft;
+      const scrollWidth = carousel.scrollWidth;
+      const clientWidth = carousel.clientWidth;
+      const maxScroll = Math.max(0, scrollWidth - clientWidth);
+
+      const items = carousel.querySelectorAll('.bv-carousel-item');
+      if (items.length === 0) return;
+
+      const itemWidth = items[0].offsetWidth + 12;
+      const visibleCount = Math.max(1, Math.floor(clientWidth / itemWidth));
+      const totalPages = Math.max(1, Math.ceil(items.length / visibleCount));
+      const currentPage = Math.min(totalPages, Math.max(1, Math.floor((scrollLeft + itemWidth * 0.5) / (visibleCount * itemWidth)) + 1));
+
+      if (pageTotal) pageTotal.textContent = totalPages;
+      if (pageCurrent) pageCurrent.textContent = currentPage;
+
+      if (prevBtn) {
+        prevBtn.disabled = scrollLeft <= 8;
+      }
+      if (nextBtn) {
+        nextBtn.disabled = scrollLeft >= maxScroll - 8;
+      }
+    };
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const scrollAmount = carousel.clientWidth * 0.88;
+        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const scrollAmount = carousel.clientWidth * 0.88;
+        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+    }
+
+    carousel.addEventListener('scroll', updateControls, { passive: true });
+    window.addEventListener('resize', updateControls);
+    setTimeout(updateControls, 150);
+  });
+
+  /* ====================================================
+     10b. HERO SHELF NAVIGATION (PREV / NEXT ARROWS & TABS)
+     ==================================================== */
+  const shelfTrack = document.getElementById('bv-shelf-track');
+  const shelfPrev = document.getElementById('bv-shelf-prev');
+  const shelfNext = document.getElementById('bv-shelf-next');
+
+  function updateShelfButtons() {
+    if (!shelfTrack) return;
+    const scrollLeft = shelfTrack.scrollLeft;
+    const maxScroll = Math.max(0, shelfTrack.scrollWidth - shelfTrack.clientWidth);
+    if (shelfPrev) shelfPrev.disabled = scrollLeft <= 8;
+    if (shelfNext) shelfNext.disabled = scrollLeft >= maxScroll - 8;
+  }
+
+  if (shelfTrack) {
+    if (shelfPrev) {
+      shelfPrev.addEventListener('click', (e) => {
+        e.preventDefault();
+        const scrollAmount = shelfTrack.clientWidth * 0.75;
+        shelfTrack.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      });
+    }
+
+    if (shelfNext) {
+      shelfNext.addEventListener('click', (e) => {
+        e.preventDefault();
+        const scrollAmount = shelfTrack.clientWidth * 0.75;
+        shelfTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+    }
+
+    shelfTrack.addEventListener('scroll', updateShelfButtons, { passive: true });
+    window.addEventListener('resize', updateShelfButtons);
+    setTimeout(updateShelfButtons, 150);
+
+    const shelfTabs = document.querySelectorAll('.bv-shelf__tab[data-shelf-tab]');
+    const shelfItems = document.querySelectorAll('.bv-shelf__card[data-shelf-item]');
+
+    shelfTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        shelfTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const filter = tab.getAttribute('data-shelf-tab');
+
+        shelfItems.forEach(item => {
+          const itemType = item.getAttribute('data-shelf-item') || '';
+          if (filter === 'all' || itemType.includes(filter)) {
+            item.style.display = 'flex';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+        shelfTrack.scrollLeft = 0;
+        setTimeout(updateShelfButtons, 60);
+      });
+    });
+  }
+
+  /* ====================================================
+     11. AJAX ADD TO CART (CARD & MODAL BUTTONS)
+     ==================================================== */
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  function showToast(message, type = 'success') {
+    let wrapper = document.querySelector('.bv-messages-wrapper');
+    if (!wrapper) {
+      wrapper = document.createElement('div');
+      wrapper.className = 'bv-messages-wrapper';
+      document.body.appendChild(wrapper);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `bv-toast ${type}`;
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `
+      <i class="bi bi-check-circle-fill bv-toast__icon" aria-hidden="true"></i>
+      <div class="bv-toast__body">
+        <div class="bv-toast__title">Cart Updated</div>
+        ${message}
+      </div>
+      <button class="bv-toast__close" aria-label="Close notification">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    `;
+    wrapper.appendChild(toast);
+
+    const closeBtn = toast.querySelector('.bv-toast__close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        toast.classList.add('dismissing');
+        setTimeout(() => toast.remove(), 400);
+      });
+    }
+
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.classList.add('dismissing');
+        setTimeout(() => toast.remove(), 400);
+      }
+    }, 3500);
+  }
+
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.js-add-to-cart, .js-modal-add-cart');
+    if (!btn) return;
+
+    e.preventDefault();
+    const addUrl = btn.getAttribute('data-add-url');
+    if (!addUrl) return;
+
+    const originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm" style="width:12px;height:12px;" role="status"></span>';
+
+    try {
+      const csrfToken = getCookie('csrftoken');
+      const response = await fetch(addUrl, {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': csrfToken || '',
+        },
+      });
+
+      const data = await response.json();
+      if (data.status === 'success') {
+        const badge = document.getElementById('bv-nav-cart-badge');
+        if (badge) {
+          badge.textContent = data.cart_count;
+          badge.classList.remove('d-none');
+        }
+
+        btn.innerHTML = '<i class="bi bi-check2"></i>';
+        btn.style.background = '#15803d';
+        btn.style.color = '#ffffff';
+
+        showToast(data.message || 'Book added to your cart!');
+
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+          btn.style.background = '';
+          btn.style.color = '';
+          btn.disabled = false;
+        }, 1600);
+      } else {
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+      }
+    } catch (err) {
+      console.error('Add to cart error:', err);
+      window.location.href = addUrl;
+    }
+  });
+
 }); // end DOMContentLoaded

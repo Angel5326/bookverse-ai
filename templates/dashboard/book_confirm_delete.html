@@ -1,0 +1,32 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block dashboard_content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6">
+    <div class="bv-dash-card text-center py-5">
+      <div class="text-danger mb-3" style="font-size: 3rem;">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+      <h2 class="text-white mb-2">Delete Book?</h2>
+      <p class="text-muted mb-4">
+        Are you sure you want to permanently delete <br>
+        <strong class="text-white fs-5">"{{ book.title }}"</strong>?
+      </p>
+      <div class="p-3 rounded-3 mb-4 text-start bv-dash-toolbar small text-secondary">
+        <div><strong>Slug:</strong> {{ book.slug }}</div>
+        <div><strong>Price:</strong> ₹{{ book.price }}</div>
+        <div class="text-warning mt-2"><i class="bi bi-info-circle me-1"></i> This action cannot be undone.</div>
+      </div>
+
+      <form method="post" class="d-flex justify-content-center gap-3">
+        {% csrf_token %}
+        <a href="{% url 'dashboard:book_list' %}" class="btn-bv-pill-outline">Cancel</a>
+        <button type="submit" class="btn btn-danger rounded-pill px-4">
+          <i class="bi bi-trash-fill me-1"></i> Confirm Delete
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

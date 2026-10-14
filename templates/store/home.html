@@ -11,11 +11,10 @@
 {% endcomment %}
 <section class="bv-hero" aria-label="Hero">
 
-  {# Small pill label #}
-  <div class="bv-hero__label" role="note">
-    <span class="dot" aria-hidden="true"></span>
-    <i class="bi bi-stars" aria-hidden="true"></i>
-    AI-powered bookstore
+  {# ── Arranged White Books Background (User Attached) with Light Blur Effect ── #}
+  <div class="bv-hero__books-backdrop" aria-hidden="true">
+    <img src="{% static 'images/arranged_white_books.png' %}" alt="Arranged white books" class="bv-hero__books-img" fetchpriority="high">
+    <div class="bv-hero__books-overlay"></div>
   </div>
 
   {# Headline #}
@@ -55,48 +54,40 @@
     <div class="bv-hero__shelf-mat">
       <div class="bv-hero__shelf-notch">
 
-        {# Top header bar inside shelf #}
-        <div class="bv-shelf__header">
-          <div class="bv-shelf__brand">
-            <div class="bv-logo-mark" style="width:22px;height:22px;border-radius:6px;font-size:11px;">
-              <i class="bi bi-book-half" aria-hidden="true"></i>
-            </div>
-            <span class="bv-shelf__title">BookVerse</span>
+        {# Filter tabs row + Shelf navigation buttons #}
+        <div class="bv-shelf__top-bar">
+          <div class="bv-shelf__tabs" role="tablist">
+            <button class="bv-shelf__tab active" role="tab" data-shelf-tab="all">
+              <span>Explore All</span>
+              <span class="tab-count">10</span>
+            </button>
+            <button class="bv-shelf__tab" role="tab" data-shelf-tab="recommended">
+              <span>Picked for You</span>
+              <span class="tab-count">5</span>
+            </button>
+            <button class="bv-shelf__tab" role="tab" data-shelf-tab="upcoming">
+              <span>Coming Soon</span>
+              <span class="tab-count">5</span>
+            </button>
+            <button class="bv-shelf__tab" role="tab" data-shelf-tab="preorder">
+              <span>First Editions</span>
+              <span class="tab-count">4</span>
+            </button>
           </div>
 
-          <div class="bv-shelf__search">
-            <i class="bi bi-search" aria-hidden="true"></i>
-            <span>Search books, authors, genres...</span>
+          <div class="bv-shelf-nav-arrows">
+            <button class="bv-shelf-nav-btn bv-shelf-nav-btn--prev" id="bv-shelf-prev" aria-label="Previous shelf books" disabled><i class="bi bi-chevron-left"></i></button>
+            <button class="bv-shelf-nav-btn bv-shelf-nav-btn--next" id="bv-shelf-next" aria-label="Next shelf books"><i class="bi bi-chevron-right"></i></button>
           </div>
-
-          <div class="bv-shelf__actions">
-            <button class="bv-shelf__icon-btn" title="Favorites" aria-label="Favorites"><i class="bi bi-star"></i></button>
-            <button class="bv-shelf__icon-btn" title="View Grid" aria-label="Grid view"><i class="bi bi-grid"></i></button>
-            <button class="bv-shelf__icon-btn" title="Open Catalog" aria-label="Catalog"><i class="bi bi-box-arrow-up-right"></i></button>
-            <div class="bv-shelf__divider"></div>
-            <div class="bv-shelf__status">
-              <i class="bi bi-search"></i>
-              <i class="bi bi-wifi"></i>
-              <span>09:41</span>
-            </div>
-          </div>
-        </div>
-
-        {# Filter tabs row #}
-        <div class="bv-shelf__tabs" role="tablist">
-          <button class="bv-shelf__tab active" role="tab" data-shelf-tab="all"><span>🌟 All</span> <span class="tab-count">10</span></button>
-          <button class="bv-shelf__tab" role="tab" data-shelf-tab="recommended"><span>✨ Recommended Books</span> <span class="tab-count">5</span></button>
-          <button class="bv-shelf__tab" role="tab" data-shelf-tab="upcoming"><span>⏳ Upcoming Books</span> <span class="tab-count">5</span></button>
-          <button class="bv-shelf__tab" role="tab" data-shelf-tab="preorder"><span>📦 Pre-Orders</span> <span class="tab-count">4</span></button>
-          <button class="bv-shelf__tab bv-shelf__tab--add" title="More categories" aria-label="More categories"><i class="bi bi-plus-lg"></i></button>
         </div>
 
         {# Cards track inside shelf #}
-        <div class="bv-shelf__cards-track" role="list" aria-label="Recommended and Upcoming books shelf">
+        <div class="bv-shelf__cards-track" id="bv-shelf-track" role="list" aria-label="Recommended and Upcoming books shelf">
 
           <!-- Recommended 1 -->
           <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #1e1b4b, #3b82f6);">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/nexus.jpg' %}" alt="Nexus: Information Networks" class="bv-shelf__cover-img">
               <div class="bv-shelf__card-overlay">
                 <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> 99% AI Match</span>
                 <div class="bv-shelf__card-text-preview">
@@ -113,9 +104,10 @@
 
           <!-- Recommended 2 -->
           <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #064e3b, #059669);">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/systems.jpg' %}" alt="Thinking in Systems" class="bv-shelf__cover-img">
               <div class="bv-shelf__card-overlay">
-                <span class="bv-shelf__card-badge"><i class="bi bi-heart-fill" style="color:#f43f5e;"></i> Recommended</span>
+                <span class="bv-shelf__card-badge"><i class="bi bi-check2"></i> Recommended</span>
                 <div class="bv-shelf__card-text-preview">
                   <strong>Thinking in Systems</strong>
                   <p>Donella Meadows · Essential</p>
@@ -130,7 +122,8 @@
 
           <!-- Recommended 3 -->
           <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #312e81, #6366f1);">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/chip_war.jpg' %}" alt="Chip War" class="bv-shelf__cover-img">
               <div class="bv-shelf__card-overlay">
                 <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> Staff Choice</span>
                 <div class="bv-shelf__card-text-preview">
@@ -147,7 +140,8 @@
 
           <!-- Recommended 4 -->
           <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #7c2d12, #ea580c);">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/supercommunicators.jpg' %}" alt="Supercommunicators" class="bv-shelf__cover-img">
               <div class="bv-shelf__card-overlay">
                 <span class="bv-shelf__card-badge"><i class="bi bi-bookmark-star"></i> Based on Taste</span>
                 <div class="bv-shelf__card-text-preview">
@@ -164,7 +158,8 @@
 
           <!-- Recommended 5 -->
           <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #134e4a, #0d9488);">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/co_intelligence.jpg' %}" alt="Co-Intelligence" class="bv-shelf__cover-img">
               <div class="bv-shelf__card-overlay">
                 <span class="bv-shelf__card-badge"><i class="bi bi-robot"></i> 98% Match</span>
                 <div class="bv-shelf__card-text-preview">
@@ -181,7 +176,8 @@
 
           <!-- Upcoming 1 -->
           <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #831843, #e11d48);">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/monte_cristo.jpg' %}" alt="The Winds of Winter" class="bv-shelf__cover-img">
               <div class="bv-shelf__card-overlay">
                 <span class="bv-shelf__card-badge" style="background:rgba(225,29,72,.88);"><i class="bi bi-hourglass-split"></i> Upcoming · Nov 2026</span>
                 <div class="bv-shelf__card-text-preview">
@@ -198,7 +194,8 @@
 
           <!-- Upcoming 2 -->
           <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #451a03, #d97706);">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/cambridge_english.jpg' %}" alt="The Singularity is Nearer" class="bv-shelf__cover-img">
               <div class="bv-shelf__card-overlay">
                 <span class="bv-shelf__card-badge" style="background:rgba(217,119,6,.88);"><i class="bi bi-hourglass-split"></i> Upcoming Release</span>
                 <div class="bv-shelf__card-text-preview">
@@ -215,7 +212,8 @@
 
           <!-- Upcoming 3 -->
           <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #0f172a, #334155);">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/goodbye_eri.jpg' %}" alt="Clear Thinking" class="bv-shelf__cover-img">
               <div class="bv-shelf__card-overlay">
                 <span class="bv-shelf__card-badge" style="background:rgba(51,65,85,.88);"><i class="bi bi-clock-history"></i> Dropping Next Month</span>
                 <div class="bv-shelf__card-text-preview">
@@ -232,7 +230,8 @@
 
           <!-- Upcoming 4 -->
           <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #1e3a8a, #8b5cf6);">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/kagurabachi.jpg' %}" alt="Artificial General Intelligence" class="bv-shelf__cover-img">
               <div class="bv-shelf__card-overlay">
                 <span class="bv-shelf__card-badge" style="background:rgba(139,92,246,.88);"><i class="bi bi-stars"></i> Gemini AI Preview</span>
                 <div class="bv-shelf__card-text-preview">
@@ -249,7 +248,8 @@
 
           <!-- Upcoming 5 -->
           <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
-            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #14532d, #16a34a);">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/white_nights.jpg' %}" alt="The Coming Wave" class="bv-shelf__cover-img">
               <div class="bv-shelf__card-overlay">
                 <span class="bv-shelf__card-badge" style="background:rgba(22,163,74,.88);"><i class="bi bi-hourglass-split"></i> Expected Soon</span>
                 <div class="bv-shelf__card-text-preview">
@@ -270,124 +270,52 @@
     </div>
   </div>
 
+  {# ── Blur effect at the end of the first page (seamless transition to Now Trending) ── #}
+  <div class="bv-hero__blur-divider" aria-hidden="true"></div>
+
 </section>
 {# end hero #}
 
-{% comment %}
-   SECTION 1.5 — FEATURE PILLS (Image 2 style)
-{% endcomment %}
-<section class="bv-section-features text-center" style="padding: 72px 0 36px; background: #ffffff;" aria-label="Platform Highlights">
-  <div class="container-bv">
-    <div style="max-width: 720px; margin: 0 auto 36px;" class="bv-reveal">
-      <h2 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 800; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 12px; line-height: 1.15;">
-        Your library, wherever you need it
-      </h2>
-      <p style="font-size: 16px; color: var(--text-muted); line-height: 1.6; max-width: 620px; margin: 0 auto;">
-        Use the notch shelf, quick search, Gemini AI summaries, instant chapter breakdowns, and the full catalogue to find, understand, and read any title in seconds.
-      </p>
-    </div>
 
-    <!-- Feature pills row -->
-    <div class="bv-feature-pills-wrap bv-reveal-stagger">
-      <div class="bv-feature-pill"><i class="bi bi-cloud-check text-primary"></i> Cloud Library</div>
-      <div class="bv-feature-pill"><i class="bi bi-stars" style="color:#8b5cf6;"></i> Gemini AI Intelligence</div>
-      <div class="bv-feature-pill"><i class="bi bi-lightning-charge text-warning"></i> 5-Min Recaps</div>
-      <div class="bv-feature-pill"><i class="bi bi-shield-check text-success"></i> Privacy First</div>
-      <div class="bv-feature-pill"><i class="bi bi-search text-info"></i> Instant Search</div>
-      <div class="bv-feature-pill"><i class="bi bi-headphones text-danger"></i> Audio Recaps</div>
-      <div class="bv-feature-pill"><i class="bi bi-bookmark-heart" style="color:#ec4899;"></i> Chapter Breakdowns</div>
-      <div class="bv-feature-pill"><i class="bi bi-grid-fill text-secondary"></i> Grouped by Genre</div>
-      <div class="bv-feature-pill"><i class="bi bi-funnel text-primary"></i> Smart Filter</div>
-      <div class="bv-feature-pill"><i class="bi bi-truck text-success"></i> Fast India Delivery</div>
-      <div class="bv-feature-pill"><i class="bi bi-tags text-dark"></i> Custom Shelves</div>
-    </div>
-  </div>
-</section>
 
 
 {% comment %}
-   SECTION 2 — CATEGORIES
+   SECTION 3 — NOW TRENDING (BEST SELLERS)
 {% endcomment %}
-<section class="bv-section" id="categories" aria-labelledby="categories-heading">
+<section class="bv-section bv-trending-section" id="best-sellers" aria-labelledby="bestsellers-heading">
   <div class="container-bv">
 
     <div class="bv-section__header bv-reveal">
       <div>
-        <p class="section-label">
-          <i class="bi bi-grid" aria-hidden="true"></i> Browse by genre
-        </p>
-        <h2 class="bv-section__title" id="categories-heading">
-          Every genre, <em>every taste</em>
+        <h2 class="bv-section__title bv-trending-title font-serif" id="bestsellers-heading">
+          Now Trending
         </h2>
       </div>
-      <a href="#" class="bv-view-all" aria-label="View all categories">
-        {# TODO Person 1: replace with store:category_list #}
-        All categories <i class="bi bi-arrow-right" aria-hidden="true"></i>
-      </a>
-    </div>
-
-    {# Category chips strip #}
-    <div class="bv-categories-strip bv-reveal-stagger" role="list" aria-label="Book categories">
-      {% for cat in categories %}
-        <a
-          href="#"
-          class="bv-category-chip"
-          role="listitem"
-          aria-label="Browse {{ cat.name }} books"
-        >
-          {# TODO Person 1: replace href with store:category_detail cat.slug #}
-          <i class="bi bi-tag" aria-hidden="true"></i>
-          {{ cat.name }}
-        </a>
-      {% empty %}
-        {# Fallback placeholder chips when no categories in DB yet #}
-        <span class="bv-category-chip" role="listitem"><i class="bi bi-book" aria-hidden="true"></i> Fiction</span>
-        <span class="bv-category-chip" role="listitem"><i class="bi bi-journal" aria-hidden="true"></i> Non-Fiction</span>
-        <span class="bv-category-chip" role="listitem"><i class="bi bi-flask" aria-hidden="true"></i> Science</span>
-        <span class="bv-category-chip" role="listitem"><i class="bi bi-globe" aria-hidden="true"></i> History</span>
-        <span class="bv-category-chip" role="listitem"><i class="bi bi-star" aria-hidden="true"></i> Self-Help</span>
-        <span class="bv-category-chip" role="listitem"><i class="bi bi-person" aria-hidden="true"></i> Biography</span>
-        <span class="bv-category-chip" role="listitem"><i class="bi bi-cpu" aria-hidden="true"></i> Technology</span>
-        <span class="bv-category-chip" role="listitem"><i class="bi bi-palette" aria-hidden="true"></i> Art</span>
-      {% endfor %}
-    </div>
-
-  </div>
-</section>
-
-
-{% comment %}
-   SECTION 3 — BEST SELLERS
-{% endcomment %}
-<section class="bv-section-boxy" id="best-sellers" aria-labelledby="bestsellers-heading">
-  <div class="container-bv">
-    <div class="bv-boxy-card">
-
-      <div class="bv-section__header bv-reveal">
-        <div>
-          <p class="section-label">
-            <i class="bi bi-star-fill" style="color:#f59e0b;" aria-hidden="true"></i> Top picks
-          </p>
-          <h2 class="bv-section__title" id="bestsellers-heading">
-            Best <em>Sellers</em>
-          </h2>
+      <div class="bv-section__controls">
+        <span class="bv-section__page-indicator">Page <span class="bv-page-current">1</span> of <span class="bv-page-total">8</span></span>
+        <span class="bv-section__sep">|</span>
+        <div class="bv-nav-arrow-group">
+          <button class="bv-nav-arrow bv-nav-arrow--prev" data-target="trending-carousel" aria-label="Previous page" disabled><i class="bi bi-chevron-left"></i></button>
+          <button class="bv-nav-arrow bv-nav-arrow--next" data-target="trending-carousel" aria-label="Next page"><i class="bi bi-chevron-right"></i></button>
         </div>
-        <a href="#" class="bv-view-all" aria-label="View all best sellers">
-          View all <i class="bi bi-arrow-right" aria-hidden="true"></i>
+        <a href="{% url 'store:book_list' %}?sort=trending" class="bv-see-all-link" aria-label="See all trending books">
+          See All
         </a>
       </div>
+    </div>
 
-      <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="Best seller books">
+    <div class="bv-books-carousel-wrapper">
+      <div class="bv-books-carousel bv-reveal-stagger" id="trending-carousel" role="list" aria-label="Now trending books">
         {# Prefer best_sellers from view context, then global_best_sellers, fall back to books #}
         {% with book_list=best_sellers|default:global_best_sellers|default:books %}
           {% for book in book_list %}
-            <div role="listitem">
+            <div class="bv-carousel-item" role="listitem">
               {% include 'partials/book_card.html' with book=book %}
             </div>
           {% empty %}
             <div class="bv-empty-state" style="grid-column:1/-1;">
               <div class="bv-empty-state__icon"><i class="bi bi-star" aria-hidden="true"></i></div>
-              <h3 class="bv-empty-state__title">No best sellers yet</h3>
+              <h3 class="bv-empty-state__title">No trending books yet</h3>
               <p class="bv-empty-state__text">
                 Visit the <a href="/admin/" style="color:var(--blue);">admin panel</a> and toggle
                 <strong>is_best_seller</strong> on any book to feature it here.
@@ -396,37 +324,44 @@
           {% endfor %}
         {% endwith %}
       </div>
-
     </div>
+
+    {# ── End line Design for Now Trending ── #}
+    <div class="bv-section-end-line" aria-hidden="true"></div>
+
   </div>
 </section>
-
 
 {% comment %}
    SECTION 4 — NEW ARRIVALS
 {% endcomment %}
-<section class="bv-section-boxy" id="new-arrivals" aria-labelledby="newarrivals-heading">
+<section class="bv-section" id="new-arrivals" aria-labelledby="newarrivals-heading">
   <div class="container-bv">
-    <div class="bv-boxy-card">
 
-      <div class="bv-section__header bv-reveal">
-        <div>
-          <p class="section-label">
-            <i class="bi bi-lightning-fill" style="color:var(--blue);" aria-hidden="true"></i> Just landed
-          </p>
-          <h2 class="bv-section__title" id="newarrivals-heading">
-            New <em>Arrivals</em>
-          </h2>
+    <div class="bv-section__header bv-reveal">
+      <div>
+        <h2 class="bv-section__title bv-trending-title font-serif" id="newarrivals-heading">
+          New Arrivals
+        </h2>
+      </div>
+      <div class="bv-section__controls">
+        <span class="bv-section__page-indicator">Page <span class="bv-page-current">1</span> of <span class="bv-page-total">2</span></span>
+        <span class="bv-section__sep">|</span>
+        <div class="bv-nav-arrow-group">
+          <button class="bv-nav-arrow bv-nav-arrow--prev" data-target="newarrivals-carousel" aria-label="Previous page" disabled><i class="bi bi-chevron-left"></i></button>
+          <button class="bv-nav-arrow bv-nav-arrow--next" data-target="newarrivals-carousel" aria-label="Next page"><i class="bi bi-chevron-right"></i></button>
         </div>
-        <a href="#" class="bv-view-all" aria-label="View all new arrivals">
-          View all <i class="bi bi-arrow-right" aria-hidden="true"></i>
+        <a href="{% url 'store:book_list' %}?sort=new" class="bv-see-all-link" aria-label="See all new arrivals">
+          See All
         </a>
       </div>
+    </div>
 
-      <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="New arrival books">
+    <div class="bv-books-carousel-wrapper">
+      <div class="bv-books-carousel bv-reveal-stagger" id="newarrivals-carousel" role="list" aria-label="New arrival books">
         {% with book_list=new_arrivals|default:global_new_arrivals|default:books %}
           {% for book in book_list %}
-            <div role="listitem">
+            <div class="bv-carousel-item" role="listitem">
               {% include 'partials/book_card.html' with book=book %}
             </div>
           {% empty %}
@@ -441,33 +376,44 @@
           {% endfor %}
         {% endwith %}
       </div>
-
     </div>
+
+    {# ── End line Design for New Arrivals ── #}
+    <div class="bv-section-end-line" aria-hidden="true"></div>
+
   </div>
 </section>
 
 
 {% comment %}
-   SECTION 5 — ALL BOOKS (fallback grid)
+   SECTION 5 — ALL BOOKS (single row carousel)
 {% endcomment %}
-<section class="bv-section-boxy" id="books" aria-labelledby="allbooks-heading">
+<section class="bv-section" id="books" aria-labelledby="allbooks-heading">
   <div class="container-bv">
-    <div class="bv-boxy-card">
 
-      <div class="bv-section__header bv-reveal">
-        <div>
-          <p class="section-label">
-            <i class="bi bi-book-half" aria-hidden="true"></i> Full catalogue
-          </p>
-          <h2 class="bv-section__title" id="allbooks-heading">
-            Browse All <em>Books</em>
-          </h2>
-        </div>
+    <div class="bv-section__header bv-reveal">
+      <div>
+        <h2 class="bv-section__title bv-trending-title font-serif" id="allbooks-heading">
+          Browse All Books
+        </h2>
       </div>
+      <div class="bv-section__controls">
+        <span class="bv-section__page-indicator">Page <span class="bv-page-current">1</span> of <span class="bv-page-total">3</span></span>
+        <span class="bv-section__sep">|</span>
+        <div class="bv-nav-arrow-group">
+          <button class="bv-nav-arrow bv-nav-arrow--prev" data-target="allbooks-carousel" aria-label="Previous page" disabled><i class="bi bi-chevron-left"></i></button>
+          <button class="bv-nav-arrow bv-nav-arrow--next" data-target="allbooks-carousel" aria-label="Next page"><i class="bi bi-chevron-right"></i></button>
+        </div>
+        <a href="{% url 'store:book_list' %}" class="bv-see-all-link" aria-label="View all books">
+          See All
+        </a>
+      </div>
+    </div>
 
-      <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="All books">
+    <div class="bv-books-carousel-wrapper">
+      <div class="bv-books-carousel bv-reveal-stagger" id="allbooks-carousel" role="list" aria-label="All books">
         {% for book in books %}
-          <div role="listitem">
+          <div class="bv-carousel-item" role="listitem">
             {% include 'partials/book_card.html' with book=book %}
           </div>
         {% empty %}
@@ -481,8 +427,109 @@
           </div>
         {% endfor %}
       </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+{% comment %}
+   SECTION 5.5 — READERS & BOOKSTORE THEME SHOWCASE (Pill Gallery)
+{% endcomment %}
+<section class="bv-section bv-readers-showcase" id="readers-showcase" aria-labelledby="readers-showcase-heading">
+  <div class="container-bv">
+
+    {# Arching Pill Collage with Famous Book Covers #}
+    <div class="bv-pill-gallery bv-reveal" aria-label="Famous book covers showcase">
+
+      {# Column 1: 2 items #}
+      <div class="bv-pill-col bv-pill-col--1">
+        <a href="{% url 'store:book_list' %}?q=Great+Gatsby" class="bv-pill-card bv-pill-card--h1" title="The Great Gatsby by F. Scott Fitzgerald">
+          <img src="{% static 'images/famous_covers/great_gatsby.jpg' %}" alt="The Great Gatsby book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=Dune" class="bv-pill-card bv-pill-card--h2" title="Dune by Frank Herbert">
+          <img src="{% static 'images/famous_covers/dune.jpg' %}" alt="Dune book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 2: 3 items #}
+      <div class="bv-pill-col bv-pill-col--2">
+        <a href="{% url 'store:book_list' %}?q=Deep+Work" class="bv-pill-card bv-pill-card--s1" title="Deep Work by Cal Newport">
+          <img src="{% static 'images/famous_covers/deep_work.jpg' %}" alt="Deep Work book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=Thinking+Fast+and+Slow" class="bv-pill-card bv-pill-card--s2" title="Thinking, Fast and Slow by Daniel Kahneman">
+          <img src="{% static 'images/famous_covers/thinking_fast_slow.jpg' %}" alt="Thinking Fast and Slow book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=The+Alchemist" class="bv-pill-card bv-pill-card--s3" title="The Alchemist by Paulo Coelho">
+          <img src="{% static 'images/famous_covers/alchemist.jpg' %}" alt="The Alchemist book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 3: 1 tall capsule #}
+      <div class="bv-pill-col bv-pill-col--3">
+        <a href="{% url 'store:book_list' %}?q=Sapiens" class="bv-pill-card bv-pill-card--tall-1" title="Sapiens: A Brief History of Humankind by Yuval Noah Harari">
+          <img src="{% static 'images/famous_covers/sapiens.jpg' %}" alt="Sapiens book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 4: Apex capsule (tallest center) #}
+      <div class="bv-pill-col bv-pill-col--4">
+        <a href="{% url 'store:book_list' %}?q=Atomic+Habits" class="bv-pill-card bv-pill-card--apex" title="Atomic Habits by James Clear">
+          <img src="{% static 'images/famous_covers/atomic_habits.jpg' %}" alt="Atomic Habits book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 5: Tall capsule #}
+      <div class="bv-pill-col bv-pill-col--5">
+        <a href="{% url 'store:book_list' %}?q=Psychology+of+Money" class="bv-pill-card bv-pill-card--tall-2" title="The Psychology of Money by Morgan Housel">
+          <img src="{% static 'images/famous_covers/psychology_of_money.jpg' %}" alt="The Psychology of Money book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 6: Medium tall capsule #}
+      <div class="bv-pill-col bv-pill-col--6">
+        <a href="{% url 'store:book_list' %}?q=1984" class="bv-pill-card bv-pill-card--tall-3" title="1984 by George Orwell">
+          <img src="{% static 'images/famous_covers/1984.jpg' %}" alt="1984 book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 7: 3 items #}
+      <div class="bv-pill-col bv-pill-col--7">
+        <a href="{% url 'store:book_list' %}?q=To+Kill+a+Mockingbird" class="bv-pill-card bv-pill-card--s1" title="To Kill a Mockingbird by Harper Lee">
+          <img src="{% static 'images/famous_covers/to_kill_a_mockingbird.jpg' %}" alt="To Kill a Mockingbird book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=Subtle+Art" class="bv-pill-card bv-pill-card--s2" title="The Subtle Art of Not Giving a F*ck by Mark Manson">
+          <img src="{% static 'images/famous_covers/subtle_art.jpg' %}" alt="The Subtle Art book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=Mans+Search+for+Meaning" class="bv-pill-card bv-pill-card--s3" title="Man's Search for Meaning by Viktor Frankl">
+          <img src="{% static 'images/famous_covers/mans_search_for_meaning.jpg' %}" alt="Man's Search for Meaning book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 8: 2 items #}
+      <div class="bv-pill-col bv-pill-col--8">
+        <a href="{% url 'store:book_list' %}?q=Pride+and+Prejudice" class="bv-pill-card bv-pill-card--h1" title="Pride and Prejudice by Jane Austen">
+          <img src="{% static 'images/famous_covers/pride_and_prejudice.jpg' %}" alt="Pride and Prejudice book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=Steve+Jobs" class="bv-pill-card bv-pill-card--h2" title="Steve Jobs by Walter Isaacson">
+          <img src="{% static 'images/famous_covers/steve_jobs.jpg' %}" alt="Steve Jobs biography cover" loading="lazy">
+        </a>
+      </div>
 
     </div>
+
+    {# Centered Copy below gallery #}
+    <div class="bv-readers-showcase__content bv-reveal">
+      <h2 class="bv-readers-showcase__title" id="readers-showcase-heading">
+        Crafted with Care<br>
+        Loved Everywhere
+      </h2>
+      <p class="bv-readers-showcase__subtitle">
+        Don’t take our word for it. See why BookVerse is trusted and loved by booklovers, thinkers, and lifelong learners across India who want to discover great reads, understand books deeper, and read smarter.
+      </p>
+    </div>
+
   </div>
 </section>
 
@@ -490,17 +537,20 @@
 {% comment %}
    SECTION 6 — AI SUMMARY FEATURE
 {% endcomment %}
-<section class="bv-section" id="ai-feature" aria-labelledby="ai-heading">
+<section class="bv-section bv-ai-section" id="ai-feature" aria-labelledby="ai-heading">
   <div class="container-bv">
     <div class="bv-ai-block bv-reveal">
 
-      {# Left: copy #}
-      <div>
+      {# Left: copy matching reference image #}
+      <div class="bv-ai-left-col">
         <p class="bv-ai-block__label">
-          <i class="bi bi-cpu-fill" aria-hidden="true"></i> Powered by Gemini AI
+          <i class="bi bi-cpu-fill" aria-hidden="true"></i>
+          <span>POWERED BY GEMINI AI</span>
         </p>
         <h2 class="bv-ai-block__title" id="ai-heading">
-          Get an instant AI summary<br><em>before you buy</em>
+          Get an instant AI<br>
+          summary<br>
+          <em>before you buy</em>
         </h2>
         <p class="bv-ai-block__body">
           Never regret a purchase again. BookVerse AI uses Google's Gemini model to generate
@@ -509,59 +559,83 @@
         </p>
         <ul class="bv-ai-block__features" aria-label="AI summary features">
           <li>
-            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            <span class="bv-ai-check-bubble" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
             <span>Instant 3-paragraph summary of any book</span>
           </li>
           <li>
-            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            <span class="bv-ai-check-bubble" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
             <span>Key themes and reader mood analysis</span>
           </li>
           <li>
-            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            <span class="bv-ai-check-bubble" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
             <span>Similar book recommendations</span>
           </li>
           <li>
-            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            <span class="bv-ai-check-bubble" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
             <span>Works on 10,000+ titles, updated daily</span>
           </li>
         </ul>
-        <div style="margin-top:var(--space-6);">
-          <a href="#" class="btn-bv-pill-blue" aria-label="Try AI summary feature">
-            {# TODO Person 5: replace with ai_summary:index #}
+        <div class="bv-ai-cta-wrap">
+          <a href="{% url 'store:book_list' %}" class="btn-bv-ai-white-pill" aria-label="Try AI summary feature">
             <i class="bi bi-stars" aria-hidden="true"></i>
-            Try AI Summary
+            <span>Try AI Summary</span>
           </a>
         </div>
       </div>
 
-      {# Right: mockup UI #}
-      <div class="bv-ai-mockup" aria-label="AI summary preview" role="img">
-        <div class="bv-ai-mockup__book">
-          <div class="bv-ai-mockup__book-cover" aria-hidden="true">📘</div>
-          <div class="bv-ai-mockup__book-info">
-            <h4>Atomic Habits</h4>
-            <p>James Clear · Self-Help</p>
-            <span class="bv-ai-mockup__tag">AI Summary Ready</span>
+      {# Right: mockup UI with floating badges matching reference image #}
+      <div class="bv-ai-right-col">
+        {# Floating integration squircles & hearts above card #}
+        <div class="bv-ai-squircles-wrap" aria-hidden="true">
+          <div class="bv-ai-hearts">
+            <span class="bv-ai-heart bv-ai-heart--1"><i class="bi bi-heart-fill"></i></span>
+            <span class="bv-ai-heart bv-ai-heart--2"><i class="bi bi-heart-fill"></i></span>
+            <span class="bv-ai-heart bv-ai-heart--3"><i class="bi bi-heart-fill"></i></span>
+          </div>
+          <div class="bv-ai-squircles-row">
+            <div class="bv-ai-squircle" title="BookVerse">
+              <i class="bi bi-book-half"></i>
+            </div>
+            <div class="bv-ai-squircle" title="Gemini AI">
+              <i class="bi bi-stars"></i>
+            </div>
           </div>
         </div>
 
-        <div class="bv-ai-mockup__summary-label">
-          <i class="bi bi-stars" aria-hidden="true"></i>
-          Gemini AI Summary
-        </div>
-        <p class="bv-ai-mockup__summary-text">
-          <em>Atomic Habits</em> argues that tiny, 1% improvements compounded over time lead to
-          remarkable results. Clear introduces a four-step habit loop — cue, craving, response,
-          reward — and shows how to redesign your environment to make good habits obvious and
-          bad habits invisible…
-        </p>
-
-        {# Fake typing indicator #}
-        <div style="margin-top:12px;display:flex;align-items:center;gap:8px;">
-          <div class="bv-typing" aria-label="Generating summary">
-            <span></span><span></span><span></span>
+        {# Dark glass card below #}
+        <div class="bv-ai-card" aria-label="AI summary preview" role="img">
+          <div class="bv-ai-card__book">
+            <div class="bv-ai-card__thumb">
+              <div class="bv-ai-card__book-art" aria-hidden="true">
+                <i class="bi bi-journal-bookmark-fill"></i>
+              </div>
+            </div>
+            <div class="bv-ai-card__meta">
+              <h4 class="bv-ai-card__title">Atomic Habits</h4>
+              <p class="bv-ai-card__author">James Clear · Self-Help</p>
+              <span class="bv-ai-card__badge">AI Summary Ready</span>
+            </div>
           </div>
-          <span style="color:rgba(255,255,255,.4);font-size:12px;">Generating more…</span>
+
+          <div class="bv-ai-card__divider"></div>
+
+          <div class="bv-ai-card__summary-header">
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span>GEMINI AI SUMMARY</span>
+          </div>
+          <p class="bv-ai-card__summary-text">
+            <em>Atomic Habits</em> argues that tiny, 1% improvements compounded over time lead to
+            remarkable results. Clear introduces a four-step habit loop — cue, craving, response,
+            reward — and shows how to redesign your environment to make good habits obvious and
+            bad habits invisible…
+          </p>
+
+          <div class="bv-ai-card__footer">
+            <span class="bv-ai-card__dots" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </span>
+            <span class="bv-ai-card__generating">Generating more…</span>
+          </div>
         </div>
       </div>
 

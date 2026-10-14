@@ -1,0 +1,270 @@
+/* ============================================================
+   BookVerse AI — Custom Admin Dashboard Styles
+   Inherits design language from BookVerse AI & Supaste tokens
+   ============================================================ */
+
+.bv-dashboard-container {
+  min-height: calc(100vh - 80px);
+  background: radial-gradient(circle at 50% 0%, rgba(8, 124, 248, 0.08) 0%, transparent 60%), #0a0b10;
+  color: #e2e8f0;
+  padding-top: 100px;
+  padding-bottom: 60px;
+}
+
+.bv-dash-topbar {
+  background: rgba(18, 19, 26, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg, 20px);
+  padding: 24px 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.bv-dash-badge-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #087cf8 0%, #8ad8fc 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #0b0b0f;
+  box-shadow: 0 8px 24px rgba(8, 124, 248, 0.35);
+}
+
+.bv-dash-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--sky, #8ad8fc);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.bv-dash-title {
+  font-family: var(--font-h1, 'Playfair Display', serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+/* Nav Pills */
+.bv-dash-nav-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: rgba(18, 19, 26, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px;
+  border-radius: var(--radius-pill, 9999px);
+  width: fit-content;
+}
+
+.bv-dash-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: var(--radius-pill, 9999px);
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.bv-dash-pill:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.bv-dash-pill.active {
+  background: #087cf8;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(8, 124, 248, 0.4);
+}
+
+/* Cards */
+.bv-dash-card {
+  background: rgba(18, 19, 26, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg, 20px);
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  transition: border-color 0.2s ease;
+}
+
+.bv-dash-card:hover {
+  border-color: rgba(138, 216, 252, 0.25);
+}
+
+/* Metric cards */
+.bv-dash-metric {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 20px 24px;
+}
+
+.bv-dash-metric-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.bv-dash-metric-label {
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.bv-dash-metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.bv-dash-metric-sub {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Section titles */
+.bv-dash-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+/* Tables */
+.bv-dash-table {
+  width: 100%;
+  color: #cbd5e1;
+  margin-bottom: 0;
+}
+
+.bv-dash-table thead th {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 14px;
+}
+
+.bv-dash-table tbody td {
+  padding: 14px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 14px;
+}
+
+.bv-dash-table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.bv-dash-thumb {
+  width: 42px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.bv-dash-thumb-placeholder {
+  width: 42px;
+  height: 56px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+}
+
+.bv-dash-item-title {
+  color: #ffffff;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.bv-dash-item-title:hover {
+  color: var(--sky, #8ad8fc);
+}
+
+.bv-dash-item-sub {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.bv-dash-avatar {
+  width: 36px;
+  height: 36px;
+  font-size: 32px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Badges and Outlines */
+.bv-badge-outline {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: var(--radius-pill, 9999px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Form Inputs */
+.bv-dash-input {
+  background: rgba(10, 11, 16, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border-radius: var(--radius-md, 12px) !important;
+  padding: 12px 16px !important;
+  font-size: 14.5px !important;
+}
+
+.bv-dash-input:focus {
+  border-color: #087cf8 !important;
+  box-shadow: 0 0 0 3px rgba(8, 124, 248, 0.25) !important;
+}
+
+.bv-dash-toolbar {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.bv-dash-progress {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bv-dash-callout {
+  background: rgba(138, 216, 252, 0.05);
+  border: 1px solid rgba(138, 216, 252, 0.15);
+}
