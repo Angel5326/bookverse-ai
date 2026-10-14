@@ -1,12 +1,12 @@
 {% load static %}
 
-{#
+{% comment %}
   Reusable book card partial.
-  Usage: {% include 'partials/book_card.html' with book=book %}
+  Usage: include partials/book_card.html with book=book
   Expects: book object with fields: title, price, slug, description,
            is_best_seller, is_new_arrival, created_at
   Optional future fields (guarded): cover_image, author, category
-#}
+{% endcomment %}
 
 <article class="bv-book-card" aria-label="{{ book.title }}">
 
@@ -56,8 +56,7 @@
         href="#"
         class="bv-book-card__add"
         aria-label="Add {{ book.title }} to cart"
-      >
-        <!-- TODO Person 4: replace href with {% url 'cart:add_to_cart' book.slug %} -->
+        {# TODO Person 4: replace href with cart:add_to_cart book.slug #}
         <i class="bi bi-bag-plus" aria-hidden="true"></i>
         Add
       </a>

@@ -28,9 +28,9 @@
         </button>
         <div class="bv-dropdown__menu" role="menu">
           {% for cat in global_categories %}
-            {# href='#' until Person 1/3 creates category detail URLs #}
+            {# href='#' until Person 1 creates category detail URLs #}
             <a href="#" role="menuitem">
-              <!-- TODO Person 1: replace with {% url 'store:category_detail' cat.slug %} -->
+              {# TODO Person 1: replace with store:category_detail cat.slug #}
               {{ cat.name }}
             </a>
           {% empty %}
@@ -53,7 +53,7 @@
 
     {# ── Search bar (desktop) ── #}
     <form class="bv-navbar__search" role="search" action="#" method="get">
-      {# TODO Person 1: set action="{% url 'store:search' %}" once search view exists #}
+      {# TODO Person 1: set action to store:search once search view exists #}
       <i class="bi bi-search bv-navbar__search-icon" aria-hidden="true"></i>
       <input
         type="search"
@@ -73,7 +73,7 @@
         class="bv-cart-btn"
         aria-label="Shopping cart, {{ cart_count }} item{% if cart_count != 1 %}s{% endif %}"
       >
-        <!-- TODO Person 4: replace href with {% url 'cart:cart_detail' %} -->
+        {# TODO Person 4: replace href with cart:cart_detail #}
         <i class="bi bi-bag" aria-hidden="true"></i>
         {% if cart_count > 0 %}
           <span class="bv-cart-badge" aria-hidden="true">{{ cart_count }}</span>

@@ -126,7 +126,7 @@
         </h2>
       </div>
       <a href="#" class="bv-view-all" aria-label="View all categories">
-        <!-- TODO Person 1: replace with {% url 'store:category_list' %} -->
+        {# TODO Person 1: replace with store:category_list #}
         All categories <i class="bi bi-arrow-right" aria-hidden="true"></i>
       </a>
     </div>
@@ -140,25 +140,20 @@
           role="listitem"
           aria-label="Browse {{ cat.name }} books"
         >
-          <!-- TODO Person 1: replace href with {% url 'store:category_detail' cat.slug %} -->
+          {# TODO Person 1: replace href with store:category_detail cat.slug #}
           <i class="bi bi-tag" aria-hidden="true"></i>
           {{ cat.name }}
         </a>
       {% empty %}
-        {# Fallback placeholder chips #}
-        {% for label in "Fiction,Non-Fiction,Science,History,Self-Help,Biography,Technology,Art"|split:"," %}
-          <span class="bv-category-chip" role="listitem">
-            <i class="bi bi-tag" aria-hidden="true"></i> {{ label }}
-          </span>
-        {% empty %}
-          <span class="bv-category-chip"><i class="bi bi-tag"></i> Fiction</span>
-          <span class="bv-category-chip"><i class="bi bi-tag"></i> Non-Fiction</span>
-          <span class="bv-category-chip"><i class="bi bi-tag"></i> Science</span>
-          <span class="bv-category-chip"><i class="bi bi-tag"></i> History</span>
-          <span class="bv-category-chip"><i class="bi bi-tag"></i> Self-Help</span>
-          <span class="bv-category-chip"><i class="bi bi-tag"></i> Biography</span>
-          <span class="bv-category-chip"><i class="bi bi-tag"></i> Technology</span>
-        {% endfor %}
+        {# Fallback placeholder chips when no categories in DB yet #}
+        <span class="bv-category-chip" role="listitem"><i class="bi bi-book" aria-hidden="true"></i> Fiction</span>
+        <span class="bv-category-chip" role="listitem"><i class="bi bi-journal" aria-hidden="true"></i> Non-Fiction</span>
+        <span class="bv-category-chip" role="listitem"><i class="bi bi-flask" aria-hidden="true"></i> Science</span>
+        <span class="bv-category-chip" role="listitem"><i class="bi bi-globe" aria-hidden="true"></i> History</span>
+        <span class="bv-category-chip" role="listitem"><i class="bi bi-star" aria-hidden="true"></i> Self-Help</span>
+        <span class="bv-category-chip" role="listitem"><i class="bi bi-person" aria-hidden="true"></i> Biography</span>
+        <span class="bv-category-chip" role="listitem"><i class="bi bi-cpu" aria-hidden="true"></i> Technology</span>
+        <span class="bv-category-chip" role="listitem"><i class="bi bi-palette" aria-hidden="true"></i> Art</span>
       {% endfor %}
     </div>
 
@@ -333,7 +328,7 @@
         </ul>
         <div style="margin-top:var(--space-6);">
           <a href="#" class="btn-bv-pill-blue" aria-label="Try AI summary feature">
-            <!-- TODO Person 5: replace with {% url 'ai_summary:index' %} -->
+            {# TODO Person 5: replace with ai_summary:index #}
             <i class="bi bi-stars" aria-hidden="true"></i>
             Try AI Summary
           </a>
@@ -419,7 +414,7 @@
         Join 50,000+ readers who get curated book picks and AI summaries delivered weekly.
       </p>
 
-      {# TODO Person 3: set action="{% url 'newsletter:subscribe' %}" when view is ready #}
+      {# TODO Person 3: set action to newsletter:subscribe when view is ready #}
       <form class="bv-newsletter-form" action="#" method="post" aria-label="Newsletter subscription form">
         {% csrf_token %}
         <label for="newsletter-email" class="sr-only">Your email address</label>
