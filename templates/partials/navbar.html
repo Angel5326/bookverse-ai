@@ -4,29 +4,26 @@
 <nav class="bv-navbar" aria-label="Main navigation">
   <div class="bv-navbar__inner">
 
-    {# ── Brand with 3D glossy icon ── #}
+    {# ── Brand ── #}
     <a href="{% url 'store:home' %}" class="bv-navbar__brand" aria-label="{{ SITE_NAME }} home">
       <div class="bv-logo-mark" aria-hidden="true">
-        <i class="bi bi-book-half" style="font-size:15px;"></i>
+        <i class="bi bi-book-half"></i>
       </div>
       <span class="bv-brand-title">{{ SITE_NAME }}</span>
     </a>
 
-    {# ── Desktop nav links ── #}
+    {# ── Navigation links in logical order ── #}
     <ul class="bv-navbar__links" role="list">
-
       <li>
         <a href="{% url 'store:home' %}" aria-label="Home">Home</a>
       </li>
-
       <li>
         <a href="#books" aria-label="Browse books">Books</a>
       </li>
-
-      {# ── Categories dropdown ── #}
       <li class="bv-dropdown">
         <button class="nav-link-btn" aria-haspopup="true" aria-expanded="false" aria-label="Browse categories">
-          Categories <i class="bi bi-chevron-down" style="font-size:9px;margin-left:2px;opacity:.7;"></i>
+          <span>Categories</span>
+          <i class="bi bi-chevron-down bv-dropdown-icon"></i>
         </button>
         <div class="bv-dropdown__menu" role="menu">
           {% for cat in global_categories %}
@@ -35,31 +32,27 @@
               {{ cat.name }}
             </a>
           {% empty %}
-            <span style="padding:10px 12px;color:rgba(255,255,255,.4);font-size:12px;display:block;">
+            <span style="padding:8px 12px;color:rgba(255,255,255,.4);font-size:12px;display:block;">
               No categories yet
             </span>
           {% endfor %}
         </div>
       </li>
-
       <li>
         <a href="#best-sellers" aria-label="Best sellers">Best Sellers</a>
       </li>
-
       <li>
         <a href="#new-arrivals" aria-label="New arrivals">New Arrivals</a>
       </li>
-
       <li>
         <a href="#ai-summary" aria-label="AI Summaries">AI Summary</a>
       </li>
-
     </ul>
 
-    {# ── Right actions ── #}
+    {# ── Right actions: search trigger, cart, auth ── #}
     <div class="bv-navbar__actions">
 
-      {# Compact expandable search #}
+      {# Compact expanding search icon #}
       <form class="bv-navbar__search-compact" role="search" action="#" method="get">
         {# TODO Person 1: set action to store:search once search view exists #}
         <i class="bi bi-search bv-navbar__search-icon" aria-hidden="true"></i>
@@ -72,7 +65,7 @@
         >
       </form>
 
-      {# Cart icon button with badge #}
+      {# Cart button #}
       <a
         href="#"
         class="bv-nav-icon-btn"
@@ -92,10 +85,10 @@
         <div class="bv-dropdown">
           <button class="btn-bv-pill-white" aria-haspopup="true" aria-expanded="false" aria-label="User menu">
             <i class="bi bi-person-fill" aria-hidden="true"></i>
-            <span>{{ user.username|truncatechars:12 }}</span>
-            <i class="bi bi-chevron-down" style="font-size:9px;margin-left:2px;"></i>
+            <span>{{ user.username|truncatechars:10 }}</span>
+            <i class="bi bi-chevron-down bv-dropdown-icon"></i>
           </button>
-          <div class="bv-dropdown__menu" role="menu" style="right:0;left:auto;transform:none;min-width:170px;">
+          <div class="bv-dropdown__menu" role="menu" style="right:0;left:auto;transform:none;min-width:160px;">
             <a href="{% url 'accounts:profile' %}" role="menuitem">
               <i class="bi bi-person me-2" aria-hidden="true"></i>My Profile
             </a>
