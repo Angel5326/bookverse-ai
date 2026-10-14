@@ -39,13 +39,10 @@
         </div>
       </li>
       <li>
-        <a href="#best-sellers" aria-label="Best sellers">Best Sellers</a>
-      </li>
-      <li>
-        <a href="#new-arrivals" aria-label="New arrivals">New Arrivals</a>
-      </li>
-      <li>
-        <a href="#ai-summary" aria-label="AI Summaries">AI Summary</a>
+        <a href="#ai-feature" class="bv-nav-link-ai" aria-label="AI Based on Teams">
+          <span class="bv-nav-ai-icon" aria-hidden="true"><i class="bi bi-stars"></i></span>
+          <span>AI Based on Teams</span>
+        </a>
       </li>
     </ul>
 
@@ -129,9 +126,7 @@
   {# ── Mobile menu (collapsed) ── #}
   <div id="bv-mobile-menu" class="bv-navbar__mobile-menu" aria-label="Mobile navigation">
     <a href="{% url 'store:home' %}">🏠 Home</a>
-    <a href="#books">📚 Books</a>
-    <a href="#best-sellers">⭐ Best Sellers</a>
-    <a href="#new-arrivals">✨ New Arrivals</a>
+    <a href="#ai-feature" style="color:var(--sky);font-weight:600;"><i class="bi bi-stars me-1"></i> AI Based on Teams</a>
     {% for cat in global_categories %}
       <a href="#">
         <!-- TODO Person 1: replace with category detail URL -->

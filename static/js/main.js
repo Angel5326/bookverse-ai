@@ -224,3 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 }); // end DOMContentLoaded
+      }
+    });
+  });
+
+}); // end DOMContentLoaded
