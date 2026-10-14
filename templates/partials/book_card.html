@@ -65,9 +65,19 @@
       <p class="bv-book-card__author">by {{ book.author }}</p>
     {% endif %}
 
-    {# Footer: price + cart button #}
+    {# Footer: price + discount + cart button #}
     <div class="bv-book-card__footer">
-      <span class="bv-book-card__price" aria-label="Price: ₹{{ book.price }}">₹{{ book.price }}</span>
+      <div class="bv-book-card__pricing">
+        <div class="bv-book-card__price-row">
+          <span class="bv-book-card__price" aria-label="Price: ₹{{ book.price }}">₹{{ book.price }}</span>
+          {% if book.original_price %}
+            <span class="bv-book-card__original-price" aria-label="Original price: ₹{{ book.original_price }}">₹{{ book.original_price }}</span>
+          {% endif %}
+        </div>
+        {% if book.discount_pct %}
+          <span class="bv-book-card__discount-tag">{{ book.discount_pct }}% OFF</span>
+        {% endif %}
+      </div>
 
       {# Add to Cart — href='#' until Person 4 builds cart URLs #}
       <a

@@ -1451,11 +1451,47 @@ a:hover { color: var(--blue); }
   border-top: 1px solid rgba(0,0,0,.06);
 }
 
+.bv-book-card__pricing {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.1;
+}
+
+.bv-book-card__price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
 .bv-book-card__price {
   font-size: 14.5px;
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.bv-book-card__original-price {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-decoration: line-through;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.bv-book-card__discount-tag {
+  font-size: 9px;
+  font-weight: 700;
+  color: #15803d;
+  background: rgba(22, 163, 74, 0.1);
+  padding: 1px 5px;
+  border-radius: 4px;
+  display: inline-block;
+  width: max-content;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
 }
 
 .bv-book-card__add {
