@@ -105,11 +105,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }, {
-      threshold: 0.12,
-      rootMargin: '0px 0px -40px 0px'
+      threshold: 0,
+      rootMargin: '250px 0px 250px 0px'
     });
 
+    document.body.classList.add('js-reveal-ready');
     revealTargets.forEach(el => observer.observe(el));
+
+    // Fallback: make sure all content becomes visible even if observer is slow or user jumps to anchor
+    setTimeout(() => {
+      revealTargets.forEach(el => el.classList.add('visible'));
+    }, 1200);
   }
 
 
@@ -219,11 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 3000);
           }
         }
-      }
-    });
-  });
-
-}); // end DOMContentLoaded
       }
     });
   });

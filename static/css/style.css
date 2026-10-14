@@ -298,43 +298,58 @@ a:hover { color: var(--blue); }
   vertical-align: middle;
 }
 
-/* AI Based on Teams pill item with glowing icon */
-.bv-nav-link-ai {
+/* AI Based on Teams — Logo only button */
+.bv-nav-ai-btn {
   display: inline-flex !important;
   align-items: center;
-  gap: 7px;
-  padding: 4px 10px 4px 6px !important;
-  border-radius: var(--radius-pill);
-  background: rgba(8, 124, 248, 0.16);
-  border: 1px solid rgba(8, 124, 248, 0.35);
-  color: #ffffff !important;
-  font-size: 12.5px !important;
-  font-weight: 600 !important;
+  justify-content: center;
+  padding: 3px !important;
+  border-radius: 9px;
+  background: transparent;
   line-height: 1;
-  transition: all 0.18s ease;
-  white-space: nowrap;
+  text-decoration: none;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
 }
 
-.bv-nav-link-ai:hover {
-  background: rgba(8, 124, 248, 0.28);
-  border-color: rgba(138, 216, 252, 0.6);
-  box-shadow: 0 0 14px rgba(8, 124, 248, 0.4);
-  transform: translateY(-1px);
+.bv-nav-ai-btn:hover {
+  transform: translateY(-1px) scale(1.12);
 }
 
 .bv-nav-ai-icon {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
-  border-radius: 5px;
-  background: linear-gradient(135deg, #087cf8, #8ad8fc);
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #087cf8 0%, #3aa0ff 45%, #a855f7 100%);
   color: #ffffff;
-  font-size: 10px;
-  box-shadow: 0 2px 6px rgba(8, 124, 248, 0.45);
+  font-size: 13px;
+  box-shadow: 0 2px 10px rgba(8, 124, 248, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   flex-shrink: 0;
   line-height: 1;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.bv-nav-ai-icon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 7px 7px 0 0;
+  pointer-events: none;
+}
+
+.bv-nav-ai-btn:hover .bv-nav-ai-icon {
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.8), 0 0 10px rgba(8, 124, 248, 0.9), inset 0 1px 0 #ffffff;
+  border-color: rgba(255, 255, 255, 0.75);
 }
 
 /* Dropdown */
@@ -1226,7 +1241,140 @@ a:hover { color: var(--blue); }
   transform: scale(1.04);
 }
 
-/* Placeholder cover when no image */
+/* Rich hardcover typographic mockup for books */
+.bv-cover-mock {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+  color: #ffffff;
+  overflow: hidden;
+  box-shadow: inset 8px 0 14px -4px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  transition: transform 0.3s ease;
+}
+
+.bv-cover-mock__spine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(0, 0, 0, 0.3) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.bv-cover-mock__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding-left: 6px;
+}
+
+.bv-cover-mock__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.bv-cover-mock__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-pill);
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+}
+
+.bv-cover-mock__icon {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.bv-cover-mock__center {
+  text-align: center;
+  padding: 12px 4px;
+}
+
+.bv-cover-mock__title {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #ffffff;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.bv-cover-mock__line {
+  width: 32px;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.45);
+  margin: 6px auto;
+  border-radius: 1px;
+}
+
+.bv-cover-mock__genre {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  margin: 0;
+}
+
+.bv-cover-mock__bottom {
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 8px;
+}
+
+.bv-cover-mock__brand {
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 600;
+}
+
+/* Palette variations across cards */
+.bv-books-grid > div:nth-child(2n) .bv-cover-mock {
+  background: linear-gradient(145deg, #1e3a8a 0%, #0c1f4a 100%);
+}
+.bv-books-grid > div:nth-child(3n) .bv-cover-mock {
+  background: linear-gradient(145deg, #831843 0%, #430a21 100%);
+}
+.bv-books-grid > div:nth-child(4n) .bv-cover-mock {
+  background: linear-gradient(145deg, #064e3b 0%, #02231b 100%);
+}
+.bv-books-grid > div:nth-child(5n) .bv-cover-mock {
+  background: linear-gradient(145deg, #7c2d12 0%, #3e1407 100%);
+}
+.bv-books-grid > div:nth-child(6n) .bv-cover-mock {
+  background: linear-gradient(145deg, #3730a3 0%, #1a1752 100%);
+}
+.bv-books-grid > div:nth-child(7n) .bv-cover-mock {
+  background: linear-gradient(145deg, #0e4e5c 0%, #052127 100%);
+}
+
 .bv-book-cover-placeholder {
   width: 100%;
   height: 100%;
@@ -2109,31 +2257,51 @@ a:hover { color: var(--blue); }
 
 /* ============================================================
    17. SCROLL REVEAL ANIMATION
+/* ============================================================
+   17. SCROLL REVEAL ANIMATION (Resilient progressive enhancement)
    ============================================================ */
 .bv-reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.bv-reveal.visible {
   opacity: 1;
   transform: translateY(0);
+  transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
 /* Staggered children */
 .bv-reveal-stagger > * {
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: translateY(0);
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.bv-reveal-stagger.visible > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay: 0.05s; }
-.bv-reveal-stagger.visible > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay: 0.10s; }
-.bv-reveal-stagger.visible > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay: 0.15s; }
-.bv-reveal-stagger.visible > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay: 0.20s; }
-.bv-reveal-stagger.visible > *:nth-child(5) { opacity:1; transform:translateY(0); transition-delay: 0.25s; }
-.bv-reveal-stagger.visible > *:nth-child(6) { opacity:1; transform:translateY(0); transition-delay: 0.30s; }
+/* Only hide unrevealed elements once JS observer is active */
+.js-reveal-ready .bv-reveal:not(.visible) {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+.js-reveal-ready .bv-reveal-stagger:not(.visible) > * {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.bv-reveal.visible,
+.bv-reveal-stagger.visible > * {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.bv-reveal-stagger.visible > *:nth-child(1) { transition-delay: 0.04s; }
+.bv-reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.08s; }
+.bv-reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.12s; }
+.bv-reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.16s; }
+.bv-reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.20s; }
+.bv-reveal-stagger.visible > *:nth-child(6) { transition-delay: 0.24s; }
+.bv-reveal-stagger.visible > *:nth-child(7) { transition-delay: 0.28s; }
+.bv-reveal-stagger.visible > *:nth-child(8) { transition-delay: 0.32s; }
+.bv-reveal-stagger.visible > *:nth-child(9) { transition-delay: 0.36s; }
+.bv-reveal-stagger.visible > *:nth-child(10) { transition-delay: 0.40s; }
+.bv-reveal-stagger.visible > *:nth-child(11) { transition-delay: 0.44s; }
+.bv-reveal-stagger.visible > *:nth-child(12) { transition-delay: 0.48s; }
 
 /* ============================================================
    18. RESPONSIVE BREAKPOINTS

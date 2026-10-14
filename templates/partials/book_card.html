@@ -24,9 +24,27 @@
     {% if book.cover_image %}
       <img src="{{ book.cover_image.url }}" alt="Cover of {{ book.title }}" loading="lazy">
     {% else %}
-      {# CSS gradient placeholder with first letter of title #}
-      <div class="bv-book-cover-placeholder" aria-hidden="true">
-        {{ book.title|slice:":1"|upper }}
+      {# Rich hardcover typographic mockup #}
+      <div class="bv-cover-mock" aria-label="{{ book.title }}">
+        <div class="bv-cover-mock__spine"></div>
+        <div class="bv-cover-mock__inner">
+          <div class="bv-cover-mock__top">
+            <span class="bv-cover-mock__tag"><i class="bi bi-stars"></i> Gemini AI</span>
+            <span class="bv-cover-mock__icon"><i class="bi bi-book"></i></span>
+          </div>
+          <div class="bv-cover-mock__center">
+            <h4 class="bv-cover-mock__title">{{ book.title }}</h4>
+            <div class="bv-cover-mock__line"></div>
+            {% if book.category %}
+              <p class="bv-cover-mock__genre">{{ book.category.name }}</p>
+            {% else %}
+              <p class="bv-cover-mock__genre">Hardcover Edition</p>
+            {% endif %}
+          </div>
+          <div class="bv-cover-mock__bottom">
+            <span class="bv-cover-mock__brand">BookVerse · AI Verified</span>
+          </div>
+        </div>
       </div>
     {% endif %}
 

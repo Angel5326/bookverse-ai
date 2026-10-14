@@ -314,8 +314,8 @@
       </div>
 
       <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="Best seller books">
-        {# Prefer global_best_sellers, fall back to books from view context #}
-        {% with book_list=global_best_sellers|default:books %}
+        {# Prefer best_sellers from view context, then global_best_sellers, fall back to books #}
+        {% with book_list=best_sellers|default:global_best_sellers|default:books %}
           {% for book in book_list %}
             <div role="listitem">
               {% include 'partials/book_card.html' with book=book %}
@@ -360,7 +360,7 @@
       </div>
 
       <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="New arrival books">
-        {% with book_list=global_new_arrivals|default:books %}
+        {% with book_list=new_arrivals|default:global_new_arrivals|default:books %}
           {% for book in book_list %}
             <div role="listitem">
               {% include 'partials/book_card.html' with book=book %}
