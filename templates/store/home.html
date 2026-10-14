@@ -32,13 +32,13 @@
 
     {# CTAs #}
     <div class="bv-hero__cta">
-      <a href="#books" class="btn-bv-pill-dark" aria-label="Browse books">
+      <a href="#books" class="btn-bv-hero-primary" aria-label="Browse all books">
         <i class="bi bi-book-half" aria-hidden="true"></i>
-        Browse Books
+        <span>Browse Books</span>
       </a>
-      <a href="#ai-feature" class="btn-bv-pill-white" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.35);" aria-label="Learn about AI summaries">
+      <a href="#ai-feature" class="btn-bv-hero-secondary" aria-label="Learn how AI summaries work">
         <i class="bi bi-cpu" aria-hidden="true"></i>
-        How AI works
+        <span>How AI works</span>
       </a>
     </div>
 
@@ -50,64 +50,195 @@
     </div>
   </div>
 
-  {# ── Floating glass app-preview panel ── #}
-  <div class="bv-hero__panel" role="region" aria-label="App preview">
-    {# macOS-style window controls #}
-    <div class="bv-hero__panel-bar" aria-hidden="true">
-      <div class="bv-hero__panel-dot"></div>
-      <div class="bv-hero__panel-dot"></div>
-      <div class="bv-hero__panel-dot"></div>
-      <span style="color:rgba(255,255,255,.5);font-size:12px;margin-left:auto;">bookverse.ai</span>
-    </div>
+  {# ── Hero Notch Shelf App Preview (Supaste style) ── #}
+  <div class="bv-hero__shelf-wrapper" role="region" aria-label="BookVerse shelf preview">
+    <div class="bv-hero__shelf-mat">
+      <div class="bv-hero__shelf-notch">
 
-    {# Category chips inside panel #}
-    <div class="bv-chip-row" data-filter-group role="list" aria-label="Category filter chips">
-      <button class="bv-chip active" data-filter-chip role="listitem">All Books</button>
-      {% for cat in categories %}
-        <button class="bv-chip" data-filter-chip role="listitem">{{ cat.name }}</button>
-      {% empty %}
-        <button class="bv-chip">Fiction</button>
-        <button class="bv-chip">Non-Fiction</button>
-        <button class="bv-chip">Science</button>
-        <button class="bv-chip">History</button>
-        <button class="bv-chip">Self-Help</button>
-      {% endfor %}
-    </div>
+        {# Top header bar inside shelf #}
+        <div class="bv-shelf__header">
+          <div class="bv-shelf__brand">
+            <div class="bv-logo-mark" style="width:22px;height:22px;border-radius:6px;font-size:11px;">
+              <i class="bi bi-book-half" aria-hidden="true"></i>
+            </div>
+            <span class="bv-shelf__title">BookVerse</span>
+          </div>
 
-    {# Mini book cards row inside the panel #}
-    <div class="bv-hero__books-row d-flex gap-3" style="overflow-x:auto;padding-bottom:4px;cursor:grab;" aria-label="Featured books preview">
-      {% for book in books %}
-        <div class="bv-book-mini" style="min-width:130px;">
-          <div class="bv-book-mini__cover" aria-hidden="true">
-            {% if book.cover_image %}
-              <img src="{{ book.cover_image.url }}" alt="Cover of {{ book.title }}" style="width:100%;height:100%;object-fit:cover;">
-            {% else %}
-              {{ book.title|slice:":1"|upper }}
-            {% endif %}
+          <div class="bv-shelf__search">
+            <i class="bi bi-search" aria-hidden="true"></i>
+            <span>Search books, authors, genres...</span>
           </div>
-          <div class="bv-book-mini__body">
-            <div class="bv-book-mini__title">{{ book.title }}</div>
-            <div class="bv-book-mini__price">₹{{ book.price }}</div>
-          </div>
-        </div>
-      {% empty %}
-        {# Placeholder cards when no books yet #}
-        {% for i in "123" %}
-          <div class="bv-book-mini" style="min-width:130px;">
-            <div class="bv-book-mini__cover" aria-hidden="true">📚</div>
-            <div class="bv-book-mini__body">
-              <div class="bv-book-mini__title">Add books from admin</div>
-              <div class="bv-book-mini__price">₹ —</div>
+
+          <div class="bv-shelf__actions">
+            <button class="bv-shelf__icon-btn" title="Favorites" aria-label="Favorites"><i class="bi bi-star"></i></button>
+            <button class="bv-shelf__icon-btn" title="View Grid" aria-label="Grid view"><i class="bi bi-grid"></i></button>
+            <button class="bv-shelf__icon-btn" title="Open Catalog" aria-label="Catalog"><i class="bi bi-box-arrow-up-right"></i></button>
+            <div class="bv-shelf__divider"></div>
+            <div class="bv-shelf__status">
+              <i class="bi bi-search"></i>
+              <i class="bi bi-wifi"></i>
+              <span>09:41</span>
             </div>
           </div>
-        {% endfor %}
-      {% endfor %}
-    </div>
+        </div>
 
-  </div>{# end hero panel #}
+        {# Filter tabs row #}
+        <div class="bv-shelf__tabs" role="tablist">
+          <button class="bv-shelf__tab active" role="tab"><span>⚡ Bestsellers</span> <span class="tab-count">24</span></button>
+          <button class="bv-shelf__tab" role="tab"><span>✨ New Arrivals</span> <span class="tab-count">18</span></button>
+          <button class="bv-shelf__tab" role="tab"><span>🧠 AI Summaries</span> <span class="tab-count">40</span></button>
+          <button class="bv-shelf__tab" role="tab"><span>🎧 Audiobooks</span> <span class="tab-count">12</span></button>
+          <button class="bv-shelf__tab" role="tab"><span>📖 Sci-Fi</span> <span class="tab-count">28</span></button>
+          <button class="bv-shelf__tab bv-shelf__tab--add" title="More categories" aria-label="More categories"><i class="bi bi-plus-lg"></i></button>
+        </div>
+
+        {# Cards track inside shelf #}
+        <div class="bv-shelf__cards-track" role="list" aria-label="Featured books shelf">
+          <!-- Card 1 -->
+          <div class="bv-shelf__card" role="listitem">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> AI Summary</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>The Psychology of Money</strong>
+                  <p>Timeless lessons on wealth</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-graph-up-arrow"></i> Finance</span>
+              <span class="bv-shelf__card-price">₹399</span>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bv-shelf__card" role="listitem">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #7c2d12, #ea580c);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-lightning-fill"></i> #1 Bestseller</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Atomic Habits</strong>
+                  <p>Tiny changes, big results</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-bullseye"></i> Habits</span>
+              <span class="bv-shelf__card-price">₹499</span>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bv-shelf__card" role="listitem">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #831843, #e11d48);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> 5-Min Recap</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Dune</strong>
+                  <p>Frank Herbert's sci-fi epic</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-rocket-takeoff"></i> Sci-Fi</span>
+              <span class="bv-shelf__card-price">₹450</span>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bv-shelf__card" role="listitem">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #134e4a, #0d9488);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-bookmark-star"></i> Staff Pick</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Klara and the Sun</strong>
+                  <p>Love & artificial beings</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-book"></i> Fiction</span>
+              <span class="bv-shelf__card-price">₹380</span>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="bv-shelf__card" role="listitem">
+            <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #312e81, #6366f1);">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-headphones"></i> Audio Ready</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Deep Work</strong>
+                  <p>Rules for focused success</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-laptop"></i> Focus</span>
+              <span class="bv-shelf__card-price">₹350</span>
+            </div>
+          </div>
+
+          {# Dynamic books from database #}
+          {% for book in books %}
+            <div class="bv-shelf__card" role="listitem">
+              <div class="bv-shelf__card-media" style="background: linear-gradient(135deg, #0a508f, #087cf8);">
+                {% if book.cover_image %}
+                  <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+                {% endif %}
+                <div class="bv-shelf__card-overlay">
+                  <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> AI Ready</span>
+                  <div class="bv-shelf__card-text-preview">
+                    <strong>{{ book.title }}</strong>
+                    <p>{{ book.author|default:"Featured Title" }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="bv-shelf__card-meta">
+                <span class="bv-shelf__card-tag"><i class="bi bi-book"></i> {{ book.category.name|default:"Book" }}</span>
+                <span class="bv-shelf__card-price">₹{{ book.price }}</span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 </section>
 {# end hero #}
+
+{% comment %}
+   SECTION 1.5 — FEATURE PILLS (Image 2 style)
+{% endcomment %}
+<section class="bv-section-features text-center" style="padding: 72px 0 36px; background: #ffffff;" aria-label="Platform Highlights">
+  <div class="container-bv">
+    <div style="max-width: 720px; margin: 0 auto 36px;" class="bv-reveal">
+      <h2 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 800; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 12px; line-height: 1.15;">
+        Your library, wherever you need it
+      </h2>
+      <p style="font-size: 16px; color: var(--text-muted); line-height: 1.6; max-width: 620px; margin: 0 auto;">
+        Use the notch shelf, quick search, Gemini AI summaries, instant chapter breakdowns, and the full catalogue to find, understand, and read any title in seconds.
+      </p>
+    </div>
+
+    <!-- Feature pills row -->
+    <div class="bv-feature-pills-wrap bv-reveal-stagger">
+      <div class="bv-feature-pill"><i class="bi bi-cloud-check text-primary"></i> Cloud Library</div>
+      <div class="bv-feature-pill"><i class="bi bi-stars" style="color:#8b5cf6;"></i> Gemini AI Intelligence</div>
+      <div class="bv-feature-pill"><i class="bi bi-lightning-charge text-warning"></i> 5-Min Recaps</div>
+      <div class="bv-feature-pill"><i class="bi bi-shield-check text-success"></i> Privacy First</div>
+      <div class="bv-feature-pill"><i class="bi bi-search text-info"></i> Instant Search</div>
+      <div class="bv-feature-pill"><i class="bi bi-headphones text-danger"></i> Audio Recaps</div>
+      <div class="bv-feature-pill"><i class="bi bi-bookmark-heart" style="color:#ec4899;"></i> Chapter Breakdowns</div>
+      <div class="bv-feature-pill"><i class="bi bi-grid-fill text-secondary"></i> Grouped by Genre</div>
+      <div class="bv-feature-pill"><i class="bi bi-funnel text-primary"></i> Smart Filter</div>
+      <div class="bv-feature-pill"><i class="bi bi-truck text-success"></i> Fast India Delivery</div>
+      <div class="bv-feature-pill"><i class="bi bi-tags text-dark"></i> Custom Shelves</div>
+    </div>
+  </div>
+</section>
 
 
 {% comment %}
@@ -164,44 +295,45 @@
 {% comment %}
    SECTION 3 — BEST SELLERS
 {% endcomment %}
-<section class="bv-section bv-section--alt" id="best-sellers" aria-labelledby="bestsellers-heading">
+<section class="bv-section-boxy" id="best-sellers" aria-labelledby="bestsellers-heading">
   <div class="container-bv">
+    <div class="bv-boxy-card">
 
-    <div class="bv-section__header bv-reveal">
-      <div>
-        <p class="section-label">
-          <i class="bi bi-star-fill" style="color:#f59e0b;" aria-hidden="true"></i> Top picks
-        </p>
-        <h2 class="bv-section__title" id="bestsellers-heading">
-          Best <em>Sellers</em>
-        </h2>
+      <div class="bv-section__header bv-reveal">
+        <div>
+          <p class="section-label">
+            <i class="bi bi-star-fill" style="color:#f59e0b;" aria-hidden="true"></i> Top picks
+          </p>
+          <h2 class="bv-section__title" id="bestsellers-heading">
+            Best <em>Sellers</em>
+          </h2>
+        </div>
+        <a href="#" class="bv-view-all" aria-label="View all best sellers">
+          View all <i class="bi bi-arrow-right" aria-hidden="true"></i>
+        </a>
       </div>
-      <a href="#" class="bv-view-all" aria-label="View all best sellers">
-        <!-- TODO Person 1: replace with filtered listing URL -->
-        View all <i class="bi bi-arrow-right" aria-hidden="true"></i>
-      </a>
-    </div>
 
-    <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="Best seller books">
-      {# Prefer global_best_sellers, fall back to books from view context #}
-      {% with book_list=global_best_sellers|default:books %}
-        {% for book in book_list %}
-          <div role="listitem">
-            {% include 'partials/book_card.html' with book=book %}
-          </div>
-        {% empty %}
-          <div class="bv-empty-state" style="grid-column:1/-1;">
-            <div class="bv-empty-state__icon"><i class="bi bi-star" aria-hidden="true"></i></div>
-            <h3 class="bv-empty-state__title">No best sellers yet</h3>
-            <p class="bv-empty-state__text">
-              Visit the <a href="/admin/" style="color:var(--blue);">admin panel</a> and toggle
-              <strong>is_best_seller</strong> on any book to feature it here.
-            </p>
-          </div>
-        {% endfor %}
-      {% endwith %}
-    </div>
+      <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="Best seller books">
+        {# Prefer global_best_sellers, fall back to books from view context #}
+        {% with book_list=global_best_sellers|default:books %}
+          {% for book in book_list %}
+            <div role="listitem">
+              {% include 'partials/book_card.html' with book=book %}
+            </div>
+          {% empty %}
+            <div class="bv-empty-state" style="grid-column:1/-1;">
+              <div class="bv-empty-state__icon"><i class="bi bi-star" aria-hidden="true"></i></div>
+              <h3 class="bv-empty-state__title">No best sellers yet</h3>
+              <p class="bv-empty-state__text">
+                Visit the <a href="/admin/" style="color:var(--blue);">admin panel</a> and toggle
+                <strong>is_best_seller</strong> on any book to feature it here.
+              </p>
+            </div>
+          {% endfor %}
+        {% endwith %}
+      </div>
 
+    </div>
   </div>
 </section>
 
@@ -209,43 +341,44 @@
 {% comment %}
    SECTION 4 — NEW ARRIVALS
 {% endcomment %}
-<section class="bv-section" id="new-arrivals" aria-labelledby="newarrivals-heading">
+<section class="bv-section-boxy" id="new-arrivals" aria-labelledby="newarrivals-heading">
   <div class="container-bv">
+    <div class="bv-boxy-card">
 
-    <div class="bv-section__header bv-reveal">
-      <div>
-        <p class="section-label">
-          <i class="bi bi-lightning-fill" style="color:var(--blue);" aria-hidden="true"></i> Just landed
-        </p>
-        <h2 class="bv-section__title" id="newarrivals-heading">
-          New <em>Arrivals</em>
-        </h2>
+      <div class="bv-section__header bv-reveal">
+        <div>
+          <p class="section-label">
+            <i class="bi bi-lightning-fill" style="color:var(--blue);" aria-hidden="true"></i> Just landed
+          </p>
+          <h2 class="bv-section__title" id="newarrivals-heading">
+            New <em>Arrivals</em>
+          </h2>
+        </div>
+        <a href="#" class="bv-view-all" aria-label="View all new arrivals">
+          View all <i class="bi bi-arrow-right" aria-hidden="true"></i>
+        </a>
       </div>
-      <a href="#" class="bv-view-all" aria-label="View all new arrivals">
-        <!-- TODO Person 1: replace with new_arrivals listing URL -->
-        View all <i class="bi bi-arrow-right" aria-hidden="true"></i>
-      </a>
-    </div>
 
-    <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="New arrival books">
-      {% with book_list=global_new_arrivals|default:books %}
-        {% for book in book_list %}
-          <div role="listitem">
-            {% include 'partials/book_card.html' with book=book %}
-          </div>
-        {% empty %}
-          <div class="bv-empty-state" style="grid-column:1/-1;">
-            <div class="bv-empty-state__icon"><i class="bi bi-lightning" aria-hidden="true"></i></div>
-            <h3 class="bv-empty-state__title">No new arrivals yet</h3>
-            <p class="bv-empty-state__text">
-              Add books via the <a href="/admin/" style="color:var(--blue);">admin panel</a>.
-              New books appear here automatically.
-            </p>
-          </div>
-        {% endfor %}
-      {% endwith %}
-    </div>
+      <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="New arrival books">
+        {% with book_list=global_new_arrivals|default:books %}
+          {% for book in book_list %}
+            <div role="listitem">
+              {% include 'partials/book_card.html' with book=book %}
+            </div>
+          {% empty %}
+            <div class="bv-empty-state" style="grid-column:1/-1;">
+              <div class="bv-empty-state__icon"><i class="bi bi-lightning" aria-hidden="true"></i></div>
+              <h3 class="bv-empty-state__title">No new arrivals yet</h3>
+              <p class="bv-empty-state__text">
+                Add books via the <a href="/admin/" style="color:var(--blue);">admin panel</a>.
+                New books appear here automatically.
+              </p>
+            </div>
+          {% endfor %}
+        {% endwith %}
+      </div>
 
+    </div>
   </div>
 </section>
 
@@ -253,37 +386,39 @@
 {% comment %}
    SECTION 5 — ALL BOOKS (fallback grid)
 {% endcomment %}
-<section class="bv-section bv-section--alt" id="books" aria-labelledby="allbooks-heading">
+<section class="bv-section-boxy" id="books" aria-labelledby="allbooks-heading">
   <div class="container-bv">
+    <div class="bv-boxy-card">
 
-    <div class="bv-section__header bv-reveal">
-      <div>
-        <p class="section-label">
-          <i class="bi bi-books" aria-hidden="true"></i> Full catalogue
-        </p>
-        <h2 class="bv-section__title" id="allbooks-heading">
-          Browse All <em>Books</em>
-        </h2>
-      </div>
-    </div>
-
-    <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="All books">
-      {% for book in books %}
-        <div role="listitem">
-          {% include 'partials/book_card.html' with book=book %}
-        </div>
-      {% empty %}
-        <div class="bv-empty-state" style="grid-column:1/-1;">
-          <div class="bv-empty-state__icon"><i class="bi bi-book" aria-hidden="true"></i></div>
-          <h3 class="bv-empty-state__title">Your library is empty</h3>
-          <p class="bv-empty-state__text">
-            Head over to the <a href="/admin/" style="color:var(--blue);">admin panel</a> and
-            add your first book to get started!
+      <div class="bv-section__header bv-reveal">
+        <div>
+          <p class="section-label">
+            <i class="bi bi-book-half" aria-hidden="true"></i> Full catalogue
           </p>
+          <h2 class="bv-section__title" id="allbooks-heading">
+            Browse All <em>Books</em>
+          </h2>
         </div>
-      {% endfor %}
-    </div>
+      </div>
 
+      <div class="bv-books-grid bv-reveal-stagger" role="list" aria-label="All books">
+        {% for book in books %}
+          <div role="listitem">
+            {% include 'partials/book_card.html' with book=book %}
+          </div>
+        {% empty %}
+          <div class="bv-empty-state" style="grid-column:1/-1;">
+            <div class="bv-empty-state__icon"><i class="bi bi-book" aria-hidden="true"></i></div>
+            <h3 class="bv-empty-state__title">Your library is empty</h3>
+            <p class="bv-empty-state__text">
+              Head over to the <a href="/admin/" style="color:var(--blue);">admin panel</a> and
+              add your first book to get started!
+            </p>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
   </div>
 </section>
 
