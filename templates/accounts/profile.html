@@ -1,12 +1,229 @@
-<!DOCTYPE html>
-<html>
-<head><title>Profile</title></head>
-<body>
-    <h2>My Profile</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Update</button>
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}My Profile — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Manage your BookVerse AI account settings, profile picture, and personal details.{% endblock %}
+
+{% block content %}
+
+<div class="bv-auth-page" style="align-items:flex-start;padding-top:120px;">
+  <div class="bv-auth-card" style="max-width:560px;width:100%;">
+
+    {# Header with avatar #}
+    <div style="display:flex;align-items:center;gap:var(--space-4);margin-bottom:var(--space-6);">
+      {# Profile picture — guard for default #}
+      {% if user.profile_picture %}
+        <img
+          src="{{ user.profile_picture.url }}"
+          alt="Profile picture of {{ user.username }}"
+          class="bv-profile-avatar"
+          width="80" height="80"
+        >
+      {% else %}
+        <div class="bv-profile-avatar-placeholder" aria-hidden="true">
+          {{ user.username|slice:":1"|upper }}
+        </div>
+      {% endif %}
+
+      <div>
+        <h1 class="bv-auth-card__title" style="margin-bottom:2px;">
+          {{ user.get_full_name|default:user.username }}
+        </h1>
+        <p style="color:var(--text-muted);font-size:13px;margin:0;">{{ user.email }}</p>
+        {% if user.is_staff %}
+          <span style="display:inline-block;margin-top:4px;background:rgba(8,124,248,.1);color:var(--blue);font-size:11px;font-weight:700;padding:2px 10px;border-radius:var(--radius-pill);">
+            Staff
+          </span>
+        {% endif %}
+      </div>
+    </div>
+
+    <h2 style="font-size:15px;font-weight:700;color:var(--text-secondary);letter-spacing:.04em;text-transform:uppercase;margin-bottom:var(--space-5);">
+      Edit Profile
+    </h2>
+
+    {# Profile update form — views.py uses ProfileUpdateForm #}
+    <form method="post" action="{% url 'accounts:profile' %}" enctype="multipart/form-data" novalidate aria-label="Profile update form">
+      {% csrf_token %}
+
+      {# Non-field errors #}
+      {% if form.non_field_errors %}
+        <div class="bv-toast error" style="position:static;animation:none;margin-bottom:var(--space-4);" role="alert">
+          <i class="bi bi-exclamation-circle-fill bv-toast__icon" aria-hidden="true"></i>
+          <div class="bv-toast__body">
+            {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {# First name + Last name #}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+
+        {% if form.first_name %}
+          <div class="bv-form-group">
+            <label for="{{ form.first_name.id_for_label }}" class="bv-form-label">First name</label>
+            <input
+              id="{{ form.first_name.id_for_label }}"
+              type="text"
+              name="{{ form.first_name.html_name }}"
+              class="bv-form-control{% if form.first_name.errors %} is-invalid{% endif %}"
+              value="{{ form.first_name.value|default:'' }}"
+              placeholder="Ravi"
+              autocomplete="given-name"
+            >
+            {% if form.first_name.errors %}
+              <div class="bv-form-error" role="alert">{{ form.first_name.errors|join:", " }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if form.last_name %}
+          <div class="bv-form-group">
+            <label for="{{ form.last_name.id_for_label }}" class="bv-form-label">Last name</label>
+            <input
+              id="{{ form.last_name.id_for_label }}"
+              type="text"
+              name="{{ form.last_name.html_name }}"
+              class="bv-form-control{% if form.last_name.errors %} is-invalid{% endif %}"
+              value="{{ form.last_name.value|default:'' }}"
+              placeholder="Shankar"
+              autocomplete="family-name"
+            >
+            {% if form.last_name.errors %}
+              <div class="bv-form-error" role="alert">{{ form.last_name.errors|join:", " }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+      </div>
+
+      {# Username #}
+      {% if form.username %}
+        <div class="bv-form-group">
+          <label for="{{ form.username.id_for_label }}" class="bv-form-label">Username</label>
+          <input
+            id="{{ form.username.id_for_label }}"
+            type="text"
+            name="{{ form.username.html_name }}"
+            class="bv-form-control{% if form.username.errors %} is-invalid{% endif %}"
+            value="{{ form.username.value|default:'' }}"
+            autocomplete="username"
+            aria-required="true"
+          >
+          {% if form.username.errors %}
+            <div class="bv-form-error" role="alert">{{ form.username.errors|join:", " }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {# Phone #}
+      {% if form.phone %}
+        <div class="bv-form-group">
+          <label for="{{ form.phone.id_for_label }}" class="bv-form-label">
+            Phone <span style="color:var(--text-muted);font-weight:400;">(optional)</span>
+          </label>
+          <input
+            id="{{ form.phone.id_for_label }}"
+            type="tel"
+            name="{{ form.phone.html_name }}"
+            class="bv-form-control{% if form.phone.errors %} is-invalid{% endif %}"
+            value="{{ form.phone.value|default:'' }}"
+            placeholder="+91 98765 43210"
+            autocomplete="tel"
+          >
+          {% if form.phone.errors %}
+            <div class="bv-form-error" role="alert">{{ form.phone.errors|join:", " }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {# Profile picture upload #}
+      {% if form.profile_picture %}
+        <div class="bv-form-group">
+          <label class="bv-form-label">Profile Picture</label>
+          <div style="display:flex;align-items:center;gap:var(--space-4);padding:14px;border:1.5px dashed rgba(0,0,0,.12);border-radius:var(--radius-md);">
+            {# Preview current image #}
+            {% if user.profile_picture %}
+              <img src="{{ user.profile_picture.url }}" alt="Current profile picture" style="width:48px;height:48px;border-radius:50%;object-fit:cover;" width="48" height="48">
+            {% else %}
+              <div style="width:48px;height:48px;border-radius:50%;background:var(--hero-gradient);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem;flex-shrink:0;" aria-hidden="true">
+                {{ user.username|slice:":1"|upper }}
+              </div>
+            {% endif %}
+            <div>
+              <label for="{{ form.profile_picture.id_for_label }}" style="display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:#fff;padding:7px 14px;border-radius:var(--radius-pill);font-size:12px;font-weight:600;cursor:pointer;transition:opacity .2s;">
+                <i class="bi bi-camera" aria-hidden="true"></i>
+                Choose photo
+              </label>
+              <input
+                id="{{ form.profile_picture.id_for_label }}"
+                type="file"
+                name="{{ form.profile_picture.html_name }}"
+                accept="image/*"
+                class="sr-only"
+              >
+              <p style="margin:4px 0 0;font-size:11px;color:var(--text-muted);">JPG, PNG or WebP · max 5MB</p>
+            </div>
+          </div>
+          {% if form.profile_picture.errors %}
+            <div class="bv-form-error" role="alert">{{ form.profile_picture.errors|join:", " }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {# Submit #}
+      <div style="display:flex;gap:var(--space-3);margin-top:var(--space-5);">
+        <button type="submit" class="btn-bv-pill-dark" style="flex:1;justify-content:center;" aria-label="Save profile changes">
+          <i class="bi bi-check-lg" aria-hidden="true"></i> Save Changes
+        </button>
+        <a href="{% url 'store:home' %}" class="btn-bv-pill-dark" style="background:rgba(0,0,0,.06);color:var(--text-primary);" aria-label="Cancel and go home">
+          Cancel
+        </a>
+      </div>
+
     </form>
-</body>
-</html>
+
+    {# Quick account info #}
+    <div style="margin-top:var(--space-7);padding-top:var(--space-5);border-top:1px solid rgba(0,0,0,.08);">
+      <h3 style="font-size:13px;font-weight:700;color:var(--text-secondary);letter-spacing:.04em;text-transform:uppercase;margin-bottom:var(--space-4);">
+        Account Info
+      </h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+        <div style="padding:12px 16px;background:#f7f9fc;border-radius:var(--radius-md);">
+          <p style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;">Email</p>
+          <p style="font-size:13px;font-weight:600;color:var(--text-primary);">{{ user.email }}</p>
+        </div>
+        <div style="padding:12px 16px;background:#f7f9fc;border-radius:var(--radius-md);">
+          <p style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;">Member since</p>
+          <p style="font-size:13px;font-weight:600;color:var(--text-primary);">{{ user.date_joined|date:"M Y" }}</p>
+        </div>
+        <div style="padding:12px 16px;background:#f7f9fc;border-radius:var(--radius-md);">
+          <p style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;">Verified</p>
+          <p style="font-size:13px;font-weight:600;color:{% if user.is_verified %}#22c55e{% else %}#f59e0b{% endif %};">
+            {% if user.is_verified %}✓ Yes{% else %}⚠ Pending{% endif %}
+          </p>
+        </div>
+        <div style="padding:12px 16px;background:#f7f9fc;border-radius:var(--radius-md);">
+          <p style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;">My Orders</p>
+          <a href="#" style="font-size:13px;font-weight:600;color:var(--blue);">
+            {# TODO Person 4: replace href with orders:my_orders #}
+            View orders →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {# Danger zone #}
+    <div style="margin-top:var(--space-5);padding:var(--space-4) var(--space-5);background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:var(--radius-md);">
+      <p style="font-size:13px;color:#ef4444;font-weight:600;margin-bottom:6px;"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> Danger Zone</p>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Logging out will clear your session from this device.</p>
+      <a href="{% url 'accounts:logout' %}" style="font-size:13px;color:#ef4444;font-weight:600;display:inline-flex;align-items:center;gap:6px;" aria-label="Log out of your account">
+        <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Log out
+      </a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock content %}

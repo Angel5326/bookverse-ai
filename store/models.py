@@ -38,5 +38,18 @@ class Book(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+    @property
+    def discount_pct(self):
+        """Calculates a realistic discount percentage between 15% and 40%."""
+        discounts = [20, 28, 35, 15, 30, 25, 40, 22, 33, 18]
+        return discounts[(self.id or 1) % len(discounts)]
+
+    @property
+    def original_price(self):
+        """Calculates original MRP before discount."""
+        pct = self.discount_pct
+        orig = float(self.price) / (1 - pct / 100)
+        return int(round(orig / 10) * 10 - 1) if round(orig / 10) * 10 - 1 > float(self.price) else int(round(orig))
+
     def __str__(self):
         return self.title

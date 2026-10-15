@@ -1,29 +1,712 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>BookVerse AI</title>
-</head>
-<body>
-    <h1>📚 Welcome to BookVerse AI</h1>
-    <p>Your AI-powered online bookstore.</p>
+{% extends 'base.html' %}
+{% load static %}
 
-    <h2>Categories</h2>
-    <ul>
-        {% for category in categories %}
-            <li>{{ category.name }}</li>
-        {% empty %}
-            <li>No categories yet. Add from admin panel.</li>
-        {% endfor %}
-    </ul>
+{% block title %}BookVerse AI — Find Your Next Book, Understand It Instantly{% endblock %}
+{% block meta_description %}Browse thousands of books, read AI-powered summaries, and order in seconds. BookVerse AI — India's smartest bookstore.{% endblock %}
 
-    <h2>Latest Books</h2>
-    <ul>
+{% block content %}
+
+{% comment %}
+   SECTION 1 — HERO
+{% endcomment %}
+<section class="bv-hero" aria-label="Hero">
+
+  {# ── Arranged White Books Background (User Attached) with Light Blur Effect ── #}
+  <div class="bv-hero__books-backdrop" aria-hidden="true">
+    <img src="{% static 'images/arranged_white_books.png' %}" alt="Arranged white books" class="bv-hero__books-img" fetchpriority="high">
+    <div class="bv-hero__books-overlay"></div>
+  </div>
+
+  {# Headline #}
+  <div class="bv-hero__text">
+    <h1 class="bv-hero__h1">
+      Find your next book.<br>
+      <em>Understand it instantly.</em>
+    </h1>
+
+    <p class="bv-hero__sub">
+      BookVerse AI lets you discover, preview with Gemini-powered summaries,
+      and order from thousands of titles — all in one beautiful place.
+    </p>
+
+    {# CTAs #}
+    <div class="bv-hero__cta">
+      <a href="#books" class="btn-bv-hero-primary" aria-label="Browse all books">
+        <i class="bi bi-book-half" aria-hidden="true"></i>
+        <span>Browse Books</span>
+      </a>
+      <a href="#ai-feature" class="btn-bv-hero-secondary" aria-label="Learn how AI summaries work">
+        <i class="bi bi-cpu" aria-hidden="true"></i>
+        <span>How AI works</span>
+      </a>
+    </div>
+
+    {# Trust lines #}
+    <div class="bv-hero__trust" aria-label="Key features">
+      <span><i class="bi bi-check-circle" aria-hidden="true"></i> 10,000+ Titles</span>
+      <span><i class="bi bi-check-circle" aria-hidden="true"></i> AI Summary before you buy</span>
+      <span><i class="bi bi-check-circle" aria-hidden="true"></i> Fast delivery across India</span>
+    </div>
+  </div>
+
+  {# ── Hero Notch Shelf App Preview (Supaste style) ── #}
+  <div class="bv-hero__shelf-wrapper" role="region" aria-label="BookVerse shelf preview">
+    <div class="bv-hero__shelf-mat">
+      <div class="bv-hero__shelf-notch">
+
+        {# Filter tabs row + Shelf navigation buttons #}
+        <div class="bv-shelf__top-bar">
+          <div class="bv-shelf__tabs" role="tablist">
+            <button class="bv-shelf__tab active" role="tab" data-shelf-tab="all">
+              <span>Explore All</span>
+              <span class="tab-count">10</span>
+            </button>
+            <button class="bv-shelf__tab" role="tab" data-shelf-tab="recommended">
+              <span>Picked for You</span>
+              <span class="tab-count">5</span>
+            </button>
+            <button class="bv-shelf__tab" role="tab" data-shelf-tab="upcoming">
+              <span>Coming Soon</span>
+              <span class="tab-count">5</span>
+            </button>
+            <button class="bv-shelf__tab" role="tab" data-shelf-tab="preorder">
+              <span>First Editions</span>
+              <span class="tab-count">4</span>
+            </button>
+          </div>
+
+          <div class="bv-shelf-nav-arrows">
+            <button class="bv-shelf-nav-btn bv-shelf-nav-btn--prev" id="bv-shelf-prev" aria-label="Previous shelf books" disabled><i class="bi bi-chevron-left"></i></button>
+            <button class="bv-shelf-nav-btn bv-shelf-nav-btn--next" id="bv-shelf-next" aria-label="Next shelf books"><i class="bi bi-chevron-right"></i></button>
+          </div>
+        </div>
+
+        {# Cards track inside shelf #}
+        <div class="bv-shelf__cards-track" id="bv-shelf-track" role="list" aria-label="Recommended and Upcoming books shelf">
+
+          <!-- Recommended 1 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/nexus.jpg' %}" alt="Nexus: Information Networks" class="bv-shelf__cover-img">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> 99% AI Match</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Nexus: Information Networks</strong>
+                  <p>Yuval Noah Harari · Top Pick</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-cpu"></i> Tech & AI</span>
+              <span class="bv-shelf__card-price">₹699</span>
+            </div>
+          </div>
+
+          <!-- Recommended 2 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/systems.jpg' %}" alt="Thinking in Systems" class="bv-shelf__cover-img">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-check2"></i> Recommended</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Thinking in Systems</strong>
+                  <p>Donella Meadows · Essential</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-diagram-3"></i> Logic & Mind</span>
+              <span class="bv-shelf__card-price">₹450</span>
+            </div>
+          </div>
+
+          <!-- Recommended 3 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/chip_war.jpg' %}" alt="Chip War" class="bv-shelf__cover-img">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-stars"></i> Staff Choice</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Chip War</strong>
+                  <p>Chris Miller · Microchips</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-motherboard"></i> Silicon Geo</span>
+              <span class="bv-shelf__card-price">₹599</span>
+            </div>
+          </div>
+
+          <!-- Recommended 4 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/supercommunicators.jpg' %}" alt="Supercommunicators" class="bv-shelf__cover-img">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-bookmark-star"></i> Based on Taste</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Supercommunicators</strong>
+                  <p>Charles Duhigg · Connection</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-chat-dots"></i> Communication</span>
+              <span class="bv-shelf__card-price">₹520</span>
+            </div>
+          </div>
+
+          <!-- Recommended 5 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="recommended">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/co_intelligence.jpg' %}" alt="Co-Intelligence" class="bv-shelf__cover-img">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge"><i class="bi bi-robot"></i> 98% Match</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Co-Intelligence</strong>
+                  <p>Ethan Mollick · Living with AI</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-robot"></i> AI Future</span>
+              <span class="bv-shelf__card-price">₹490</span>
+            </div>
+          </div>
+
+          <!-- Upcoming 1 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/monte_cristo.jpg' %}" alt="The Winds of Winter" class="bv-shelf__cover-img">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge" style="background:rgba(225,29,72,.88);"><i class="bi bi-hourglass-split"></i> Upcoming · Nov 2026</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>The Winds of Winter</strong>
+                  <p>George R.R. Martin · Pre-Order</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-calendar-event"></i> Pre-Order</span>
+              <span class="bv-shelf__card-price">₹899</span>
+            </div>
+          </div>
+
+          <!-- Upcoming 2 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/cambridge_english.jpg' %}" alt="The Singularity is Nearer" class="bv-shelf__cover-img">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge" style="background:rgba(217,119,6,.88);"><i class="bi bi-hourglass-split"></i> Upcoming Release</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>The Singularity is Nearer</strong>
+                  <p>Ray Kurzweil · Futurology</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-rocket-takeoff"></i> Future Tech</span>
+              <span class="bv-shelf__card-price">₹650</span>
+            </div>
+          </div>
+
+          <!-- Upcoming 3 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/goodbye_eri.jpg' %}" alt="Clear Thinking" class="bv-shelf__cover-img">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge" style="background:rgba(51,65,85,.88);"><i class="bi bi-clock-history"></i> Dropping Next Month</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Clear Thinking</strong>
+                  <p>Shane Parrish · New Hardcover</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-lightning-charge"></i> Decisions</span>
+              <span class="bv-shelf__card-price">₹480</span>
+            </div>
+          </div>
+
+          <!-- Upcoming 4 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/kagurabachi.jpg' %}" alt="Artificial General Intelligence" class="bv-shelf__cover-img">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge" style="background:rgba(139,92,246,.88);"><i class="bi bi-stars"></i> Gemini AI Preview</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>Artificial General Intelligence</strong>
+                  <p>Demis Hassabis · Pre-Order</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-cpu-fill"></i> Frontier AI</span>
+              <span class="bv-shelf__card-price">₹750</span>
+            </div>
+          </div>
+
+          <!-- Upcoming 5 -->
+          <div class="bv-shelf__card" role="listitem" data-shelf-item="upcoming preorder">
+            <div class="bv-shelf__card-media">
+              <img src="{% static 'images/covers/white_nights.jpg' %}" alt="The Coming Wave" class="bv-shelf__cover-img">
+              <div class="bv-shelf__card-overlay">
+                <span class="bv-shelf__card-badge" style="background:rgba(22,163,74,.88);"><i class="bi bi-hourglass-split"></i> Expected Soon</span>
+                <div class="bv-shelf__card-text-preview">
+                  <strong>The Coming Wave (Expanded)</strong>
+                  <p>Mustafa Suleyman · Pre-Order</p>
+                </div>
+              </div>
+            </div>
+            <div class="bv-shelf__card-meta">
+              <span class="bv-shelf__card-tag"><i class="bi bi-shield-lock"></i> Governance</span>
+              <span class="bv-shelf__card-price">₹590</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  {# ── Blur effect at the end of the first page (seamless transition to Now Trending) ── #}
+  <div class="bv-hero__blur-divider" aria-hidden="true"></div>
+
+</section>
+{# end hero #}
+
+
+
+
+{% comment %}
+   SECTION 3 — NOW TRENDING (BEST SELLERS)
+{% endcomment %}
+<section class="bv-section bv-trending-section" id="best-sellers" aria-labelledby="bestsellers-heading">
+  <div class="container-bv">
+
+    <div class="bv-section__header bv-reveal">
+      <div>
+        <h2 class="bv-section__title bv-trending-title font-serif" id="bestsellers-heading">
+          Now Trending
+        </h2>
+      </div>
+      <div class="bv-section__controls">
+        <span class="bv-section__page-indicator">Page <span class="bv-page-current">1</span> of <span class="bv-page-total">8</span></span>
+        <span class="bv-section__sep">|</span>
+        <div class="bv-nav-arrow-group">
+          <button class="bv-nav-arrow bv-nav-arrow--prev" data-target="trending-carousel" aria-label="Previous page" disabled><i class="bi bi-chevron-left"></i></button>
+          <button class="bv-nav-arrow bv-nav-arrow--next" data-target="trending-carousel" aria-label="Next page"><i class="bi bi-chevron-right"></i></button>
+        </div>
+        <a href="{% url 'store:book_list' %}?sort=trending" class="bv-see-all-link" aria-label="See all trending books">
+          See All
+        </a>
+      </div>
+    </div>
+
+    <div class="bv-books-carousel-wrapper">
+      <div class="bv-books-carousel bv-reveal-stagger" id="trending-carousel" role="list" aria-label="Now trending books">
+        {# Prefer best_sellers from view context, then global_best_sellers, fall back to books #}
+        {% with book_list=best_sellers|default:global_best_sellers|default:books %}
+          {% for book in book_list %}
+            <div class="bv-carousel-item" role="listitem">
+              {% include 'partials/book_card.html' with book=book %}
+            </div>
+          {% empty %}
+            <div class="bv-empty-state" style="grid-column:1/-1;">
+              <div class="bv-empty-state__icon"><i class="bi bi-star" aria-hidden="true"></i></div>
+              <h3 class="bv-empty-state__title">No trending books yet</h3>
+              <p class="bv-empty-state__text">
+                Visit the <a href="/admin/" style="color:var(--blue);">admin panel</a> and toggle
+                <strong>is_best_seller</strong> on any book to feature it here.
+              </p>
+            </div>
+          {% endfor %}
+        {% endwith %}
+      </div>
+    </div>
+
+    {# ── End line Design for Now Trending ── #}
+    <div class="bv-section-end-line" aria-hidden="true"></div>
+
+  </div>
+</section>
+
+{% comment %}
+   SECTION 4 — NEW ARRIVALS
+{% endcomment %}
+<section class="bv-section" id="new-arrivals" aria-labelledby="newarrivals-heading">
+  <div class="container-bv">
+
+    <div class="bv-section__header bv-reveal">
+      <div>
+        <h2 class="bv-section__title bv-trending-title font-serif" id="newarrivals-heading">
+          New Arrivals
+        </h2>
+      </div>
+      <div class="bv-section__controls">
+        <span class="bv-section__page-indicator">Page <span class="bv-page-current">1</span> of <span class="bv-page-total">2</span></span>
+        <span class="bv-section__sep">|</span>
+        <div class="bv-nav-arrow-group">
+          <button class="bv-nav-arrow bv-nav-arrow--prev" data-target="newarrivals-carousel" aria-label="Previous page" disabled><i class="bi bi-chevron-left"></i></button>
+          <button class="bv-nav-arrow bv-nav-arrow--next" data-target="newarrivals-carousel" aria-label="Next page"><i class="bi bi-chevron-right"></i></button>
+        </div>
+        <a href="{% url 'store:book_list' %}?sort=new" class="bv-see-all-link" aria-label="See all new arrivals">
+          See All
+        </a>
+      </div>
+    </div>
+
+    <div class="bv-books-carousel-wrapper">
+      <div class="bv-books-carousel bv-reveal-stagger" id="newarrivals-carousel" role="list" aria-label="New arrival books">
+        {% with book_list=new_arrivals|default:global_new_arrivals|default:books %}
+          {% for book in book_list %}
+            <div class="bv-carousel-item" role="listitem">
+              {% include 'partials/book_card.html' with book=book %}
+            </div>
+          {% empty %}
+            <div class="bv-empty-state" style="grid-column:1/-1;">
+              <div class="bv-empty-state__icon"><i class="bi bi-lightning" aria-hidden="true"></i></div>
+              <h3 class="bv-empty-state__title">No new arrivals yet</h3>
+              <p class="bv-empty-state__text">
+                Add books via the <a href="/admin/" style="color:var(--blue);">admin panel</a>.
+                New books appear here automatically.
+              </p>
+            </div>
+          {% endfor %}
+        {% endwith %}
+      </div>
+    </div>
+
+    {# ── End line Design for New Arrivals ── #}
+    <div class="bv-section-end-line" aria-hidden="true"></div>
+
+  </div>
+</section>
+
+
+{% comment %}
+   SECTION 5 — ALL BOOKS (single row carousel)
+{% endcomment %}
+<section class="bv-section" id="books" aria-labelledby="allbooks-heading">
+  <div class="container-bv">
+
+    <div class="bv-section__header bv-reveal">
+      <div>
+        <h2 class="bv-section__title bv-trending-title font-serif" id="allbooks-heading">
+          Browse All Books
+        </h2>
+      </div>
+      <div class="bv-section__controls">
+        <span class="bv-section__page-indicator">Page <span class="bv-page-current">1</span> of <span class="bv-page-total">3</span></span>
+        <span class="bv-section__sep">|</span>
+        <div class="bv-nav-arrow-group">
+          <button class="bv-nav-arrow bv-nav-arrow--prev" data-target="allbooks-carousel" aria-label="Previous page" disabled><i class="bi bi-chevron-left"></i></button>
+          <button class="bv-nav-arrow bv-nav-arrow--next" data-target="allbooks-carousel" aria-label="Next page"><i class="bi bi-chevron-right"></i></button>
+        </div>
+        <a href="{% url 'store:book_list' %}" class="bv-see-all-link" aria-label="View all books">
+          See All
+        </a>
+      </div>
+    </div>
+
+    <div class="bv-books-carousel-wrapper">
+      <div class="bv-books-carousel bv-reveal-stagger" id="allbooks-carousel" role="list" aria-label="All books">
         {% for book in books %}
-            <li>{{ book.title }} - ₹{{ book.price }}</li>
+          <div class="bv-carousel-item" role="listitem">
+            {% include 'partials/book_card.html' with book=book %}
+          </div>
         {% empty %}
-            <li>No books yet. Add from admin panel.</li>
+          <div class="bv-empty-state" style="grid-column:1/-1;">
+            <div class="bv-empty-state__icon"><i class="bi bi-book" aria-hidden="true"></i></div>
+            <h3 class="bv-empty-state__title">Your library is empty</h3>
+            <p class="bv-empty-state__text">
+              Head over to the <a href="/admin/" style="color:var(--blue);">admin panel</a> and
+              add your first book to get started!
+            </p>
+          </div>
         {% endfor %}
-    </ul>
-</body>
-</html>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+{% comment %}
+   SECTION 5.5 — READERS & BOOKSTORE THEME SHOWCASE (Pill Gallery)
+{% endcomment %}
+<section class="bv-section bv-readers-showcase" id="readers-showcase" aria-labelledby="readers-showcase-heading">
+  <div class="container-bv">
+
+    {# Arching Pill Collage with Famous Book Covers #}
+    <div class="bv-pill-gallery bv-reveal" aria-label="Famous book covers showcase">
+
+      {# Column 1: 2 items #}
+      <div class="bv-pill-col bv-pill-col--1">
+        <a href="{% url 'store:book_list' %}?q=Great+Gatsby" class="bv-pill-card bv-pill-card--h1" title="The Great Gatsby by F. Scott Fitzgerald">
+          <img src="{% static 'images/famous_covers/great_gatsby.jpg' %}" alt="The Great Gatsby book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=Dune" class="bv-pill-card bv-pill-card--h2" title="Dune by Frank Herbert">
+          <img src="{% static 'images/famous_covers/dune.jpg' %}" alt="Dune book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 2: 3 items #}
+      <div class="bv-pill-col bv-pill-col--2">
+        <a href="{% url 'store:book_list' %}?q=Deep+Work" class="bv-pill-card bv-pill-card--s1" title="Deep Work by Cal Newport">
+          <img src="{% static 'images/famous_covers/deep_work.jpg' %}" alt="Deep Work book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=Thinking+Fast+and+Slow" class="bv-pill-card bv-pill-card--s2" title="Thinking, Fast and Slow by Daniel Kahneman">
+          <img src="{% static 'images/famous_covers/thinking_fast_slow.jpg' %}" alt="Thinking Fast and Slow book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=The+Alchemist" class="bv-pill-card bv-pill-card--s3" title="The Alchemist by Paulo Coelho">
+          <img src="{% static 'images/famous_covers/alchemist.jpg' %}" alt="The Alchemist book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 3: 1 tall capsule #}
+      <div class="bv-pill-col bv-pill-col--3">
+        <a href="{% url 'store:book_list' %}?q=Sapiens" class="bv-pill-card bv-pill-card--tall-1" title="Sapiens: A Brief History of Humankind by Yuval Noah Harari">
+          <img src="{% static 'images/famous_covers/sapiens.jpg' %}" alt="Sapiens book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 4: Apex capsule (tallest center) #}
+      <div class="bv-pill-col bv-pill-col--4">
+        <a href="{% url 'store:book_list' %}?q=Atomic+Habits" class="bv-pill-card bv-pill-card--apex" title="Atomic Habits by James Clear">
+          <img src="{% static 'images/famous_covers/atomic_habits.jpg' %}" alt="Atomic Habits book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 5: Tall capsule #}
+      <div class="bv-pill-col bv-pill-col--5">
+        <a href="{% url 'store:book_list' %}?q=Psychology+of+Money" class="bv-pill-card bv-pill-card--tall-2" title="The Psychology of Money by Morgan Housel">
+          <img src="{% static 'images/famous_covers/psychology_of_money.jpg' %}" alt="The Psychology of Money book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 6: Medium tall capsule #}
+      <div class="bv-pill-col bv-pill-col--6">
+        <a href="{% url 'store:book_list' %}?q=1984" class="bv-pill-card bv-pill-card--tall-3" title="1984 by George Orwell">
+          <img src="{% static 'images/famous_covers/1984.jpg' %}" alt="1984 book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 7: 3 items #}
+      <div class="bv-pill-col bv-pill-col--7">
+        <a href="{% url 'store:book_list' %}?q=To+Kill+a+Mockingbird" class="bv-pill-card bv-pill-card--s1" title="To Kill a Mockingbird by Harper Lee">
+          <img src="{% static 'images/famous_covers/to_kill_a_mockingbird.jpg' %}" alt="To Kill a Mockingbird book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=Subtle+Art" class="bv-pill-card bv-pill-card--s2" title="The Subtle Art of Not Giving a F*ck by Mark Manson">
+          <img src="{% static 'images/famous_covers/subtle_art.jpg' %}" alt="The Subtle Art book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=Mans+Search+for+Meaning" class="bv-pill-card bv-pill-card--s3" title="Man's Search for Meaning by Viktor Frankl">
+          <img src="{% static 'images/famous_covers/mans_search_for_meaning.jpg' %}" alt="Man's Search for Meaning book cover" loading="lazy">
+        </a>
+      </div>
+
+      {# Column 8: 2 items #}
+      <div class="bv-pill-col bv-pill-col--8">
+        <a href="{% url 'store:book_list' %}?q=Pride+and+Prejudice" class="bv-pill-card bv-pill-card--h1" title="Pride and Prejudice by Jane Austen">
+          <img src="{% static 'images/famous_covers/pride_and_prejudice.jpg' %}" alt="Pride and Prejudice book cover" loading="lazy">
+        </a>
+        <a href="{% url 'store:book_list' %}?q=Steve+Jobs" class="bv-pill-card bv-pill-card--h2" title="Steve Jobs by Walter Isaacson">
+          <img src="{% static 'images/famous_covers/steve_jobs.jpg' %}" alt="Steve Jobs biography cover" loading="lazy">
+        </a>
+      </div>
+
+    </div>
+
+    {# Centered Copy below gallery #}
+    <div class="bv-readers-showcase__content bv-reveal">
+      <h2 class="bv-readers-showcase__title" id="readers-showcase-heading">
+        Crafted with Care<br>
+        Loved Everywhere
+      </h2>
+      <p class="bv-readers-showcase__subtitle">
+        Don’t take our word for it. See why BookVerse is trusted and loved by booklovers, thinkers, and lifelong learners across India who want to discover great reads, understand books deeper, and read smarter.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+{% comment %}
+   SECTION 6 — AI SUMMARY FEATURE
+{% endcomment %}
+<section class="bv-section bv-ai-section" id="ai-feature" aria-labelledby="ai-heading">
+  <div class="container-bv">
+    <div class="bv-ai-block bv-reveal">
+
+      {# Left: copy matching reference image #}
+      <div class="bv-ai-left-col">
+        <p class="bv-ai-block__label">
+          <i class="bi bi-cpu-fill" aria-hidden="true"></i>
+          <span>POWERED BY GEMINI AI</span>
+        </p>
+        <h2 class="bv-ai-block__title" id="ai-heading">
+          Get an instant AI<br>
+          summary<br>
+          <em>before you buy</em>
+        </h2>
+        <p class="bv-ai-block__body">
+          Never regret a purchase again. BookVerse AI uses Google's Gemini model to generate
+          concise, spoiler-free summaries of any book in our catalogue — so you know exactly
+          what you're getting before you spend a rupee.
+        </p>
+        <ul class="bv-ai-block__features" aria-label="AI summary features">
+          <li>
+            <span class="bv-ai-check-bubble" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+            <span>Instant 3-paragraph summary of any book</span>
+          </li>
+          <li>
+            <span class="bv-ai-check-bubble" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+            <span>Key themes and reader mood analysis</span>
+          </li>
+          <li>
+            <span class="bv-ai-check-bubble" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+            <span>Similar book recommendations</span>
+          </li>
+          <li>
+            <span class="bv-ai-check-bubble" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+            <span>Works on 10,000+ titles, updated daily</span>
+          </li>
+        </ul>
+        <div class="bv-ai-cta-wrap">
+          <a href="{% url 'store:book_list' %}" class="btn-bv-ai-white-pill" aria-label="Try AI summary feature">
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span>Try AI Summary</span>
+          </a>
+        </div>
+      </div>
+
+      {# Right: mockup UI with floating badges matching reference image #}
+      <div class="bv-ai-right-col">
+        {# Floating integration squircles & hearts above card #}
+        <div class="bv-ai-squircles-wrap" aria-hidden="true">
+          <div class="bv-ai-hearts">
+            <span class="bv-ai-heart bv-ai-heart--1"><i class="bi bi-heart-fill"></i></span>
+            <span class="bv-ai-heart bv-ai-heart--2"><i class="bi bi-heart-fill"></i></span>
+            <span class="bv-ai-heart bv-ai-heart--3"><i class="bi bi-heart-fill"></i></span>
+          </div>
+          <div class="bv-ai-squircles-row">
+            <div class="bv-ai-squircle" title="BookVerse">
+              <i class="bi bi-book-half"></i>
+            </div>
+            <div class="bv-ai-squircle" title="Gemini AI">
+              <i class="bi bi-stars"></i>
+            </div>
+          </div>
+        </div>
+
+        {# Dark glass card below #}
+        <div class="bv-ai-card" aria-label="AI summary preview" role="img">
+          <div class="bv-ai-card__book">
+            <div class="bv-ai-card__thumb">
+              <div class="bv-ai-card__book-art" aria-hidden="true">
+                <i class="bi bi-journal-bookmark-fill"></i>
+              </div>
+            </div>
+            <div class="bv-ai-card__meta">
+              <h4 class="bv-ai-card__title">Atomic Habits</h4>
+              <p class="bv-ai-card__author">James Clear · Self-Help</p>
+              <span class="bv-ai-card__badge">AI Summary Ready</span>
+            </div>
+          </div>
+
+          <div class="bv-ai-card__divider"></div>
+
+          <div class="bv-ai-card__summary-header">
+            <i class="bi bi-stars" aria-hidden="true"></i>
+            <span>GEMINI AI SUMMARY</span>
+          </div>
+          <p class="bv-ai-card__summary-text">
+            <em>Atomic Habits</em> argues that tiny, 1% improvements compounded over time lead to
+            remarkable results. Clear introduces a four-step habit loop — cue, craving, response,
+            reward — and shows how to redesign your environment to make good habits obvious and
+            bad habits invisible…
+          </p>
+
+          <div class="bv-ai-card__footer">
+            <span class="bv-ai-card__dots" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </span>
+            <span class="bv-ai-card__generating">Generating more…</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+{% comment %}
+   SECTION 7 — AUDIOBOOKS TEASER (static placeholder)
+{% endcomment %}
+<section class="bv-section bv-section--alt" id="audiobooks" aria-labelledby="audio-heading">
+  <div class="container-bv">
+
+    <div class="bv-reveal" style="text-align:center;max-width:600px;margin-inline:auto;">
+      <p class="section-label" style="justify-content:center;">
+        <i class="bi bi-headphones" aria-hidden="true"></i> Coming soon
+      </p>
+      <h2 class="bv-section__title" id="audio-heading" style="text-align:center;">
+        Audiobooks are <em>on their way</em>
+      </h2>
+      <p style="color:var(--text-muted);margin-top:var(--space-4);font-size:16px;">
+        We're building a world-class audiobook library. Subscribe to our newsletter
+        to be the first to know when they drop.
+      </p>
+      <div style="display:flex;justify-content:center;gap:var(--space-3);margin-top:var(--space-6);">
+        <i class="bi bi-headphones" aria-hidden="true" style="font-size:4rem;color:var(--muted);"></i>
+      </div>
+      <a href="#newsletter" class="btn-bv-pill-dark" style="margin-top:var(--space-5);display:inline-flex;" aria-label="Subscribe for audiobooks announcement">
+        Notify me
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+{% comment %}
+   SECTION 8 — NEWSLETTER BAND
+{% endcomment %}
+<section class="bv-section" id="newsletter" aria-labelledby="newsletter-heading">
+  <div class="container-bv">
+    <div class="bv-newsletter-band bv-reveal">
+
+      <h2 id="newsletter-heading">
+        Read more, spend smarter
+      </h2>
+      <p>
+        Join 50,000+ readers who get curated book picks and AI summaries delivered weekly.
+      </p>
+
+      {# TODO Person 3: set action to newsletter:subscribe when view is ready #}
+      <form class="bv-newsletter-form" action="#" method="post" aria-label="Newsletter subscription form">
+        {% csrf_token %}
+        <label for="newsletter-email" class="sr-only">Your email address</label>
+        <input
+          id="newsletter-email"
+          type="email"
+          name="email"
+          placeholder="Enter your email…"
+          required
+          autocomplete="email"
+          aria-label="Email address for newsletter"
+        >
+        <button type="submit" class="btn-bv-pill-dark" aria-label="Subscribe to newsletter">
+          Subscribe
+        </button>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

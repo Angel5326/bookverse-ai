@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}BookVerse AI Admin Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=1.1">
+{% endblock %}
+
+{% block content %}
+<div class="bv-dashboard-container">
+  <div class="container-fluid px-3 px-md-4 py-4">
+
+    <!-- Top Admin Header Bar -->
+    <div class="bv-dash-topbar mb-4">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div class="d-flex align-items-center gap-3">
+          <div class="bv-dash-badge-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <div>
+            <div class="bv-dash-eyebrow">ADMINISTRATION CONTROL PANEL</div>
+            <h1 class="bv-dash-title mb-0">BookVerse AI Admin</h1>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <a href="{% url 'store:home' %}" class="btn-bv-pill-outline btn-sm">
+            <i class="bi bi-box-arrow-left me-1"></i> View Website
+          </a>
+          <a href="/admin/" target="_blank" rel="noopener" class="btn-bv-pill-outline btn-sm">
+            <i class="bi bi-gear-fill me-1"></i> Django Core Admin
+          </a>
+          <a href="{% url 'dashboard:book_add' %}" class="btn-bv-pill-blue btn-sm">
+            <i class="bi bi-plus-circle-fill me-1"></i> Add New Book
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Pills / Tabs -->
+    <div class="bv-dash-nav-pills mb-4">
+      <a href="{% url 'dashboard:overview' %}" class="bv-dash-pill {% if active_tab == 'overview' %}active{% endif %}">
+        <i class="bi bi-grid-1x2-fill"></i> Overview
+      </a>
+      <a href="{% url 'dashboard:book_list' %}" class="bv-dash-pill {% if active_tab == 'books' %}active{% endif %}">
+        <i class="bi bi-book-fill"></i> Books Catalog
+      </a>
+      <a href="{% url 'dashboard:category_list' %}" class="bv-dash-pill {% if active_tab == 'categories' %}active{% endif %}">
+        <i class="bi bi-tags-fill"></i> Categories
+      </a>
+      <a href="{% url 'dashboard:user_list' %}" class="bv-dash-pill {% if active_tab == 'users' %}active{% endif %}">
+        <i class="bi bi-people-fill"></i> Users & Staff
+      </a>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="bv-dash-main">
+      {% block dashboard_content %}{% endblock %}
+    </main>
+
+  </div>
+</div>
+{% endblock %}
