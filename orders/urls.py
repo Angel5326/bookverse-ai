@@ -4,5 +4,6 @@ from . import views
 app_name = 'orders'
 
 urlpatterns = [
-    # Order URLs – Person 4 fill pannuvaanga
+    path('checkout/', views.checkout, name='checkout'),
+    path('success/', views.order_success, name='order_success'),
 ]

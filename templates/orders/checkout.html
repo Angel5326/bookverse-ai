@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Checkout</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3"><label>Full Name</label><input type="text" name="full_name" class="form-control" required></div>
+                <div class="mb-3"><label>Phone</label><input type="text" name="phone" class="form-control" required></div>
+                <div class="mb-3"><label>Address</label><textarea name="address" class="form-control" required></textarea></div>
+                <button type="submit" class="btn btn-success">Place Order (Dummy)</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <h4>Total: ₹{{ cart.total_price }}</h4>
+        </div>
+    </div>
+</div>
+{% endblock %}

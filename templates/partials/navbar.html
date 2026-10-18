@@ -1,148 +1,75 @@
 {% load static %}
-
-{# ── Top-docked notch navbar (Supaste style) ── #}
-<nav class="bv-navbar" aria-label="Main navigation">
-  <div class="bv-navbar__inner">
-
-    {# ── Brand ── #}
-    <a href="{% url 'store:home' %}" class="bv-navbar__brand" aria-label="{{ SITE_NAME }} home">
-      <div class="bv-logo-mark" aria-hidden="true">
-        <i class="bi bi-book-half"></i>
-      </div>
-      <span class="bv-brand-title">{{ SITE_NAME }}</span>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center fw-bold" href="{% url 'store:home' %}">
+      <i class="bi bi-book-half text-primary me-2" style="font-size: 1.5rem;"></i>
+      BookVerse AI
     </a>
-
-    {# ── Navigation links in logical order ── #}
-    <ul class="bv-navbar__links" role="list">
-      <li>
-        <a href="{% url 'store:home' %}" aria-label="Home">Home</a>
-      </li>
-      <li>
-        <a href="{% url 'store:book_list' %}" aria-label="Browse books">Books</a>
-      </li>
-      <li class="bv-dropdown">
-        <button class="nav-link-btn" aria-haspopup="true" aria-expanded="false" aria-label="Browse categories">
-          <span>Categories</span>
-          <i class="bi bi-chevron-down bv-dropdown-icon"></i>
-        </button>
-        <div class="bv-dropdown__menu" role="menu">
-          {% for cat in global_categories %}
-            <a href="{% url 'store:book_list' %}?category={{ cat.slug }}" role="menuitem">
-              {{ cat.name }}
-            </a>
-          {% empty %}
-            <span style="padding:8px 12px;color:rgba(255,255,255,.4);font-size:12px;display:block;">
-              No categories yet
-            </span>
-          {% endfor %}
-        </div>
-      </li>
-      <li>
-        <a href="#ai-feature" class="bv-nav-ai-btn" title="AI Based on Teams" aria-label="AI Based on Teams">
-          <span class="bv-nav-ai-icon" aria-hidden="true"><i class="bi bi-stars"></i></span>
-        </a>
-      </li>
-    </ul>
-
-    {# ── Right actions: search trigger, cart, auth ── #}
-    <div class="bv-navbar__actions">
-
-      {# Compact expanding search icon #}
-      <form class="bv-navbar__search-compact" role="search" action="{% url 'store:book_list' %}" method="get">
-        <i class="bi bi-search bv-navbar__search-icon" aria-hidden="true"></i>
-        <input
-          type="search"
-          name="q"
-          placeholder="Search books..."
-          aria-label="Search books"
-          autocomplete="off"
-        >
-      </form>
-
-      {# Cart button #}
-      <a
-        href="{% url 'cart:cart_detail' %}"
-        class="bv-nav-icon-btn"
-        aria-label="Shopping cart, {{ cart_count }} item{% if cart_count != 1 %}s{% endif %}"
-        title="View cart"
-      >
-        <i class="bi bi-bag" aria-hidden="true"></i>
-        {% if cart_count > 0 %}
-          <span class="bv-cart-badge" id="bv-nav-cart-badge" aria-hidden="true">{{ cart_count }}</span>
-        {% else %}
-          <span class="bv-cart-badge d-none" id="bv-nav-cart-badge" aria-hidden="true">0</span>
-        {% endif %}
-      </a>
-
-      {# Auth actions #}
-      {% if user.is_authenticated %}
-        {# User dropdown #}
-        <div class="bv-dropdown">
-          <button class="btn-bv-pill-white bv-nav-user-btn" aria-haspopup="true" aria-expanded="false" aria-label="User menu" title="{{ user.username }}">
-            <i class="bi bi-person-fill" aria-hidden="true"></i>
-          </button>
-          <div class="bv-dropdown__menu" role="menu" style="right:0;left:auto;transform:none;min-width:160px;">
-            <a href="{% url 'accounts:profile' %}" role="menuitem">
-              <i class="bi bi-person me-2" aria-hidden="true"></i>My Profile
-            </a>
-            {% if user.is_staff %}
-              <a href="{% url 'dashboard:overview' %}" role="menuitem">
-                <i class="bi bi-speedometer2 me-2" aria-hidden="true"></i>Admin Panel
-              </a>
-              <a href="/admin/" role="menuitem" target="_blank" rel="noopener">
-                <i class="bi bi-shield-lock me-2" aria-hidden="true"></i>Django Admin
-              </a>
-            {% endif %}
-            <a href="{% url 'accounts:logout' %}" role="menuitem" style="color:rgba(255,100,100,.9);">
-              <i class="bi bi-box-arrow-right me-2" aria-hidden="true"></i>Log out
-            </a>
-          </div>
-        </div>
-      {% else %}
-        <a href="{% url 'accounts:login' %}" class="bv-nav-link-login" aria-label="Log in">
-          Log in
-        </a>
-        <a href="{% url 'accounts:register' %}" class="btn-bv-pill-white" aria-label="Sign up">
-          Sign up
-        </a>
-      {% endif %}
-
-    </div>{# end actions #}
-
-    {# ── Mobile hamburger ── #}
-    <button
-      id="bv-nav-toggler"
-      class="bv-navbar-toggler"
-      aria-controls="bv-mobile-menu"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <i class="bi bi-list" aria-hidden="true"></i>
+    
+    <!-- Mobile Toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
     </button>
+    
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'store:home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'store:book_list' %}">Books</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            Categories
+          </a>
+          <ul class="dropdown-menu">
+            <!-- Category loop (context processor la irundhu varum) -->
+            {% for cat in global_categories %}
+              <li><a class="dropdown-item" href="{% url 'store:book_list' %}?category={{ cat.slug }}">{{ cat.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
 
-  </div>{# end inner #}
+      <!-- Right Side Icons -->
+      <div class="d-flex align-items-center gap-3">
+        <!-- Cart Icon -->
+        <a href="{% url 'cart:cart_detail' %}" class="text-white position-relative text-decoration-none">
+          <i class="bi bi-cart3" style="font-size: 1.3rem;"></i>
+          {% if cart_count > 0 %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
+              {{ cart_count }}
+            </span>
+          {% endif %}
+        </a>
 
-  {# ── Mobile menu (collapsed) ── #}
-  <div id="bv-mobile-menu" class="bv-navbar__mobile-menu" aria-label="Mobile navigation">
-    <a href="{% url 'store:home' %}">🏠 Home</a>
-    <a href="#ai-feature" style="color:var(--sky);font-weight:600;"><i class="bi bi-stars me-1"></i> AI Based on Teams</a>
-    {% for cat in global_categories %}
-      <a href="{% url 'store:book_list' %}?category={{ cat.slug }}">
-        {{ cat.name }}
-      </a>
-    {% endfor %}
-    <hr style="border-color:rgba(255,255,255,.1);margin:8px 0;">
-    {% if user.is_authenticated %}
-      <a href="{% url 'accounts:profile' %}">👤 My Profile</a>
-      {% if user.is_staff %}
-        <a href="{% url 'dashboard:overview' %}">⚡ Admin Panel</a>
-        <a href="/admin/" target="_blank" rel="noopener">⚙️ Django Admin</a>
-      {% endif %}
-      <a href="{% url 'accounts:logout' %}" style="color:rgba(255,100,100,.8);">Log out</a>
-    {% else %}
-      <a href="{% url 'accounts:login' %}">Log in</a>
-      <a href="{% url 'accounts:register' %}" style="color:var(--sky);">Sign up →</a>
-    {% endif %}
+        <!-- User Dropdown -->
+        <div class="dropdown">
+          <a href="#" class="text-white text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            {% if user.is_authenticated %}
+              <li><h6 class="dropdown-header">Hi, {{ user.username }}</h6></li>
+              <li><a class="dropdown-item" href="{% url 'accounts:dashboard' %}">My Dashboard</a></li>
+              <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Profile Settings</a></li>
+              {% if user.is_superuser %}
+                <li><a class="dropdown-item" href="/admin/">Admin Panel</a></li>
+              {% endif %}
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}">Logout</a></li>
+            {% else %}
+              <li><a class="dropdown-item" href="{% url 'accounts:login' %}">Login</a></li>
+              <li><a class="dropdown-item" href="{% url 'accounts:register' %}">Register</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-
 </nav>
+<!-- Add spacing because navbar is fixed-top -->
+<div style="margin-top: 76px;"></div>

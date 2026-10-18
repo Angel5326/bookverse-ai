@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import CustomUserCreationForm, ProfileUpdateForm
-
+from orders.models import Order
 
 class RegisterView(CreateView):
     form_class = CustomUserCreationForm
@@ -16,7 +16,6 @@ class RegisterView(CreateView):
         response = super().form_valid(form)
         messages.success(self.request, 'Account created successfully! Please login.')
         return response
-
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -33,12 +32,10 @@ def login_view(request):
             messages.error(request, 'Invalid email or password.')
     return render(request, 'accounts/login.html')
 
-
 def logout_view(request):
     logout(request)
     messages.info(request, 'You have been logged out.')
     return redirect('store:home')
-
 
 @login_required
 def profile_view(request):
@@ -51,3 +48,11 @@ def profile_view(request):
     else:
         form = ProfileUpdateForm(instance=request.user)
     return render(request, 'accounts/profile.html', {'form': form})
+
+@login_required
+def dashboard_view(request):
+    user_orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    context = {
+        'orders': user_orders
+    }
+    return render(request, 'accounts/dashboard.html', context)

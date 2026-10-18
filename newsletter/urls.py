@@ -4,5 +4,5 @@ from . import views
 app_name = 'newsletter'
 
 urlpatterns = [
-    # Newsletter URLs – Person 3 fill pannuvaanga
+    path('subscribe/', views.subscribe, name='subscribe'),
 ]

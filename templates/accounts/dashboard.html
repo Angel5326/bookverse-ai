@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}My Dashboard - BookVerse AI{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <h2 class="fw-bold mb-4">Welcome, {{ request.user.username }}! 👋</h2>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <i class="bi bi-person-circle text-primary" style="font-size: 4rem;"></i>
+                    <h5 class="mt-3">{{ request.user.username }}</h5>
+                    <p class="text-muted small">{{ request.user.email }}</p>
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-outline-primary btn-sm w-100">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">My Orders 📦</h4>
+                </div>
+                <div class="card-body">
+                    {% if orders %}
+                        <ul class="list-group">
+                            {% for order in orders %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Order #{{ order.id }} - ₹{{ order.total_amount }}
+                                    <span class="badge bg-primary rounded-pill">{{ order.status }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">You haven't placed any orders yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
