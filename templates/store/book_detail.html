@@ -22,4 +22,52 @@
         </div>
     </div>
 </div>
+<!-- Button to trigger AI -->
+<button id="ai-summary-btn" class="btn btn-outline-primary mt-3" data-book-id="{{ book.id }}">
+    ✨ Generate AI Summary
+</button>
+
+<!-- Loading Spinner (Hidden by default) -->
+<div id="loading-spinner" class="mt-3 d-none">
+    <div class="spinner-border text-primary" role="status"></div>
+    <span>Generating AI Summary... (This may take up to 10 seconds)</span>
+
+</div>
+
+<!-- Summary Display Area -->
+<div id="ai-summary-box" class="mt-3 p-3 bg-light border rounded d-none">
+    <h5><i class="bi bi-robot"></i> AI Summary</h5>
+    <p id="ai-summary-text" class="mb-0 text-muted"></p>
+</div>
+
+<script>
+document.getElementById('ai-summary-btn').addEventListener('click', function() {
+    const bookId = this.getAttribute('data-book-id');
+    const btn = this;
+    const spinner = document.getElementById('loading-spinner');
+    const summaryBox = document.getElementById('ai-summary-box');
+    const summaryText = document.getElementById('ai-summary-text');
+
+    // UI Updates
+    btn.classList.add('d-none');
+    spinner.classList.remove('d-none');
+
+    // AJAX Call to Django
+    fetch(`/ai/generate/${bookId}/`)
+        .then(response => response.json())
+        .then(data => {
+            spinner.classList.add('d-none');
+            summaryBox.classList.remove('d-none');
+            summaryText.innerText = data.summary;
+        })
+        .catch(error => {
+            spinner.classList.add('d-none');
+            btn.classList.remove('d-none');
+            alert("Error generating summary. Please check terminal.");
+            console.error(error);
+        });
+});
+</script>
+
+
 {% endblock %}

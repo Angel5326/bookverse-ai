@@ -4,5 +4,5 @@ from . import views
 app_name = 'ai_summary'
 
 urlpatterns = [
-    # AI URLs – Person 5 fill pannuvaanga
+    path('generate/<int:book_id>/', views.get_summary, name='get_summary'),
 ]
